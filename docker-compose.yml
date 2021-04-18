@@ -30,7 +30,7 @@ services:
     build:
       context: ./front
     volumes:
-      - .front/:/usr/src/app
+      - ./front/:/usr/src/app
     command: sh -c "cd react-sample && yarn start"
     ports:
       - "$FRONT_PORT:$CONTAINER_PORT"
