@@ -1,0 +1,36 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./api/db/mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    ports:
+      - "$DB_OPEN_PORT:$MYSQL_PORT"
+  api:
+    build:
+      context: ./api
+      args:
+        UID: $UID
+        GID: $GID
+        UNAME: $UNAME
+        DBPASS: $MYSQL_ROOT_PASSWORD
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - ./api:/api
+    ports:
+      - "$API_PORT:$CONTAINER_PORT"
+    environment:
+      RAILS_ENV: development
+    depends_on:
+      - db
+  front:
+    build:
+      context: ./front
+    volumes:
+      - .front/:/usr/src/app
+    command: sh -c "cd react-sample && yarn start"
+    ports:
+      - "$FRONT_PORT:$CONTAINER_PORT"
