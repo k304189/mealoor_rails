@@ -26,4 +26,4 @@
 
 api/db/mysql_data
 
-front/react-sample/node_modules/*
+front/node_modules/*
