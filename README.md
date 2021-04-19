@@ -15,6 +15,17 @@ $ docker-compose run api rails new . --force --no-deps --database=mysql --api --
 　　・--skip-test・・・標準のtestディレクトリを作成しない  
 　　・--skip-bundle・・・Gemのインストールを行わない  
 
+```
+$ docker-compose run api rails generate rspec:install
+
+$ docker-compose run api rails generate devise:install
+
+$ docker-compose run api rails generate devise_token_auth:install User auth
+
+$ docker-compose run api rails db:migrate
+
+```
+
 ### Reactセットアップ
 
 1. Reactアプリ作成
