@@ -50,4 +50,6 @@ $ docker-compose run --rm front sh -c "npm i react-router-dom"
 
 $ docker-compose run --rm front sh -c "npm i axios"
 
+docker-compose rum --rm front sh -c "npm i @types/react-router-dom" # typescriptの開発では必要
+
 ```
