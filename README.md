@@ -36,3 +36,18 @@ $ docker-compose run --rm front sh -c "npm install -g create-react-app && create
 
 　ここではfrontのイメージに「create-react-app」というReactアプリのひな形を作成する  
 　ライブラリをインストールし、直後にfrontというReactアプリを作成  
+
+```
+$ docker-compose run --rm front sh -c "NODE_OPTIONS=--max_old_space_size=2048 npm i @emotion/react@^11"
+
+$ docker-compose run --rm front sh -c "npm i @emotion/styled@^11"
+
+$ docker-compose run --rm front sh -c "npm i framer-motion@^4"
+
+$ docker-compose run --rm front sh -c "npm i @chakra-ui/react"
+
+$ docker-compose run --rm front sh -c "npm i react-router-dom"
+
+$ docker-compose run --rm front sh -c "npm i axios"
+
+```
