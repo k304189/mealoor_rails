@@ -27,8 +27,8 @@ export const Password: VFC<Props> = memo((props) => {
         />
         <InputRightElement>
           { show ?
-              <ViewOffIcon onClick={onClickShow} /> :
-              <ViewIcon onClick={onClickShow} />
+              <ViewOffIcon onClick={onClickShow} data-testid="view-officon" /> :
+              <ViewIcon onClick={onClickShow} data-testid="view-icon" />
           }
         </InputRightElement>
       </InputGroup>

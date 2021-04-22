@@ -54,4 +54,6 @@ docker-compose rum --rm front sh -c "npm i @types/react-router-dom" # typescript
 
 docker-compose run --rm front sh -c "npm i @chakra-ui/icons"
 
+docker-compose run --rm front sh -c "npm i eslint" # パスが通っていなかっただけの可能性があり、不要かも
+
 ```
