@@ -2,12 +2,13 @@ import React, { ChangeEvent, useState } from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { Password } from "../../../components/molecules/input/Password";
+import { Password } from "../../../../components/molecules/input/Password";
 
 const value = "value";
 const onChangeFunction = jest.fn();
-const placeholder = "パスワード";
+const placeholder = "パスワード（確認用）"
 
+const DEFAULT_PLACEHOLDER = "パスワード";
 const INPUT_TYPE_PASSWORD = "password";
 const INPUT_TYPE_TEXT = "text";
 const ICON_ID_VIEW_ICON = "view-icon";
@@ -15,8 +16,8 @@ const ICON_ID_VIEW_OFFICON = "view-officon";
 
 afterEach(() => cleanup());
 
-describe("First Rendering", () => {
-  test("render Password component", () => {
+describe("Placeholder Test", () => {
+  test("Set Placeholder", () => {
     render(
       <Password
         value={value}
@@ -24,28 +25,23 @@ describe("First Rendering", () => {
         placeholder={placeholder}
       />
     );
-    const inputElement = screen.getByPlaceholderText(placeholder);
-    const showIcon = screen.getByTestId(ICON_ID_VIEW_ICON);
-    expect(inputElement).toBeTruthy();
-    expect(inputElement.type).toBe(INPUT_TYPE_PASSWORD);
-    expect(inputElement.value).toBe(value);
-    expect(showIcon).toBeTruthy();
+    const defaultInputElement = screen.queryByPlaceholderText(DEFAULT_PLACEHOLDER);
+    const setInputElement = screen.queryByPlaceholderText(placeholder);
+    expect(defaultInputElement).toBeNull();
+    expect(setInputElement).not.toBeNull();
   });
 
-});
-
-describe("Input Text Call On Change Function", () => {
-  test("When Input Text, Call onChange", () => {
+  test("Not Set Placeholder", () => {
     render(
       <Password
         value={value}
         onChange={onChangeFunction}
-        placeholder={placeholder}
       />
     );
-    const inputElement = screen.getByPlaceholderText(placeholder);
-    userEvent.type(inputElement, "text");
-    expect(onChangeFunction).toHaveBeenCalled();
+    const defaultInputElement = screen.queryByPlaceholderText(DEFAULT_PLACEHOLDER);
+    const setInputElement = screen.queryByPlaceholderText(placeholder);
+    expect(defaultInputElement).not.toBeNull();
+    expect(setInputElement).toBeNull();
   });
 });
 
