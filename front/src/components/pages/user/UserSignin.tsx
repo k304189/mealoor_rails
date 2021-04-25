@@ -23,7 +23,7 @@ export const UserSignin: VFC = memo(() => {
   return (
     <SignoutHeaderLayout>
       <Flex align="center" justify="center" height="100vh">
-        <Box bg="white" w="sm" p={4} borderRadius="md" shadow="md">
+        <Box as="article" w="sm" p={4}>
           <Stack spacing={2} py={4} px={10}>
             <Box>
               <Text fontSize="xs">メールアドレス</Text>

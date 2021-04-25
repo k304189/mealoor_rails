@@ -4,18 +4,21 @@ import { memo, ReactNode, VFC } from "react";
 type Props = {
   onClick: () => void;
   px?: number;
-  opacity?: string;
   children: ReactNode;
 };
 
 export const HeaderLink: VFC<Props> = memo((props) => {
-  const { onClick, px=0, opacity="0.8", children } = props;
+  const { onClick, px=0, children } = props;
+  const hover = {
+    cursor: "pointer",
+    backgroundColor: "#E2E8F0"
+  };
   return (
     <Center
       as="a"
       px={px}
       onClick={onClick}
-      _hover={{ cursor: "pointer", opacity: opacity }}
+      _hover={hover}
       h="100%"
     >
       {children}

@@ -1,5 +1,5 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
-import { IconButton, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { IconButton, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 import { DefaultInput } from "../../atoms/input/DefaultInput";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Password: VFC<Props> = memo((props) => {
-  const { value, onChange, placeholder="パスワード", focusBorderColor="blue.500" } = props;
+  const { value, onChange, placeholder="パスワード", focusBorderColor="#7FDC96" } = props;
   const [ show, setShow ] = useState(false);
   const onClickShow = () => setShow(!show);
 

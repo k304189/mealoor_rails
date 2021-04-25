@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const DefaultInput: VFC<Props> = memo((props) => {
-  const { value, onChange, placeholder="", type="text", focusBorderColor="blue.500"} = props;
+  const { value, onChange, placeholder="", type="text", focusBorderColor="#7FDC96"} = props;
 
   return (
     <Input

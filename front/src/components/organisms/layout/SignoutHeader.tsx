@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Center, Flex, Heading, Link, Spacer, useDisclosure } from "@chakra-ui/react";
+import { Flex, Heading, Spacer, useDisclosure } from "@chakra-ui/react";
 import { memo, useCallback, VFC } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -17,21 +17,21 @@ export const SignoutHeader: VFC = memo(() => {
   const onClickSignup = useCallback(() => history.push("/signup"), []);
   return (
     <Flex
-      as="nav"
-      bg="teal.500"
-      color="gray.50"
+      as="header"
       align="center"
       justify="spacec-between"
       h={{ base: "28px", md: "48px"}}
     >
-      <HeaderLink px={2} onClick={onClickHome} opacity="1">
+      <HeaderLink px={2} onClick={onClickHome}>
         <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
           mealoor
         </Heading>
       </HeaderLink>
       <Spacer />
-      <HeaderLink px={2} onClick={onClickSignin}>サインイン</HeaderLink>
-      <HeaderLink px={2} onClick={onClickSignup}>サインアップ</HeaderLink>
+      <Flex h="100%">
+        <HeaderLink px={2} onClick={onClickSignin}>サインイン</HeaderLink>
+        <HeaderLink px={2} onClick={onClickSignup}>サインアップ</HeaderLink>
+      </Flex>
     </Flex>
   );
 });
