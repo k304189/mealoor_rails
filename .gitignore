@@ -27,3 +27,5 @@
 api/db/mysql_data
 
 front/node_modules/*
+
+front/.env

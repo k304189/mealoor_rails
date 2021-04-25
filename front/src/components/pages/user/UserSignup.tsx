@@ -1,22 +1,30 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { ChangeEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, FocusEvent, memo, useState, VFC } from "react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { Password } from "../../molecules/input/Password";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SignoutHeaderLayout } from "../../templates/SignoutHeaderLayout";
+import { useUserSignup } from "../../../hooks/user/useUserSignup";
+import { useCheckEmail } from "../../../hooks/user/useCheckEmail";
 
 export const UserSignup: VFC = memo(() => {
   const [ nickname, setNickname ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
+  const [ emailValid, setEmailValid ] = useState(true);
+  const { signup } = useUserSignup();
+  const { checkEmail } = useCheckEmail();
 
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) =>
     setNickname(e.target.value);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
+
+  const onBlurEmail = (e: FocusEvent<HTMLInputElement>) =>
+    setEmailValid(checkEmail(email));
 
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);
@@ -25,7 +33,13 @@ export const UserSignup: VFC = memo(() => {
     setPasswordConfirmation(e.target.value);
 
   const onClickSignup = () => {
-    alert("aaa");
+    const signupUser = {
+      nickname: nickname,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation
+    };
+    signup(signupUser);
   };
 
   return (
@@ -48,7 +62,11 @@ export const UserSignup: VFC = memo(() => {
                 placeholder="メールアドレス"
                 value={email}
                 onChange={onChangeEmail}
+                onBlur={onBlurEmail}
               />
+              <Text fontSize="xs" color="red">
+                {emailValid ? "" : "メールアドレスが不正です"}
+              </Text>
             </Box>
 
             <Box>
