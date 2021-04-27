@@ -1,6 +1,10 @@
+import { memo, VFC } from "react";
+
 import { SignoutHeaderLayout } from "../../templates/SignoutHeaderLayout";
 
-export const Top = () => {
+export const Top: VFC = memo(() => {
+  localStorage.clear();
+  console.log(localStorage);
   return (
     <SignoutHeaderLayout>
       <div>
@@ -8,4 +12,4 @@ export const Top = () => {
       </div>
     </SignoutHeaderLayout>
   )
-}
+})

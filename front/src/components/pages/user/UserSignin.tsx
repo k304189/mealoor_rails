@@ -5,10 +5,16 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { Password } from "../../molecules/input/Password";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SignoutHeaderLayout } from "../../templates/SignoutHeaderLayout";
+import { useUserSignin } from "../../../hooks/user/useUserSignin";
+
+import { useLogin } from "../../../hooks/user/useLogin";
 
 export const UserSignin: VFC = memo(() => {
+  const { loginUser } = useLogin();
+  console.log(localStorage);
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
+  const { signin } = useUserSignin();
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
@@ -17,7 +23,11 @@ export const UserSignin: VFC = memo(() => {
     setPassword(e.target.value);
 
   const onClickSignin = () => {
-    alert("bbb");
+    const signinUser = {
+      email: email,
+      password: password
+    };
+    signin(signinUser);
   }
 
   return (

@@ -8,7 +8,10 @@ import { SignoutHeaderLayout } from "../../templates/SignoutHeaderLayout";
 import { useUserSignup } from "../../../hooks/user/useUserSignup";
 import { useCheckEmail } from "../../../hooks/user/useCheckEmail";
 
+import { useLogin } from "../../../hooks/user/useLogin";
+
 export const UserSignup: VFC = memo(() => {
+  const { loginUser } = useLogin();
   const [ nickname, setNickname ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
