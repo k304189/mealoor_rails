@@ -1,0 +1,82 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        }
+      }
+    },
+    "rules": {
+      "linebreak-style": "off",
+      "jsx-quotes": "off",
+      "no-unused-expressions": "off",
+      "no-restricted-imports": "off",
+      "semi-style": "off",
+      "object-curly-newline": "off",
+      "no-duplicate-imports": "off",
+      "react/react-in-jsx-scope": "off",
+      "implicit-arrow-linebreak": "off",
+      "object-shorthand": "off",
+      "array-bracket-spacing": "off",
+      "quotes": "off",
+      "import/extensions": "off",
+      "import/prefer-default-export": "off",
+      "indent": "off",
+      "space-infix-ops": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "comma-dangle": "off",
+      "operator-linebreak": "off",
+      "react/jsx-wrap-multilines": "off",
+      "react/jsx-indent": "off",
+      "react/jsx-curly-newline": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "object-curly-spacing": "off",
+      "padded-blocks": "off",
+      "react/jsx-closing-tag-location": "off",
+      "arrow-body-style": "off",
+      "keyword-spacing": "off",
+      "camelcase": "off",
+      "quote-props": "off",
+      "prefer-template": "off",
+      "object-curly-spacing": "off",
+      "no-use-before-define": "off",
+      "react/jsx-equals-spacing": "off",
+      "key-spacing": "off",
+      "no-shadow": "off",
+      "dot-notation": "off",
+      "semi": "off",
+
+
+
+
+      "@typescript-eslint/indent": "off",
+      "@typescript-eslint/prefer-interface": "off",
+      "react/jsx-filename-extension": [
+        "error",
+        { "extensions": [".jsx", ".tsx"] }
+      ],
+      "react/prop-types": "off",
+      "spaced-comment": ["error", "always", { "markers": ["/ <reference"] }]
+    }
+}

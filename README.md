@@ -56,4 +56,8 @@ docker-compose run --rm front sh -c "npm i @chakra-ui/icons"
 
 docker-compose run --rm front sh -c "npm i eslint" # パスが通っていなかっただけの可能性があり、不要かも
 
+docker-compose run --rm front sh -c "npm i prettier eslint-config-prettier" # prettier 整形ツール
+
+docker-compose run --rm front sh -c "npm i @typescript-eslint/eslint-plugin @typescript-eslint/parser"
+
 ```
