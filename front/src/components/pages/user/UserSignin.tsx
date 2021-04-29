@@ -12,8 +12,8 @@ import { useLogin } from "../../../hooks/user/useLogin";
 export const UserSignin: VFC = memo(() => {
   const { loginUser } = useLogin();
   console.log(localStorage);
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { signin } = useUserSignin();
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
@@ -24,11 +24,11 @@ export const UserSignin: VFC = memo(() => {
 
   const onClickSignin = () => {
     const signinUser = {
-      email: email,
-      password: password
+      email,
+      password,
     };
     signin(signinUser);
-  }
+  };
 
   return (
     <SignoutHeaderLayout>
@@ -52,7 +52,7 @@ export const UserSignin: VFC = memo(() => {
               />
             </Box>
             <PrimaryButton onClick={onClickSignin}>ログイン</PrimaryButton>
-         </Stack>
+          </Stack>
         </Box>
       </Flex>
     </SignoutHeaderLayout>

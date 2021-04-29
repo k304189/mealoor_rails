@@ -6,19 +6,23 @@ import { useLogin } from "./useLogin";
 import { useRequestHeader } from "./useRequestHeader";
 import { useMessage } from "../common/useMessage";
 
-type signin = {
+type signinUserType = {
   email: string;
   password: string;
 };
 
-export const useUserSignin = () => {
+type returnType = {
+  signin: (signinUser: signinUserType) => void;
+};
+
+export const useUserSignin = (): returnType => {
   const history = useHistory();
   const { setLoginUser } = useLogin();
   const { setRequestHeader } = useRequestHeader();
   const { showMessage } = useMessage();
 
-  const signin = useCallback((signinUser: signin) => {
-    const url = process.env.REACT_APP_API_V1_URL + "/auth/sign_in";
+  const signin = useCallback((signinUser: signinUserType) => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/auth/sign_in`;
     axios
       .post(url, signinUser)
       .then((res) => {
@@ -26,7 +30,7 @@ export const useUserSignin = () => {
         setLoginUser(res.data.data);
         history.push("/dashboard");
       })
-      .catch((e) => {
+      .catch(() => {
         showMessage({ title: "ログインに失敗しました", status: "error" });
       });
   }, []);

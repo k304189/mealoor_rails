@@ -8,10 +8,10 @@ type Props = {
 };
 
 export const HeaderLink: VFC<Props> = memo((props) => {
-  const { onClick, px=0, children } = props;
+  const { onClick, px = 0, children } = props;
   const hover = {
     cursor: "pointer",
-    backgroundColor: "#E2E8F0"
+    backgroundColor: "#E2E8F0",
   };
   return (
     <Center

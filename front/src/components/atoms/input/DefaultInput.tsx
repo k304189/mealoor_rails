@@ -12,12 +12,12 @@ type Props = {
 
 export const DefaultInput: VFC<Props> = memo((props) => {
   const { value,
-          onChange,
-          placeholder="",
-          type="text",
-          focusBorderColor="#7FDC96",
-          onBlur=() => {}
-        } = props;
+    onChange,
+    placeholder = "",
+    type = "text",
+    focusBorderColor = "#7FDC96",
+    onBlur = () => {},
+  } = props;
 
   return (
     <Input

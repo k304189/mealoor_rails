@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -13,7 +13,7 @@ const callFunction = jest.fn();
 describe("First Rendering", () => {
   test("render Children is text", () => {
     render(
-      <HeaderLink onClick={callFunction}>{headerLinkText}</HeaderLink>
+      <HeaderLink onClick={callFunction}>{headerLinkText}</HeaderLink>,
     );
     const element = screen.queryByText(headerLinkText);
     expect(element).toBeTruthy();
@@ -25,7 +25,7 @@ describe("First Rendering", () => {
     render(
       <HeaderLink onClick={callFunction}>
         <h1>{headerLinkHtmlText}</h1>
-      </HeaderLink>
+      </HeaderLink>,
     );
     const element = screen.queryByText(headerLinkHtmlText);
     expect(element).toBeTruthy();

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -6,7 +6,7 @@ import { Password } from "../../../../components/molecules/input/Password";
 
 const value = "value";
 const onChangeFunction = jest.fn();
-const placeholder = "パスワード（確認用）"
+const placeholder = "パスワード（確認用）";
 
 const DEFAULT_PLACEHOLDER = "パスワード";
 const INPUT_TYPE_PASSWORD = "password";
@@ -23,7 +23,7 @@ describe("Placeholder Test", () => {
         value={value}
         onChange={onChangeFunction}
         placeholder={placeholder}
-      />
+      />,
     );
     const defaultInputElement = screen.queryByPlaceholderText(DEFAULT_PLACEHOLDER);
     const setInputElement = screen.queryByPlaceholderText(placeholder);
@@ -36,7 +36,7 @@ describe("Placeholder Test", () => {
       <Password
         value={value}
         onChange={onChangeFunction}
-      />
+      />,
     );
     const defaultInputElement = screen.queryByPlaceholderText(DEFAULT_PLACEHOLDER);
     const setInputElement = screen.queryByPlaceholderText(placeholder);
@@ -52,7 +52,7 @@ describe("Toggle Icon and Input Type", () => {
         value={value}
         onChange={onChangeFunction}
         placeholder={placeholder}
-      />
+      />,
     );
     const inputElement = screen.getByPlaceholderText(placeholder);
     let displayIcon = screen.getByTestId(ICON_ID_VIEW_ICON);
@@ -70,6 +70,5 @@ describe("Toggle Icon and Input Type", () => {
     expect(inputElement.type).toBe(INPUT_TYPE_PASSWORD);
     expect(screen.queryByTestId(ICON_ID_VIEW_ICON)).not.toBeNull();
     expect(screen.queryByTestId(ICON_ID_VIEW_OFFICON)).toBeNull();
-
   });
 });

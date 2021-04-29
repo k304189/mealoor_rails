@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -19,7 +19,7 @@ describe("First Rendering", () => {
         value={value}
         onChange={onChangeFunction}
         placeholder={placeholder}
-      />
+      />,
     );
     const inputElement = screen.getByPlaceholderText(placeholder);
     expect(inputElement).toBeTruthy();

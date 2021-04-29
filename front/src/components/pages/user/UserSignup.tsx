@@ -12,11 +12,11 @@ import { useLogin } from "../../../hooks/user/useLogin";
 
 export const UserSignup: VFC = memo(() => {
   const { loginUser } = useLogin();
-  const [ nickname, setNickname ] = useState("");
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
-  const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
-  const [ emailValid, setEmailValid ] = useState(true);
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [emailValid, setEmailValid] = useState(true);
   const { signup } = useUserSignup();
   const { checkEmail } = useCheckEmail();
 
@@ -37,10 +37,10 @@ export const UserSignup: VFC = memo(() => {
 
   const onClickSignup = () => {
     const signupUser = {
-      nickname: nickname,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation
+      nickname,
+      email,
+      password,
+      passwordConfirmation,
     };
     signup(signupUser);
   };

@@ -11,19 +11,19 @@ export const Router: VFC = memo(() => {
   return (
     <Switch>
       <LoginUserProvider>
-        <Route exact path = "/">
+        <Route exact path="/">
           <Top />
         </Route>
-        <Route exact path = "/signup">
+        <Route exact path="/signup">
           <UserSignup />
         </Route>
-        <Route exact path = "/signin">
+        <Route exact path="/signin">
           <UserSignin />
         </Route>
-        <Route path = "/dashboard">
+        <Route path="/dashboard">
           <Dashboard />
         </Route>
       </LoginUserProvider>
     </Switch>
-  )
+  );
 });

@@ -6,7 +6,11 @@ type Props = {
   status: "info" | "warning" | "success" | "error";
 };
 
-export const useMessage = () => {
+type returnType = {
+  showMessage: (props: Props) => void;
+};
+
+export const useMessage = (): returnType => {
   const toast = useToast();
   const showMessage = useCallback(
     (props: Props) => {
@@ -16,10 +20,10 @@ export const useMessage = () => {
         status,
         position: "top-right",
         duration: 2000,
-        isClosable: true
+        isClosable: true,
       });
     },
-    [toast]
+    [toast],
   );
   return { showMessage };
 };

@@ -3,10 +3,15 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
-  useState
+  useState,
+  VFC,
 } from "react";
 
 import { User } from "../types/api/user";
+
+type Props = {
+  children: ReactNode;
+};
 
 export type LoginUserContextType = {
   loginUser: User | null;
@@ -14,15 +19,15 @@ export type LoginUserContextType = {
 };
 
 export const LoginUserContext = createContext<LoginUserContextType>(
-  {} as LoginUserContextType
+  {} as LoginUserContextType,
 );
 
-export const LoginUserProvider = (props: { children: ReactNode }) => {
+export const LoginUserProvider: VFC<Props> = (props) => {
   const { children } = props;
-  const [ loginUser, setLoginUser ] = useState<User | null>(null);
+  const [loginUser, setLoginUser] = useState<User | null>(null);
   return (
     <LoginUserContext.Provider value={{ loginUser, setLoginUser }}>
       {children}
     </LoginUserContext.Provider>
   );
-}
+};

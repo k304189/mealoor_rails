@@ -1,10 +1,11 @@
+import { VFC } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react";
 
 import systemTheme from "./theme/systemTheme";
-import { Router } from "./router/Router"
+import { Router } from "./router/Router";
 
-function App() {
+const App: VFC = () => {
   return (
     <ChakraProvider theme={systemTheme}>
       <BrowserRouter>
@@ -12,6 +13,6 @@ function App() {
       </BrowserRouter>
     </ChakraProvider>
   );
-}
+};
 
 export default App;

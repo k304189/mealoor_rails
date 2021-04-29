@@ -5,7 +5,7 @@ const systemTheme = extendTheme({
     global: {
       body: {
         backgroundColor: "#7FDC96",
-        color: "gray.800"
+        color: "gray.800",
       },
       header: {
         backgroundColor: "#FCFDFE",
@@ -14,9 +14,9 @@ const systemTheme = extendTheme({
       article: {
         backgroundColor: "#FCFDFE",
         borderRadius: "md",
-        shadow: "md"
-      }
-    }
-  }
+        shadow: "md",
+      },
+    },
+  },
 });
 export default systemTheme;

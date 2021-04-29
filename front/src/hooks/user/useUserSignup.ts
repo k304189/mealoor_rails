@@ -6,21 +6,25 @@ import { useLogin } from "./useLogin";
 import { useRequestHeader } from "./useRequestHeader";
 import { useMessage } from "../common/useMessage";
 
-type signup = {
+type signupUserType = {
   nickname: string;
   email: string;
   password: string;
   passwordConfirmation: string;
 };
 
-export const useUserSignup = () => {
+type returnType = {
+  signup: (signupUser: signupUserType) => void;
+};
+
+export const useUserSignup = (): returnType => {
   const history = useHistory();
   const { setLoginUser } = useLogin();
   const { setRequestHeader } = useRequestHeader();
   const { showMessage } = useMessage();
 
-  const signup = useCallback((signupUser: signup) => {
-    const url = process.env.REACT_APP_API_V1_URL + "/auth/";
+  const signup = useCallback((signupUser: signupUserType) => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/auth/`;
     axios
       .post(url, signupUser)
       .then((res) => {
@@ -28,8 +32,8 @@ export const useUserSignup = () => {
         setLoginUser(res.data.data);
         history.push("/dashboard");
       })
-      .catch((e) => {
-        showMessage({ title:"ユーザー登録に失敗しました", status: "error"});
+      .catch(() => {
+        showMessage({ title: "ユーザー登録に失敗しました", status: "error" });
       });
   }, []);
   return { signup };

@@ -12,8 +12,8 @@ type Props = {
 };
 
 export const Password: VFC<Props> = memo((props) => {
-  const { value, onChange, placeholder="パスワード", focusBorderColor="#7FDC96" } = props;
-  const [ show, setShow ] = useState(false);
+  const { value, onChange, placeholder = "パスワード", focusBorderColor = "#7FDC96" } = props;
+  const [show, setShow] = useState(false);
   const onClickShow = () => setShow(!show);
 
   return (
@@ -27,14 +27,17 @@ export const Password: VFC<Props> = memo((props) => {
           focusBorderColor={focusBorderColor}
         />
         <InputRightElement>
-          { show ?
+          { show
+            ? (
               <IconButton
                 data-testid="view-officon"
                 aria-label="Show password"
                 bg="transparent"
                 onClick={onClickShow}
                 icon={<ViewOffIcon />}
-              />:
+              />
+            )
+            : (
               <IconButton
                 data-testid="view-icon"
                 aria-label="Not Show password"
@@ -42,7 +45,7 @@ export const Password: VFC<Props> = memo((props) => {
                 onClick={onClickShow}
                 icon={<ViewIcon />}
               />
-          }
+            ) }
         </InputRightElement>
       </InputGroup>
     </>
