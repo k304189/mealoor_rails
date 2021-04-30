@@ -60,4 +60,10 @@ docker-compose run --rm front sh -c "npm i prettier eslint-config-prettier" # pr
 
 docker-compose run --rm front sh -c "npm i @typescript-eslint/eslint-plugin @typescript-eslint/parser"
 
+docker-compose run --rm front sh -c "npm i msw"
+
+docker-compose run --rm front sh -c "npm i @testing-library/react-hooks"
+
+docker-compose run --rm front sh -c "npm i react-test-renderer"
+
 ```
