@@ -72,3 +72,20 @@ describe("Toggle Icon and Input Type", () => {
     expect(screen.queryByTestId(ICON_ID_VIEW_OFFICON)).toBeNull();
   });
 });
+
+describe("Tab move", () => {
+  test("When Tab move from input, Not Focus IconButton", () => {
+    render(
+      <Password
+        value={value}
+        onChange={onChangeFunction}
+        placeholder={placeholder}
+      />,
+    );
+    const inputElement = screen.getByPlaceholderText(placeholder);
+    let displayIcon = screen.getByTestId(ICON_ID_VIEW_ICON);
+    userEvent.click(inputElement);
+    userEvent.tab();
+    expect(displayIcon).not.toHaveFocus();
+  });
+});
