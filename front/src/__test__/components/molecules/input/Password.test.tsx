@@ -83,7 +83,7 @@ describe("Tab move", () => {
       />,
     );
     const inputElement = screen.getByPlaceholderText(placeholder);
-    let displayIcon = screen.getByTestId(ICON_ID_VIEW_ICON);
+    const displayIcon = screen.getByTestId(ICON_ID_VIEW_ICON);
     userEvent.click(inputElement);
     userEvent.tab();
     expect(displayIcon).not.toHaveFocus();

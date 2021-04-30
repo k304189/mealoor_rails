@@ -6,7 +6,7 @@ import { PrimaryButton } from "../../../../components/atoms/button/PrimaryButton
 
 afterEach(() => cleanup());
 
-const buttonText = "ボタン"
+const buttonText = "ボタン";
 const onClickFunction = jest.fn();
 
 describe("First Rendering", () => {
@@ -44,7 +44,7 @@ describe("Click Button Call Function", () => {
     render(
       <PrimaryButton
         onClick={onClickFunction}
-        disabled={true}
+        disabled
       >
         {buttonText}
       </PrimaryButton>,

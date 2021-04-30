@@ -33,7 +33,7 @@ export const Password: VFC<Props> = memo((props) => {
                 data-testid="view-officon"
                 aria-label="Show password"
                 bg="transparent"
-                tabIndex="-1"
+                tabIndex={-1}
                 onClick={onClickShow}
                 icon={<ViewOffIcon />}
               />
@@ -43,7 +43,7 @@ export const Password: VFC<Props> = memo((props) => {
                 data-testid="view-icon"
                 aria-label="Not Show password"
                 bg="transparent"
-                tabIndex="-1"
+                tabIndex={-1}
                 onClick={onClickShow}
                 icon={<ViewIcon />}
               />
