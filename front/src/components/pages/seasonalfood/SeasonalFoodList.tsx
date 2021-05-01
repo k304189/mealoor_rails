@@ -1,18 +1,20 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
-import { Box, Center, Button, Flex, Table, Thead, Tbody, Tr, Th, Td, useDisclosure } from "@chakra-ui/react";
+import { memo, useState, VFC } from "react";
+import {
+  Box,
+  Flex,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { SeasonalFoodEditModal } from "../../organisms/seasonalfood/SeasonalFoodEditModal";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
-
-type dataType = {
-  id: number;
-  name: string;
-  category: string;
-  startMonth: string;
-  endMonth: string;
-};
 
 const sampleData = [
   { id: 1, name: "リンゴ", category: "フルーツ", startMonth: 1, endMonth: 3 },
@@ -51,7 +53,7 @@ export const SeasonalFoodList: VFC = memo(() => {
               </Tr>
             </Thead>
             <Tbody>
-              {seasonalFoods.map((data, index) => (
+              {seasonalFoods.map((data) => (
                 <Tr key={data.id}>
                   <Td p={0}>
                     <DefaultLink

@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, VFC } from "react";
+import { memo, VFC } from "react";
 
 import { DefaultSelect } from "../../atoms/input/DefaultSelect";
 import { CustomizeSelect } from "../../../types/molecules/customizeSelect";

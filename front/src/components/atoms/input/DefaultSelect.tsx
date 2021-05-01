@@ -1,5 +1,5 @@
 import { Select } from "@chakra-ui/react";
-import { ChangeEvent, memo, ReactNode, VFC } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 
 type optionType = {
   value: string | number;
