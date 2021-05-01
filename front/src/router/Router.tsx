@@ -5,6 +5,7 @@ import { Top } from "../components/pages/top/Top";
 import { UserSignup } from "../components/pages/user/UserSignup";
 import { UserSignin } from "../components/pages/user/UserSignin";
 import { Dashboard } from "../components/pages/dashboard/Dashboard";
+import { SeasonalFoodList } from "../components/pages/seasonalfood/SeasonalFoodList";
 import { LoginUserProvider } from "../providers/LoginUserProvider";
 
 export const Router: VFC = memo(() => {
@@ -22,6 +23,9 @@ export const Router: VFC = memo(() => {
         </Route>
         <Route path="/dashboard">
           <Dashboard />
+        </Route>
+        <Route path="/seasonalfood">
+          <SeasonalFoodList />
         </Route>
       </LoginUserProvider>
     </Switch>
