@@ -1,16 +1,18 @@
 import {
+  Box,
   Flex,
   FormControl,
   FormLabel,
   Stack,
   Spacer,
 } from "@chakra-ui/react";
-import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
+import { ChangeEvent, FocusEvent, memo, useEffect, useState, VFC } from "react";
 
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SelectMonth } from "../../molecules/select/SelectMonth";
 import { SelectCategory } from "../../molecules/select/SelectCategory";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
+import { DefaultInputForm } from "../input/DefaultInputForm";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 
 type Props = {
@@ -25,6 +27,10 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const [category, setCategory] = useState("");
   const [startMonth, setStartMonth] = useState<number>(0);
   const [endMonth, setEndMonth] = useState<number>(0);
+  const [nameEmpty, setNameEmpty] = useState(false);
+  const [categoryEmpty, setCategoryEmpty] = useState(false);
+  const [startMonthEmpty, setStartMonthEmpty] = useState(false);
+  const [endMonthEmpty, setEndMonthEmpty] = useState(false);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -38,7 +44,19 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const onChangeEndMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     setEndMonth(Number(e.target.value));
 
-  const onClickSubmit = () => console.log("Click Button!");
+  const onBlurName = (e: FocusEvent<HTMLInputElement>) =>
+    setNameEmpty(name === "");
+
+  const onBlurCategory = (e: FocusEvent<HTMLSelectElement>) =>
+    setCategoryEmpty(category === "");
+
+  const onBlurStartMonthEmpty = (e: FocusEvent<HTMLSelectElement>) =>
+    setStartMonthEmpty(!(startMonth >= 1 && startMonth <= 12));
+
+  const onBlurEndMonthEmpty = (e: FocusEvent<HTMLSelectElement>) =>
+    setEndMonthEmpty(!(endMonth >= 1 && endMonth <= 12));
+
+  const onClickSubmit = () => console.log(`${startMonth} ${startMonthEmpty}`);
 
   useEffect(() => {
     setName(seasonalFood?.name ?? "");
@@ -56,10 +74,30 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       onClick={onClickSubmit}
     >
       <Stack spacing={4}>
-        <FormControl>
-          <FormLabel fontSize="xs">食材名</FormLabel>
-          <DefaultInput value={name} onChange={onChangeName} />
-        </FormControl>
+        <DefaultInputForm
+          label="食材名"
+          require="require"
+          isInvalid={nameEmpty}
+          errorMsg="必須項目です。入力してください"
+        >
+          <DefaultInput
+            value={name}
+            onChange={onChangeName}
+            onBlur={onBlurName}
+          />
+        </DefaultInputForm>
+        <DefaultInputForm
+          label="カテゴリー"
+          require="require"
+          isInvalid={categoryEmpty}
+          errorMsg="必須項目です。選択してください"
+        >
+          <SelectCategory
+            selectedValue={category}
+            onChange={onChangeCategory}
+            onBlur={onBlurCategory}
+          />
+        </DefaultInputForm>
         <FormControl>
           <FormLabel fontSize="xs">カテゴリー</FormLabel>
           <SelectCategory
@@ -68,21 +106,35 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
           />
         </FormControl>
         <Flex>
-          <FormControl w="40%">
-            <FormLabel fontSize="xs">開始月</FormLabel>
-            <SelectMonth
-              selectedValue={startMonth}
-              onChange={onChangeStartMonth}
-            />
-          </FormControl>
+          <Box w="40%">
+            <DefaultInputForm
+              label="開始月"
+              require="require"
+              isInvalid={startMonthEmpty}
+              errorMsg="必須項目です。選択してください"
+            >
+              <SelectMonth
+                selectedValue={startMonth}
+                onChange={onChangeStartMonth}
+                onBlur={onBlurStartMonthEmpty}
+              />
+            </DefaultInputForm>
+          </Box>
           <Spacer />
-          <FormControl w="40%">
-            <FormLabel fontSize="xs">終了月</FormLabel>
-            <SelectMonth
-              selectedValue={endMonth}
-              onChange={onChangeEndMonth}
-            />
-          </FormControl>
+          <Box w="40%">
+            <DefaultInputForm
+              label="終了月"
+              require="require"
+              isInvalid={endMonthEmpty}
+              errorMsg="必須項目です。選択してください"
+            >
+              <SelectMonth
+                selectedValue={endMonth}
+                onChange={onChangeEndMonth}
+                onBlur={onBlurEndMonthEmpty}
+              />
+            </DefaultInputForm>
+          </Box>
         </Flex>
       </Stack>
     </DefaultModal>

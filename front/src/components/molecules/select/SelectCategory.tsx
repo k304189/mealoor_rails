@@ -4,7 +4,7 @@ import { DefaultSelect } from "../../atoms/input/DefaultSelect";
 import { CustomizeSelect } from "../../../types/molecules/customizeSelect";
 
 export const SelectCategory: VFC<CustomizeSelect> = memo((props) => {
-  const { selectedValue = "", onChange } = props;
+  const { selectedValue = "", onChange, onBlur = () => {} } = props;
   const categoryOption = [
     { value: "米" },
     { value: "パン" },
@@ -30,6 +30,7 @@ export const SelectCategory: VFC<CustomizeSelect> = memo((props) => {
       selectedValue={selectedValue}
       optionList={categoryOption}
       onChange={onChange}
+      onBlur={onBlur}
     />
   );
 });

@@ -4,7 +4,7 @@ import { DefaultSelect } from "../../atoms/input/DefaultSelect";
 import { CustomizeSelect } from "../../../types/molecules/customizeSelect";
 
 export const SelectMonth: VFC<CustomizeSelect> = memo((props) => {
-  const { selectedValue = "", onChange } = props;
+  const { selectedValue = "", onChange, onBlur = () => {} } = props;
   const monthOption = [
     { value: 1, displayValue: "1月" },
     { value: 2, displayValue: "2月" },
@@ -24,6 +24,7 @@ export const SelectMonth: VFC<CustomizeSelect> = memo((props) => {
       selectedValue={selectedValue}
       optionList={monthOption}
       onChange={onChange}
+      onBlur={onBlur}
     />
   );
 });
