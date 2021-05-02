@@ -59,8 +59,8 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     setName(seasonalFood?.name ?? "");
     setCategory(seasonalFood?.category ?? "");
-    setStartMonth(seasonalFood?.startMonth ?? 0);
-    setEndMonth(seasonalFood?.endMonth ?? 0);
+    setStartMonth(seasonalFood?.start_month ?? 0);
+    setEndMonth(seasonalFood?.end_month ?? 0);
   }, [seasonalFood]);
 
   return (

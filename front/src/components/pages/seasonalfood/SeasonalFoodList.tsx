@@ -17,16 +17,16 @@ import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 
 const sampleData = [
-  { id: 1, name: "リンゴ", category: "フルーツ", startMonth: 1, endMonth: 3 },
-  { id: 2, name: "オレンジ", category: "フルーツ", startMonth: 2, endMonth: 3 },
-  { id: 3, name: "もも", category: "フルーツ", startMonth: 3, endMonth: 3 },
-  { id: 4, name: "なし", category: "フルーツ", startMonth: 4, endMonth: 3 },
-  { id: 5, name: "ぶどう", category: "フルーツ", startMonth: 5, endMonth: 3 },
-  { id: 6, name: "トマト", category: "緑黄色野菜", startMonth: 6, endMonth: 3 },
-  { id: 7, name: "キャベツ", category: "淡色野菜", startMonth: 7, endMonth: 3 },
-  { id: 8, name: "ピーマン", category: "緑黄色野菜", startMonth: 8, endMonth: 3 },
-  { id: 9, name: "ニラ", category: "緑黄色野菜", startMonth: 9, endMonth: 3 },
-  { id: 10, name: "白菜", category: "淡色野菜", startMonth: 10, endMonth: 3 },
+  { id: 1, name: "リンゴ", category: "フルーツ", start_month: 1, end_month: 3 },
+  { id: 2, name: "オレンジ", category: "フルーツ", start_month: 2, end_month: 3 },
+  { id: 3, name: "もも", category: "フルーツ", start_month: 3, end_month: 3 },
+  { id: 4, name: "なし", category: "フルーツ", start_month: 4, end_month: 3 },
+  { id: 5, name: "ぶどう", category: "フルーツ", start_month: 5, end_month: 3 },
+  { id: 6, name: "トマト", category: "緑黄色野菜", start_month: 6, end_month: 3 },
+  { id: 7, name: "キャベツ", category: "淡色野菜", start_month: 7, end_month: 3 },
+  { id: 8, name: "ピーマン", category: "緑黄色野菜", start_month: 8, end_month: 3 },
+  { id: 9, name: "ニラ", category: "緑黄色野菜", start_month: 9, end_month: 3 },
+  { id: 10, name: "白菜", category: "淡色野菜", start_month: 10, end_month: 3 },
 ];
 
 export const SeasonalFoodList: VFC = memo(() => {
@@ -63,8 +63,8 @@ export const SeasonalFoodList: VFC = memo(() => {
                     </DefaultLink>
                   </Td>
                   <Td>{data.category}</Td>
-                  <Td>{data.startMonth}</Td>
-                  <Td>{data.endMonth}</Td>
+                  <Td>{data.start_month}</Td>
+                  <Td>{data.end_month}</Td>
                 </Tr>
               ))}
             </Tbody>
