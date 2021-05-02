@@ -1,0 +1,2 @@
+class SeasonalFood < ApplicationRecord
+end

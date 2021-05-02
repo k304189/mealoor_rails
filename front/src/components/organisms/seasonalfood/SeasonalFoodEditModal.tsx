@@ -11,16 +11,19 @@ import { SelectMonth } from "../../molecules/select/SelectMonth";
 import { SelectCategory } from "../../molecules/select/SelectCategory";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultInputForm } from "../input/DefaultInputForm";
+import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 
 type Props = {
-  seasonalFood?: SeasonalFood;
+  seasonalFood?: SeasonalFood | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const { seasonalFood = null, isOpen, onClose } = props;
+  const { addSeasonalFood } = useSeasonalFoodApi();
+  const [id, setId] = useState<number>(0);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [startMonth, setStartMonth] = useState<number>(0);
@@ -54,22 +57,34 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const onBlurEndMonthEmpty = () =>
     setEndMonthEmpty(!(endMonth >= 1 && endMonth <= 12));
 
-  const onClickSubmit = () => console.log(`${startMonth} ${startMonthEmpty}`);
+  const addData = () => {
+    addSeasonalFood({
+      id,
+      name,
+      category,
+      start_month: startMonth,
+      end_month: endMonth,
+    });
+  };
 
   useEffect(() => {
+    setId(seasonalFood?.id ?? 0);
     setName(seasonalFood?.name ?? "");
     setCategory(seasonalFood?.category ?? "");
     setStartMonth(seasonalFood?.start_month ?? 0);
     setEndMonth(seasonalFood?.end_month ?? 0);
   }, [seasonalFood]);
+  const editType = (id === 0) ? "登録" : "編集";
+  const buttonTitle = (id === 0) ? "登録" : "更新";
+  const callFunction = (id === 0) ? addData : () => { console.log("更新関数実行"); };
 
   return (
     <DefaultModal
       isOpen={isOpen}
       onClose={onClose}
-      modalTitle="旬の食材編集"
-      buttonTitle="更新"
-      onClick={onClickSubmit}
+      modalTitle={`旬の食材${editType}`}
+      buttonTitle={buttonTitle}
+      onClick={callFunction}
     >
       <Stack spacing={4}>
         <DefaultInputForm

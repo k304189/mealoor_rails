@@ -14,6 +14,7 @@ import {
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { SeasonalFoodEditModal } from "../../organisms/seasonalfood/SeasonalFoodEditModal";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 
 const sampleData = [
@@ -32,10 +33,14 @@ const sampleData = [
 export const SeasonalFoodList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [seasonalFoods, setSeasonalFoods] = useState<Array<SeasonalFood>>(sampleData);
-  const [selectSeasonalFood, setSelectSeasonalFood] = useState<SeasonalFood>();
+  const [selectSeasonalFood, setSelectSeasonalFood] = useState<SeasonalFood | null>();
   const onClickSeasonalFood = (id: number) => {
     const target = seasonalFoods.find((seasonalFood) => seasonalFood.id === id);
     setSelectSeasonalFood(target);
+    onOpen();
+  };
+  const onCreateSeasonalFoodModal = () => {
+    setSelectSeasonalFood(null);
     onOpen();
   };
 
@@ -43,6 +48,7 @@ export const SeasonalFoodList: VFC = memo(() => {
     <SigninHeaderLayout>
       <Flex align="center" justify="center" height="100vh">
         <Box as="article" p={4}>
+          <PrimaryButton onClick={onCreateSeasonalFoodModal}>新規作成</PrimaryButton>
           <Table variant="simple">
             <Thead>
               <Tr fontSize={{ base: "sm", md: "md" }}>
