@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, memo, VFC } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 import { Input } from "@chakra-ui/react";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
   type?: string;
   placeholder?: string;
   focusBorderColor?: string;
-  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  onBlur?: () => void;
 };
 
 export const DefaultInput: VFC<Props> = memo((props) => {

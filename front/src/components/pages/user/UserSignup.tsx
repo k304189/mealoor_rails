@@ -1,5 +1,5 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { ChangeEvent, FocusEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, memo, useState, VFC } from "react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { Password } from "../../molecules/input/Password";
@@ -26,7 +26,7 @@ export const UserSignup: VFC = memo(() => {
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
 
-  const onBlurEmail = (e: FocusEvent<HTMLInputElement>) =>
+  const onBlurEmail = () =>
     setEmailValid(checkEmail(email));
 
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) =>

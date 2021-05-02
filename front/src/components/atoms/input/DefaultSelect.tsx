@@ -1,5 +1,5 @@
 import { Select } from "@chakra-ui/react";
-import { ChangeEvent, FocusEvent, memo, VFC } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 
 type optionType = {
   value: string | number;
@@ -11,7 +11,7 @@ type Props = {
   focusBorderColor?: string;
   optionList: Array<optionType>;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  onBlur?: (e: FocusEvent<HTMLSelectElement>) => void;
+  onBlur?: () => void;
 };
 
 export const DefaultSelect: VFC<Props> = memo((props) => {

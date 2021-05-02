@@ -1,12 +1,10 @@
 import {
   Box,
   Flex,
-  FormControl,
-  FormLabel,
   Stack,
   Spacer,
 } from "@chakra-ui/react";
-import { ChangeEvent, FocusEvent, memo, useEffect, useState, VFC } from "react";
+import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SelectMonth } from "../../molecules/select/SelectMonth";
@@ -44,16 +42,16 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const onChangeEndMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     setEndMonth(Number(e.target.value));
 
-  const onBlurName = (e: FocusEvent<HTMLInputElement>) =>
+  const onBlurName = () =>
     setNameEmpty(name === "");
 
-  const onBlurCategory = (e: FocusEvent<HTMLSelectElement>) =>
+  const onBlurCategory = () =>
     setCategoryEmpty(category === "");
 
-  const onBlurStartMonthEmpty = (e: FocusEvent<HTMLSelectElement>) =>
+  const onBlurStartMonthEmpty = () =>
     setStartMonthEmpty(!(startMonth >= 1 && startMonth <= 12));
 
-  const onBlurEndMonthEmpty = (e: FocusEvent<HTMLSelectElement>) =>
+  const onBlurEndMonthEmpty = () =>
     setEndMonthEmpty(!(endMonth >= 1 && endMonth <= 12));
 
   const onClickSubmit = () => console.log(`${startMonth} ${startMonthEmpty}`);
@@ -98,13 +96,6 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
             onBlur={onBlurCategory}
           />
         </DefaultInputForm>
-        <FormControl>
-          <FormLabel fontSize="xs">カテゴリー</FormLabel>
-          <SelectCategory
-            selectedValue={category}
-            onChange={onChangeCategory}
-          />
-        </FormControl>
         <Flex>
           <Box w="40%">
             <DefaultInputForm
