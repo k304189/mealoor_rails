@@ -17,6 +17,8 @@ type Props = {
   onClose: () => void;
   modalTitle: string;
   buttonTitle: string;
+  buttonDisabled?: boolean;
+  loading?: boolean;
   onClick: () => void;
 };
 
@@ -27,6 +29,8 @@ export const DefaultModal: VFC<Props> = memo((props) => {
     onClose,
     modalTitle,
     buttonTitle,
+    buttonDisabled = false,
+    loading = false,
     onClick,
   } = props;
   return (
@@ -39,7 +43,13 @@ export const DefaultModal: VFC<Props> = memo((props) => {
           {children}
         </ModalBody>
         <ModalFooter>
-          <PrimaryButton onClick={onClick}>{buttonTitle}</PrimaryButton>
+          <PrimaryButton
+            disabled={buttonDisabled}
+            loading={loading}
+            onClick={onClick}
+          >
+            {buttonTitle}
+          </PrimaryButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

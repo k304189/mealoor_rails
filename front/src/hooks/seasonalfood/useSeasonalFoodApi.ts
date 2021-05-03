@@ -6,30 +6,24 @@ import { SeasonalFood } from "../../types/api/seasonalFood";
 type returnType = {
   errorFlg: boolean;
   loading: boolean;
-  addSeasonalFood: (addData: SeasonalFood) => void;
-  getAllSeasonalFoods: () => void;
   allSeasonalFoods: Array<SeasonalFood>;
+  addSeasonalFood: (addData: SeasonalFood) => Promise<number>;
+  getAllSeasonalFoods: () => void;
+  editSeasonalFood: () => Promise<any>;
 }
 
 export const useSeasonalFoodApi = (): returnType => {
   const [allSeasonalFoods, setAllSeasonalFoods] = useState<Array<SeasonalFood>>([]);
   const [errorFlg, setErrorFlg] = useState(false);
   const [loading, setLoading] = useState(false);
-  const addSeasonalFood = useCallback((addData: SeasonalFood) => {
-    const url = `${process.env.REACT_APP_API_V1_URL}/seasonal_foods`;
-    const reqJson = {
+  const addSeasonalFood = useCallback(async (addData: SeasonalFood) => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/seasonal_foodsa`;
+    const json = {
       seasonal_food: addData,
     };
-    axios
-      .post(url, reqJson)
-      .then((res) => {
-        console.log(res);
-        console.log("登録に成功しました");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("登録失敗しました");
-      });
+    const response = await axios.post(url, json);
+    setAllSeasonalFoods([...allSeasonalFoods, response.data]);
+    return response.status;
   }, []);
 
   const getAllSeasonalFoods = useCallback(() => {
@@ -49,5 +43,21 @@ export const useSeasonalFoodApi = (): returnType => {
       });
   }, []);
 
-  return { errorFlg, loading, addSeasonalFood, getAllSeasonalFoods, allSeasonalFoods };
+  const editSeasonalFood = useCallback(async () => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/seasonal_foods`;
+    try {
+      return await axios.get(url);
+    } catch (e) {
+      return e;
+    }
+  }, []);
+
+  return {
+    errorFlg,
+    loading,
+    allSeasonalFoods,
+    addSeasonalFood,
+    getAllSeasonalFoods,
+    editSeasonalFood,
+  };
 };
