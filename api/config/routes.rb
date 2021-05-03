@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth'
 
       get 'users/currentuser'
-      resources :seasonal_foods, only: %i[create]
+      resources :seasonal_foods, only: %i[index create]
     end
   end
 end

@@ -1,5 +1,7 @@
 class Api::V1::SeasonalFoodsController < Api::V1::ApiController
   def index
+    @seasonalFood = SeasonalFood.all
+    render json: @seasonalFood
   end
 
   def create
