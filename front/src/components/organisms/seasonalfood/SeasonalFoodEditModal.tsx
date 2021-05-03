@@ -30,13 +30,13 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const [category, setCategory] = useState("");
   const [startMonth, setStartMonth] = useState<number>(0);
   const [endMonth, setEndMonth] = useState<number>(0);
-  const [nameInvalid, setNameInvalid] = useState(false);
-  const [categoryInvalid, setCategoryInvalid] = useState(false);
-  const [startMonthInvalid, setStartMonthInvalid] = useState(false);
-  const [endMonthInvalid, setEndMonthInvalid] = useState(false);
+  const [nameInvalid, setNameInvalid] = useState<boolean>();
+  const [categoryInvalid, setCategoryInvalid] = useState<boolean>();
+  const [startMonthInvalid, setStartMonthInvalid] = useState<boolean>();
+  const [endMonthInvalid, setEndMonthInvalid] = useState<boolean>();
   const [startMonthErrmsg, setStartMonthErrmsg] = useState("");
   const [endMonthErrmsg, setEndMonthErrmsg] = useState("");
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -62,9 +62,14 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
     if (!(startMonth >= 1 && startMonth <= 12)) {
       status = true;
       errmsg = "必須項目です。選択してください";
-    } else if (startMonth > endMonth) {
-      status = true;
-      errmsg = "終了月よりも前の月を選択してください";
+    } else if (startMonthInvalid !== undefined || endMonthInvalid !== undefined) {
+      if (startMonth > endMonth) {
+        status = true;
+        errmsg = "終了月よりも前の月を選択してください";
+      } else {
+        setEndMonthInvalid(false);
+        setEndMonthErrmsg("");
+      }
     }
     setStartMonthInvalid(status);
     setStartMonthErrmsg(errmsg);
@@ -76,9 +81,14 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
     if (!(endMonth >= 1 && endMonth <= 12)) {
       status = true;
       errmsg = "必須項目です。選択してください";
-    } else if (startMonth > endMonth) {
-      status = true;
-      errmsg = "開始月よりも後の月を選択してください";
+    } else if (startMonthInvalid !== undefined || endMonthInvalid !== undefined) {
+      if (startMonth > endMonth) {
+        status = true;
+        errmsg = "開始月よりも後の月を選択してください";
+      } else {
+        setStartMonthInvalid(false);
+        setStartMonthErrmsg("");
+      }
     }
     setEndMonthInvalid(status);
     setEndMonthErrmsg(errmsg);
@@ -90,6 +100,17 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
     setCategory(seasonalFood?.category ?? "");
     setStartMonth(seasonalFood?.start_month ?? 0);
     setEndMonth(seasonalFood?.end_month ?? 0);
+    if (seasonalFood) {
+      setNameInvalid(false);
+      setCategoryInvalid(false);
+      setStartMonthInvalid(false);
+      setEndMonthInvalid(false);
+    } else {
+      setNameInvalid(undefined);
+      setCategoryInvalid(undefined);
+      setStartMonthInvalid(undefined);
+      setEndMonthInvalid(undefined);
+    }
   };
 
   const callAddSeasonalFood = () => {
@@ -120,6 +141,20 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   useEffect(() => {
     initModal();
   }, [seasonalFood]);
+
+  useEffect(() => {
+    let disabled;
+    if (
+      nameInvalid === undefined || categoryInvalid === undefined
+      || startMonthInvalid === undefined || endMonthInvalid === undefined
+    ) {
+      disabled = true;
+    } else {
+      disabled = nameInvalid || categoryInvalid || startMonthInvalid || endMonthInvalid;
+    }
+    setButtonDisabled(disabled);
+  }, [nameInvalid, categoryInvalid, startMonthInvalid, endMonthInvalid]);
+
   const editType = (id === 0) ? "登録" : "編集";
   const buttonTitle = (id === 0) ? "登録" : "更新";
   const callFunction = (id === 0) ? callAddSeasonalFood : callEditSeasonalFood;
@@ -130,6 +165,7 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       onClose={onClose}
       modalTitle={`旬の食材${editType}`}
       buttonTitle={buttonTitle}
+      buttonDisabled={buttonDisabled}
       loading={loading}
       onClick={callFunction}
     >
