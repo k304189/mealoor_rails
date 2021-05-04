@@ -22,27 +22,20 @@ import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodA
 
 export const SeasonalFoodList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getAllSeasonalFoods } = useSeasonalFoodApi();
+  const { allSeasonalFoods, getAllSeasonalFoods } = useSeasonalFoodApi();
   const { showMessage } = useMessage();
-  const [allSeasonalFoods, setAllSeasonalFoods] = useState<Array<SeasonalFood>>([]);
   const [selectSeasonalFood, setSelectSeasonalFood] = useState<SeasonalFood | null>();
   const [loading, setLoading] = useState(false);
-  const onClickSeasonalFood = (id: number) => {
+  const onClickSeasonalFood = (id = 0) => {
     const target = allSeasonalFoods.find((seasonalFood) => seasonalFood.id === id);
+    const index = allSeasonalFoods.findIndex((seasonalFood) => seasonalFood.id === id);
     setSelectSeasonalFood(target);
-    onOpen();
-  };
-  const onCreateSeasonalFoodModal = () => {
-    setSelectSeasonalFood(null);
     onOpen();
   };
 
   useEffect(() => {
     setLoading(true);
     getAllSeasonalFoods()
-      .then((res) => {
-        setAllSeasonalFoods(res);
-      })
       .catch(() => {
         showMessage({ title: "データの取得に失敗しました", status: "error" });
       })
@@ -61,7 +54,7 @@ export const SeasonalFoodList: VFC = memo(() => {
         <>
           <Flex align="center" justify="center" height="100vh">
             <Box as="article" p={4}>
-              <PrimaryButton onClick={onCreateSeasonalFoodModal}>新規作成</PrimaryButton>
+              <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
               <Table variant="simple">
                 <Thead>
                   <Tr fontSize={{ base: "sm", md: "md" }}>
@@ -91,6 +84,7 @@ export const SeasonalFoodList: VFC = memo(() => {
             </Box>
           </Flex>
           <SeasonalFoodEditModal
+            allSeasonalFoods={allSeasonalFoods}
             seasonalFood={selectSeasonalFood}
             isOpen={isOpen}
             onClose={onClose}

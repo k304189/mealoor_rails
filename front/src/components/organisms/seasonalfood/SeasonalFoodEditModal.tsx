@@ -16,13 +16,14 @@ import { useMessage } from "../../../hooks/common/useMessage";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 
 type Props = {
+  allSeasonalFoods: Array<SeasonalFood>;
   seasonalFood?: SeasonalFood | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
-  const { seasonalFood = null, isOpen, onClose } = props;
+  const { allSeasonalFoods, seasonalFood = null, isOpen, onClose } = props;
   const { addSeasonalFood, editSeasonalFood } = useSeasonalFoodApi();
   const { showMessage } = useMessage();
   const [id, setId] = useState<number>(0);
@@ -120,7 +121,7 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       start_month: startMonth,
       end_month: endMonth,
     };
-    addSeasonalFood(addData)
+    addSeasonalFood(allSeasonalFoods, addData)
       .then(() => {
         showMessage({ title: "登録に成功しました", status: "success" });
         initModal();
@@ -134,9 +135,23 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   };
 
   const callEditSeasonalFood = () => {
-    editSeasonalFood()
-      .then((res) => {
-        console.log(res);
+    setLoading(true);
+    const editData = {
+      id,
+      name,
+      category,
+      start_month: startMonth,
+      end_month: endMonth,
+    };
+    editSeasonalFood(allSeasonalFoods, editData)
+      .then(() => {
+        showMessage({ title: "更新に成功しました", status: "success" });
+      })
+      .catch(() => {
+        showMessage({ title: "更新に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

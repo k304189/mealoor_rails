@@ -5,7 +5,7 @@ class Api::V1::SeasonalFoodsController < Api::V1::ApiController
   end
 
   def create
-    @seasonalFood = SeasonalFood.new(seasonalFood_params)
+    @seasonalFood = SeasonalFood.new(seasonal_food_params)
     if @seasonalFood.save
       render json: @seasonalFood, status: :created
     else
@@ -13,8 +13,14 @@ class Api::V1::SeasonalFoodsController < Api::V1::ApiController
     end
   end
 
+  def update
+    @seasonalFood = SeasonalFood.find(params[:id])
+    @seasonalFood.update!(seasonal_food_params)
+    render json: @seasonalFood
+  end
+
   private
-    def seasonalFood_params
+    def seasonal_food_params
       params.require(:seasonal_food).permit(:name, :category, :start_month, :end_month)
     end
 end
