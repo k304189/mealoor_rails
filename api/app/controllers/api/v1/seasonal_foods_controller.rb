@@ -19,6 +19,12 @@ class Api::V1::SeasonalFoodsController < Api::V1::ApiController
     render json: @seasonalFood
   end
 
+  def destroy
+    @seasonalFood = SeasonalFood.find(params[:id])
+    @seasonalFood.destroy!
+    render json: {}, status: :ok
+  end
+
   private
     def seasonal_food_params
       params.require(:seasonal_food).permit(:name, :category, :start_month, :end_month)

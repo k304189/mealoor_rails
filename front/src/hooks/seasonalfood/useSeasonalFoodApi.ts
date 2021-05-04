@@ -14,6 +14,10 @@ type returnType = {
     seasonalFoods: Array<SeasonalFood>,
     editData: SeasonalFood,
   ) => Promise<number>;
+  deleteSeasonalFood: (
+    seasonalFoods: Array<SeasonalFood>,
+    id: number
+  ) => Promise<number>;
 };
 
 export const useSeasonalFoodApi = (): returnType => {
@@ -45,12 +49,23 @@ export const useSeasonalFoodApi = (): returnType => {
         seasonal_food: editData,
       };
       const response = await axios.patch(url, json);
-      console.log(allSeasonalFoods);
       const index = seasonalFoods.findIndex((seasonalFood) => seasonalFood.id === editData.id);
-      console.log(index);
       if (index !== -1) {
         const newAllSeasonalFood = seasonalFoods;
         newAllSeasonalFood[index] = response.data;
+      }
+      return response.status;
+    }, [],
+  );
+
+  const deleteSeasonalFood = useCallback(
+    async (seasonalFoods: Array<SeasonalFood>, id: number) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/seasonal_foods/${id}`;
+      const response = await axios.delete(url);
+      const index = seasonalFoods.findIndex((seasonalFood) => seasonalFood.id === id);
+      if (index !== -1) {
+        const newAllSeasonalFood = seasonalFoods;
+        newAllSeasonalFood.splice(index, 1);
       }
       return response.status;
     }, [],
@@ -61,5 +76,6 @@ export const useSeasonalFoodApi = (): returnType => {
     addSeasonalFood,
     getAllSeasonalFoods,
     editSeasonalFood,
+    deleteSeasonalFood,
   };
 };
