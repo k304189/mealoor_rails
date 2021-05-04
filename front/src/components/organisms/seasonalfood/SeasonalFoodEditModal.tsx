@@ -23,7 +23,7 @@ type Props = {
 
 export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const { seasonalFood = null, isOpen, onClose } = props;
-  const { errorFlg, loading, addSeasonalFood, editSeasonalFood } = useSeasonalFoodApi();
+  const { addSeasonalFood, editSeasonalFood } = useSeasonalFoodApi();
   const { showMessage } = useMessage();
   const [id, setId] = useState<number>(0);
   const [name, setName] = useState("");
@@ -36,6 +36,7 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const [endMonthInvalid, setEndMonthInvalid] = useState<boolean>();
   const [startMonthErrmsg, setStartMonthErrmsg] = useState("");
   const [endMonthErrmsg, setEndMonthErrmsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
@@ -100,20 +101,18 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
     setCategory(seasonalFood?.category ?? "");
     setStartMonth(seasonalFood?.start_month ?? 0);
     setEndMonth(seasonalFood?.end_month ?? 0);
+    let isInValidStatus;
     if (seasonalFood) {
-      setNameInvalid(false);
-      setCategoryInvalid(false);
-      setStartMonthInvalid(false);
-      setEndMonthInvalid(false);
-    } else {
-      setNameInvalid(undefined);
-      setCategoryInvalid(undefined);
-      setStartMonthInvalid(undefined);
-      setEndMonthInvalid(undefined);
+      isInValidStatus = false;
     }
+    setNameInvalid(isInValidStatus);
+    setCategoryInvalid(isInValidStatus);
+    setStartMonthInvalid(isInValidStatus);
+    setEndMonthInvalid(isInValidStatus);
   };
 
   const callAddSeasonalFood = () => {
+    setLoading(true);
     const addData = {
       id,
       name,
@@ -128,6 +127,9 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       })
       .catch(() => {
         showMessage({ title: "登録に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

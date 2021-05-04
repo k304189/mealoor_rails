@@ -17,16 +17,16 @@ import { SeasonalFoodEditModal } from "../../organisms/seasonalfood/SeasonalFood
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
+import { useMessage } from "../../../hooks/common/useMessage";
 import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
 
 export const SeasonalFoodList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    errorFlg,
-    loading,
-    getAllSeasonalFoods,
-    allSeasonalFoods } = useSeasonalFoodApi();
+  const { getAllSeasonalFoods } = useSeasonalFoodApi();
+  const { showMessage } = useMessage();
+  const [allSeasonalFoods, setAllSeasonalFoods] = useState<Array<SeasonalFood>>([]);
   const [selectSeasonalFood, setSelectSeasonalFood] = useState<SeasonalFood | null>();
+  const [loading, setLoading] = useState(false);
   const onClickSeasonalFood = (id: number) => {
     const target = allSeasonalFoods.find((seasonalFood) => seasonalFood.id === id);
     setSelectSeasonalFood(target);
@@ -37,7 +37,19 @@ export const SeasonalFoodList: VFC = memo(() => {
     onOpen();
   };
 
-  useEffect(() => getAllSeasonalFoods(), []);
+  useEffect(() => {
+    setLoading(true);
+    getAllSeasonalFoods()
+      .then((res) => {
+        setAllSeasonalFoods(res);
+      })
+      .catch(() => {
+        showMessage({ title: "データの取得に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <SigninHeaderLayout>
