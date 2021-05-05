@@ -3,11 +3,11 @@ import {
   Box,
   Flex,
   Progress,
+  Spacer,
   Table,
   Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -18,6 +18,7 @@ import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DeleteButton } from "../../atoms/button/DeleteButton";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
+import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
@@ -31,6 +32,8 @@ export const SeasonalFoodList: VFC = memo(() => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmMsg, setDeleteConfirmMsg] = useState("");
   const [deleteSeasonalFoodId, setDeleteSeasonalFoodId] = useState(0);
+  const [pagingOffset, setPagingOffset] = useState(0);
+  const displayNum = 10;
 
   const onClickSeasonalFood = (id = 0) => {
     const target = allSeasonalFoods.find((seasonalFood) => seasonalFood.id === id);
@@ -73,6 +76,10 @@ export const SeasonalFoodList: VFC = memo(() => {
     setIsDialogOpen(false);
   };
 
+  const onClickPageChange = (page: {selected: number}) => {
+    setPagingOffset(displayNum * page.selected);
+  };
+
   useEffect(() => {
     setLoading(true);
     getAllSeasonalFoods()
@@ -94,7 +101,15 @@ export const SeasonalFoodList: VFC = memo(() => {
         <>
           <Flex align="center" justify="center" height="100vh">
             <Box as="article" p={4}>
-              <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
+              <Flex>
+                <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
+                <Spacer />
+                <DefaultPaging
+                  displayNum={displayNum}
+                  dataNum={allSeasonalFoods.length}
+                  onPageChange={onClickPageChange}
+                />
+              </Flex>
               <Table variant="simple">
                 <Thead>
                   <Tr fontSize={{ base: "sm", md: "md" }}>
@@ -106,25 +121,27 @@ export const SeasonalFoodList: VFC = memo(() => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {allSeasonalFoods.map((data) => (
-                    <Tr key={data.id}>
-                      <Td p={0}>
-                        <DefaultLink
-                          onClick={() => onClickSeasonalFood(data.id)}
-                        >
-                          {data.name}
-                        </DefaultLink>
-                      </Td>
-                      <Td>{data.category}</Td>
-                      <Td>{data.start_month}</Td>
-                      <Td>{data.end_month}</Td>
-                      <Td>
-                        <DeleteButton
-                          onClick={() => { onClickDeleteSeasonalFood(data.id); }}
-                        />
-                      </Td>
-                    </Tr>
-                  ))}
+                  {allSeasonalFoods
+                    .slice(pagingOffset, pagingOffset + displayNum)
+                    .map((data) => (
+                      <Tr key={data.id}>
+                        <Td p={0}>
+                          <DefaultLink
+                            onClick={() => onClickSeasonalFood(data.id)}
+                          >
+                            {data.name}
+                          </DefaultLink>
+                        </Td>
+                        <Td>{data.category}</Td>
+                        <Td>{data.start_month}</Td>
+                        <Td>{data.end_month}</Td>
+                        <Td>
+                          <DeleteButton
+                            onClick={() => { onClickDeleteSeasonalFood(data.id); }}
+                          />
+                        </Td>
+                      </Tr>
+                    ))}
                 </Tbody>
               </Table>
             </Box>

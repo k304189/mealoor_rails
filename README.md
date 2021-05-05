@@ -66,4 +66,8 @@ docker-compose run --rm front sh -c "npm i @testing-library/react-hooks"
 
 docker-compose run --rm front sh -c "npm i react-test-renderer"
 
+docker-compose run --rm front sh -c "npm i react-paginate"
+
+docker-compose run --rm front sh -c "npm i @types/react-paginate"
+
 ```

@@ -1,5 +1,9 @@
 import { extendTheme } from "@chakra-ui/react";
 
+const pagenationColor = {
+  bg: "#7FDC96",
+  color: "#FCFDFE",
+};
 const systemTheme = extendTheme({
   styles: {
     global: {
@@ -15,6 +19,25 @@ const systemTheme = extendTheme({
         backgroundColor: "#FCFDFE",
         borderRadius: "md",
         shadow: "md",
+      },
+      ".pagination": {
+        display: "flex",
+        listStyle: "none",
+        li: {
+          margin: "0",
+          padding: "0",
+          borderRadius: "10px",
+          _hover: pagenationColor,
+          "&.selected": pagenationColor,
+        },
+        a: {
+          display: "flex",
+          margin: "0 2px",
+          width: "32px",
+          height: "32px",
+          justifyContent: "center",
+          alignItems: "center",
+        },
       },
     },
   },
