@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe SeasonalFood, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "正常系テスト" do
+    it "すべての値が入力されている" do
+      seasonal_food = FactoryBot.build(:seasonal_food)
+      expect(seasonal_food.valid?).to eq true
+    end
+  end
+
 end
