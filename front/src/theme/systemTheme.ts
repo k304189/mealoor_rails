@@ -8,6 +8,10 @@ const headerHeight = {
   base: "28px",
   md: "48px",
 };
+const mainHeight = {
+  base: `calc(100% - ${headerHeight.base})`,
+  md: `calc(100% - ${headerHeight.md})`,
+};
 
 const systemTheme = extendTheme({
   styles: {
@@ -19,7 +23,16 @@ const systemTheme = extendTheme({
       header: {
         backgroundColor: "#FCFDFE",
         color: "#7FDC96",
+        position: "fixed",
+        zIndex: "1",
         height: headerHeight,
+        width: "100%",
+      },
+      ".main": {
+        position: "fixed",
+        width: "100%",
+        top: headerHeight,
+        height: mainHeight,
       },
       article: {
         backgroundColor: "#FCFDFE",

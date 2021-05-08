@@ -12,7 +12,7 @@ export const Dashboard: VFC = memo(() => {
 
   return (
     <SigninHeaderLayout>
-      <Flex align="center" justify="center" height="100vh">
+      <Flex className="main" align="center" justify="center">
         <Box as="article" w="95%" h="95%">
           <h1>ログイン後のダッシュボード画面です</h1>
         </Box>
