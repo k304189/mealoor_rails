@@ -1,11 +1,10 @@
-import { Flex, Heading, Spacer, useDisclosure } from "@chakra-ui/react";
+import { Flex, Heading, Spacer } from "@chakra-ui/react";
 import { memo, useCallback, VFC } from "react";
 import { useHistory } from "react-router-dom";
 
 import { HeaderLink } from "../../atoms/layout/HeaderLink";
 
 export const SignoutHeader: VFC = memo(() => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
 
   const onClickHome = useCallback(() => history.push("/"), []);
@@ -19,7 +18,6 @@ export const SignoutHeader: VFC = memo(() => {
       as="header"
       align="center"
       justify="spacec-between"
-      h={{ base: "28px", md: "48px" }}
     >
       <HeaderLink px={2} onClick={onClickHome}>
         <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>

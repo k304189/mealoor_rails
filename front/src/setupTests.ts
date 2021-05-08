@@ -20,7 +20,7 @@ const localStorageMock = (() => {
       return Object.keys(storage).length;
     },
     key: (i) => {
-      let keys = Object.keys(storage);
+      const keys = Object.keys(storage);
       return keys[i] || null;
     },
     clear: () => {

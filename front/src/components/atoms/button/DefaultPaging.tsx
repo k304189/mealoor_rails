@@ -1,4 +1,4 @@
-import { memo, useState, VFC } from "react";
+import { memo, VFC } from "react";
 import ReactPaginate from "react-paginate";
 
 type Props = {

@@ -7,10 +7,7 @@ import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SignoutHeaderLayout } from "../../templates/SignoutHeaderLayout";
 import { useUserSignin } from "../../../hooks/user/useUserSignin";
 
-import { useLogin } from "../../../hooks/user/useLogin";
-
 export const UserSignin: VFC = memo(() => {
-  const { loginUser } = useLogin();
   console.log(localStorage);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

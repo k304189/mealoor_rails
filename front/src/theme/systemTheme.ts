@@ -4,6 +4,11 @@ const pagenationColor = {
   bg: "#7FDC96",
   color: "#FCFDFE",
 };
+const headerHeight = {
+  base: "28px",
+  md: "48px",
+};
+
 const systemTheme = extendTheme({
   styles: {
     global: {
@@ -14,6 +19,7 @@ const systemTheme = extendTheme({
       header: {
         backgroundColor: "#FCFDFE",
         color: "#7FDC96",
+        height: headerHeight,
       },
       article: {
         backgroundColor: "#FCFDFE",

@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react-hooks";
 import { cleanup } from "@testing-library/react";
 
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
@@ -21,10 +21,10 @@ describe("useRequestHeader custom Hook", () => {
     const response = {
       "access-token": authToken,
       "cache-control": cacheControl,
-      client: client,
-      expiry: expiry,
+      client,
+      expiry,
       "token-type": tokenType,
-      uid: uid,
+      uid,
     };
 
     result.current.setRequestHeader(response);
@@ -54,7 +54,7 @@ describe("useRequestHeader custom Hook", () => {
 
     const request = result.current.getRequestHeader();
     expect(request["access-token"]).toBe(authToken);
-    expect(request["client"]).toBe(client);
-    expect(request["uid"]).toBe(uid);
+    expect(request.client).toBe(client);
+    expect(request.uid).toBe(uid);
   });
 });
