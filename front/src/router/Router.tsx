@@ -7,6 +7,7 @@ import { UserSignin } from "../components/pages/user/UserSignin";
 import { Dashboard } from "../components/pages/dashboard/Dashboard";
 import { SeasonalFoodList } from "../components/pages/seasonalfood/SeasonalFoodList";
 import { LoginUserProvider } from "../providers/LoginUserProvider";
+import { StockEdit } from "../components/pages/stock/StockEdit";
 
 export const Router: VFC = memo(() => {
   return (
@@ -26,6 +27,9 @@ export const Router: VFC = memo(() => {
         </Route>
         <Route path="/seasonalfood">
           <SeasonalFoodList />
+        </Route>
+        <Route exact path="/stock/add">
+          <StockEdit />
         </Route>
       </LoginUserProvider>
     </Switch>
