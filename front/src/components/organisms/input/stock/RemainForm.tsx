@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, VFC } from "react";
+import { memo, VFC } from "react";
 
 import { DefaultInputForm } from "../DefaultInputForm";
 import { DefaultNumberInput } from "../../../molecules/input/DefaultNumberInput";

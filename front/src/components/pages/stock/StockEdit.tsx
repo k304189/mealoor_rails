@@ -5,28 +5,14 @@ import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { StockTypeRadio } from "../../organisms/input/stock/StockTypeRadio";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { DefaultInputForm } from "../../organisms/input/DefaultInputForm";
-import { InputNameForm } from "../../organisms/input/InputNameForm";
-import { SelectCategoryForm } from "../../organisms/input/SelectCategoryForm";
+import { NameForm } from "../../organisms/input/common/NameForm";
+import { CategoryForm } from "../../organisms/input/common/CategoryForm";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SelectCategory } from "../../molecules/select/SelectCategory";
-import { useInputNameItem } from "../../../hooks/input/useInputNameItem";
-import { useSelectCategoryItem } from "../../../hooks/input/useSelectCategoryItem";
 
 export const StockEdit: VFC = memo(() => {
-  const {
-    name,
-    nameInvalid,
-    nameErrmsg,
-    onChangeName,
-    validateName,
-  } = useInputNameItem();
-  const {
-    category,
-    categoryInvalid,
-    categoryErrmsg,
-    onChangeCategory,
-    validateCategory,
-  } = useSelectCategoryItem();
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
   const [limit, setLimit] = useState("");
   const [price, setPrice] = useState(0);
   const [kcal, setKcal] = useState(0);
@@ -41,6 +27,12 @@ export const StockEdit: VFC = memo(() => {
   const [note, setNote] = useState("");
   const [limitInvalid, setLimitInvalid] = useState<boolean>();
   const [stockTypeInvalid, setStockTypeInvalid] = useState<boolean>();
+
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
+    setName(e.target.value);
+
+  const onChangeCategory = (e: ChangeEvent<HTMLSelectElement>) =>
+    setCategory(e.target.value);
 
   const onChangeLimit = (e: ChangeEvent<HTMLInputElement>) =>
     setLimit(e.target.value);
@@ -103,21 +95,15 @@ export const StockEdit: VFC = memo(() => {
                 gap={4}
               >
                 <GridItem rowSpan={1} colSpan={{ base: 6, md: 4 }}>
-                  <InputNameForm
+                  <NameForm
                     name={name}
-                    onChangeName={onChangeName}
-                    onBlurName={() => { validateName(name); }}
-                    isInvalid={nameInvalid}
-                    errorMsg={nameErrmsg}
+                    onChange={onChangeName}
                   />
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={{ base: 6, md: 2 }}>
-                  <SelectCategoryForm
+                  <CategoryForm
                     category={category}
-                    onChangeCategory={onChangeCategory}
-                    onBlurCategory={() => { validateCategory(category); }}
-                    isInvalid={categoryInvalid}
-                    errorMsg={categoryErrmsg}
+                    onChange={onChangeCategory}
                   />
                 </GridItem>
 
