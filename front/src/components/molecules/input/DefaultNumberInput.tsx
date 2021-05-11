@@ -42,9 +42,13 @@ export const DefaultNumberInput: VFC<Props> = memo((props) => {
         focusBorderColor={focusBorderColor}
         variant="flushed"
       >
-        <NumberInputField />
+        <NumberInputField
+          textAlign="right"
+        />
       </NumberInput>
-      <InputRightAddon>{unit}</InputRightAddon>
+      { unit
+        ? (<InputRightAddon>{unit}</InputRightAddon>)
+        : (<div />) }
     </InputGroup>
   );
 });
