@@ -37,7 +37,7 @@ export const DefaultModal: VFC<Props> = memo((props) => {
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} isCentered>
       <ModalOverlay />
       <ModalContent pb={2}>
-        <ModalHeader bg="#7FDC96" color="#FCFDFE">{modalTitle}</ModalHeader>
+        <ModalHeader as="div" bg="#7FDC96" color="#FCFDFE">{modalTitle}</ModalHeader>
         <ModalCloseButton />
         <ModalBody mx={4}>
           {children}
