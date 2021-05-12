@@ -8,7 +8,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const LimitForm: VFC<Props> = memo((props) => {
+export const InputLimit: VFC<Props> = memo((props) => {
   const { limit, onChange } = props;
   const [invalid, setInvalid] = useState(false);
   const validate = (checkValue: string) => {

@@ -1,14 +1,14 @@
 import { ChangeEvent, memo, VFC } from "react";
 
 import { DefaultInputForm } from "../DefaultInputForm";
-import { SelectStockUnit } from "../../../molecules/select/SelectStockUnit";
+import { FoodUnit } from "../../../molecules/select/FoodUnit";
 
 type Props = {
   unit: string;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
-export const FoodUnitForm: VFC<Props> = memo((props) => {
+export const SelectFoodUnit: VFC<Props> = memo((props) => {
   const { unit, onChange } = props;
 
   return (
@@ -16,7 +16,7 @@ export const FoodUnitForm: VFC<Props> = memo((props) => {
       label="単位"
       require="optional"
     >
-      <SelectStockUnit
+      <FoodUnit
         selectedValue={unit}
         onChange={onChange}
       />

@@ -8,7 +8,7 @@ import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SelectMonth } from "../../molecules/select/SelectMonth";
-import { SelectCategory } from "../../molecules/select/SelectCategory";
+import { FoodCategory } from "../../molecules/select/FoodCategory";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultInputForm } from "../input/DefaultInputForm";
 import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
@@ -205,7 +205,7 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
           isInvalid={categoryInvalid}
           errorMsg="必須項目です。選択してください"
         >
-          <SelectCategory
+          <FoodCategory
             selectedValue={category}
             onChange={onChangeCategory}
             onBlur={onBlurCategory}

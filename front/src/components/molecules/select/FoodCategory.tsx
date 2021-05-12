@@ -3,7 +3,7 @@ import { memo, VFC } from "react";
 import { DefaultSelect } from "../../atoms/input/DefaultSelect";
 import { CustomizeSelect } from "../../../types/molecules/customizeSelect";
 
-export const SelectCategory: VFC<CustomizeSelect> = memo((props) => {
+export const FoodCategory: VFC<CustomizeSelect> = memo((props) => {
   const { selectedValue = "", onChange, onBlur = () => {} } = props;
   const categoryOption = [
     { value: "米" },

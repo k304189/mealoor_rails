@@ -4,22 +4,24 @@ import { DefaultInputForm } from "../DefaultInputForm";
 import { DefaultNumberInput } from "../../../molecules/input/DefaultNumberInput";
 
 type Props = {
-  kcal: number;
+  protein: number;
   onChange: (v: number) => void;
 };
 
-export const KcalForm: VFC<Props> = memo((props) => {
-  const { kcal, onChange } = props;
+export const InputProtein: VFC<Props> = memo((props) => {
+  const { protein, onChange } = props;
 
   return (
     <DefaultInputForm
       require="optional"
-      label="カロリー"
+      label="タンパク質"
     >
       <DefaultNumberInput
-        value={kcal}
+        value={protein}
         onChange={onChange}
-        unit="kcal"
+        unit="g"
+        step={0.1}
+        precision={1}
       />
     </DefaultInputForm>
   );

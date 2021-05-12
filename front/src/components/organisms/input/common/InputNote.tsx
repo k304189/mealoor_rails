@@ -8,7 +8,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const ShopForm: VFC<Props> = memo((props) => {
+export const InputNote: VFC<Props> = memo((props) => {
   const { note, onChange } = props;
 
   return (

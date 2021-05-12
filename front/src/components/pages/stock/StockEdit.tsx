@@ -2,13 +2,7 @@ import { ChangeEvent, memo, useState, VFC } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Spacer } from "@chakra-ui/react";
 
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
-import { StockTypeRadio } from "../../organisms/input/stock/StockTypeRadio";
-import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
-import { DefaultInputForm } from "../../organisms/input/DefaultInputForm";
-import { NameForm } from "../../organisms/input/common/NameForm";
-import { CategoryForm } from "../../organisms/input/common/CategoryForm";
-import { DefaultInput } from "../../atoms/input/DefaultInput";
-import { SelectCategory } from "../../molecules/select/SelectCategory";
+import { StockEditForm } from "../../organisms/stock/StockEditForm";
 
 export const StockEdit: VFC = memo(() => {
   const [name, setName] = useState("");
@@ -88,87 +82,7 @@ export const StockEdit: VFC = memo(() => {
               py={4}
             >
               登録フォーム
-              <Grid
-                h="100%"
-                templateRows="repeat(1, 1fr)"
-                templateColumns="repeat(6, 1fr)"
-                gap={4}
-              >
-                <GridItem rowSpan={1} colSpan={{ base: 6, md: 4 }}>
-                  <NameForm
-                    name={name}
-                    onChange={onChangeName}
-                  />
-                </GridItem>
-                <GridItem rowSpan={1} colSpan={{ base: 6, md: 2 }}>
-                  <CategoryForm
-                    category={category}
-                    onChange={onChangeCategory}
-                  />
-                </GridItem>
-
-                <GridItem rowSpan={1} colSpan={{ base: 6, md: 2 }}>
-                  <DefaultInputForm
-                    require="require"
-                    label="賞味期限"
-                    isInvalid={limitInvalid}
-                    errorMsg="必須項目です。選択してください"
-                  >
-                    <DefaultInput
-                      type="date"
-                      value={limit}
-                      onChange={onChangeLimit}
-                      onBlur={onBlurLimit}
-                    />
-                  </DefaultInputForm>
-                </GridItem>
-                <GridItem rowSpan={1} colSpan={{ base: 2, md: 1 }}>
-                  <DefaultInputForm
-                    require="optional"
-                    label="料金"
-                  >
-                    <DefaultNumberInput
-                      value={price}
-                      onChange={onChangePrice}
-                      unit="円"
-                    />
-                  </DefaultInputForm>
-                </GridItem>
-                <GridItem rowSpan={1} colSpan={{ base: 2, md: 1 }}>
-                  <DefaultInputForm
-                    require="optional"
-                    label="カロリー"
-                  >
-                    <DefaultNumberInput
-                      value={kcal}
-                      onChange={onChangeKcal}
-                      unit="kcal"
-                    />
-                  </DefaultInputForm>
-                </GridItem>
-                <GridItem rowSpan={1} colSpan={{ base: 2, md: 1 }}>
-                  <DefaultInputForm
-                    label="残量"
-                    isReadOnly
-                  >
-                    <DefaultNumberInput
-                      value={remain}
-                      onChange={() => {}}
-                      max={100}
-                      unit="%"
-                    />
-                  </DefaultInputForm>
-                </GridItem>
-
-                <GridItem rowSpan={1} colSpan={{ base: 6, md: 3 }}>
-                  <DefaultInputForm
-                    require="optional"
-                    label="食材タイプ"
-                  >
-                    <StockTypeRadio onChange={setStockType} />
-                  </DefaultInputForm>
-                </GridItem>
-              </Grid>
+              <StockEditForm />
             </Box>
             <Spacer />
             <Box as="article" w="35%" h="100%" display={{ base: "none", md: "block" }}>

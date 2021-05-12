@@ -4,22 +4,22 @@ import { DefaultInputForm } from "../DefaultInputForm";
 import { DefaultNumberInput } from "../../../molecules/input/DefaultNumberInput";
 
 type Props = {
-  price: number;
+  quantity: number;
   onChange: (v: number) => void;
 };
 
-export const PriceForm: VFC<Props> = memo((props) => {
-  const { price, onChange } = props;
+export const InputQuantity: VFC<Props> = memo((props) => {
+  const { quantity, onChange } = props;
 
   return (
     <DefaultInputForm
       require="optional"
-      label="料金"
+      label="個数"
     >
       <DefaultNumberInput
-        value={price}
+        value={quantity}
         onChange={onChange}
-        unit="円"
+        unit="コ"
       />
     </DefaultInputForm>
   );

@@ -8,7 +8,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const NameForm: VFC<Props> = memo((props) => {
+export const InputName: VFC<Props> = memo((props) => {
   const { name, onChange } = props;
   const [invalid, setInvalid] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");

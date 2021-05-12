@@ -1,14 +1,14 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
 
 import { DefaultInputForm } from "../DefaultInputForm";
-import { SelectCategory } from "../../../molecules/select/SelectCategory";
+import { FoodCategory } from "../../../molecules/select/FoodCategory";
 
 type Props = {
   category: string;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
-export const CategoryForm: VFC<Props> = memo((props) => {
+export const SelectFoodCategory: VFC<Props> = memo((props) => {
   const { category, onChange } = props;
   const [invalid, setInvalid] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -33,7 +33,7 @@ export const CategoryForm: VFC<Props> = memo((props) => {
       isInvalid={invalid}
       errorMsg={errorMsg}
     >
-      <SelectCategory
+      <FoodCategory
         selectedValue={category}
         onChange={onChange}
         onBlur={() => { validate(category); }}

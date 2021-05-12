@@ -4,21 +4,23 @@ import { DefaultInputForm } from "../DefaultInputForm";
 import { DefaultNumberInput } from "../../../molecules/input/DefaultNumberInput";
 
 type Props = {
-  amount: number;
-  onChange: (v: number) => void;
+  remain: number;
+  onChange?: (v: number) => void;
 };
 
-export const FoodAmountForm: VFC<Props> = memo((props) => {
-  const { amount, onChange } = props;
+export const InputRemain: VFC<Props> = memo((props) => {
+  const { remain, onChange = () => {} } = props;
 
   return (
     <DefaultInputForm
-      require="optional"
-      label="量"
+      label="残量"
+      isReadOnly
     >
       <DefaultNumberInput
-        value={amount}
+        value={remain}
         onChange={onChange}
+        max={100}
+        unit="%"
       />
     </DefaultInputForm>
   );
