@@ -30,6 +30,8 @@ const systemTheme = extendTheme({
       },
       ".main": {
         position: "fixed",
+        alignItems: "center",
+        justifyContent: "center",
         width: "100%",
         top: headerHeight,
         height: mainHeight,
