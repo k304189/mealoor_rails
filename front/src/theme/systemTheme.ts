@@ -1,8 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
 
+const baseColor = "#7FDC96";
+const mainColor = "#FCFDFE";
+const accentColor = "#FF6D62";
+
 const pagenationColor = {
-  bg: "#7FDC96",
-  color: "#FCFDFE",
+  bg: baseColor,
+  color: mainColor,
 };
 const headerHeight = {
   base: "28px",
@@ -12,17 +16,37 @@ const mainHeight = {
   base: `calc(100% - ${headerHeight.base})`,
   md: `calc(100% - ${headerHeight.md})`,
 };
+const titleHeight = {
+  base: "24px",
+  md: "40px",
+};
+const titleFontSize = {
+  base: "12px",
+  md: "20px",
+};
+const mainChildMargin = {
+  base: "10px",
+  md: "20px",
+};
+const contentHeight = {
+  base: `calc(100% - ${headerHeight.base} - ${titleHeight.base} - ${mainChildMargin.base})`,
+  md: `calc(100% - ${headerHeight.md} - ${titleHeight.md} - ${mainChildMargin.md})`,
+};
+const contentPadding = {
+  base: "8px",
+  md: "16px",
+};
 
 const systemTheme = extendTheme({
   styles: {
     global: {
       body: {
-        backgroundColor: "#7FDC96",
+        backgroundColor: baseColor,
         color: "gray.800",
       },
       header: {
-        backgroundColor: "#FCFDFE",
-        color: "#7FDC96",
+        backgroundColor: mainColor,
+        color: baseColor,
         position: "fixed",
         zIndex: "1",
         height: headerHeight,
@@ -35,11 +59,29 @@ const systemTheme = extendTheme({
         width: "100%",
         top: headerHeight,
         height: mainHeight,
+        ".title": {
+          fontSize: titleFontSize,
+          backgroundColor: "#FFCCC8",
+          color: "#730800",
+          height: titleHeight,
+          borderLeft: `10px solid ${accentColor}`,
+          lineHeight: titleHeight,
+          fontWeight: "normal",
+          paddingLeft: "10px",
+          marginTop: mainChildMargin,
+        },
+        ".contents": {
+          marginTop: mainChildMargin,
+          width: "100%",
+          height: contentHeight,
+          padding: contentPadding,
+        },
       },
       article: {
-        backgroundColor: "#FCFDFE",
+        backgroundColor: mainColor,
         borderRadius: "md",
         shadow: "md",
+        padding: "16px",
       },
       ".pagination": {
         display: "flex",

@@ -2,7 +2,6 @@ import { memo, useState, VFC } from "react";
 import {
   Box,
   Flex,
-  Heading,
   Table,
   Thead,
   Tbody,
@@ -14,6 +13,15 @@ import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 const sampleStocks = [
   { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
 ];
 
 export const StockList: VFC = memo(() => {
@@ -22,18 +30,12 @@ export const StockList: VFC = memo(() => {
     <SigninHeaderLayout>
       <Flex className="main">
         <Box w="95%" h="100%">
-          <Box as="article" w="100%">
-            <Heading>
-              食材一覧
-            </Heading>
+          <Box className="title">
+            食材一覧
           </Box>
           <Box
+            className="contents"
             as="article"
-            w="100%"
-            h="100%"
-            mt={5}
-            px={4}
-            py={4}
           >
             データ出力エリア
             <Table>
