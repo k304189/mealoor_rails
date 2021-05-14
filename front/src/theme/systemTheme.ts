@@ -32,10 +32,6 @@ const contentHeight = {
   base: `calc(100% - ${headerHeight.base} - ${titleHeight.base} - ${mainChildMargin.base})`,
   md: `calc(100% - ${headerHeight.md} - ${titleHeight.md} - ${mainChildMargin.md})`,
 };
-const contentPadding = {
-  base: "8px",
-  md: "16px",
-};
 
 const systemTheme = extendTheme({
   styles: {
@@ -74,7 +70,6 @@ const systemTheme = extendTheme({
           marginTop: mainChildMargin,
           width: "100%",
           height: contentHeight,
-          padding: contentPadding,
         },
       },
       article: {
