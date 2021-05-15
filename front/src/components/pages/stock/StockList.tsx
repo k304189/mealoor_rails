@@ -140,9 +140,7 @@ export const StockList: VFC = memo(() => {
         isOpen={isOpen}
         onClose={onClose}
         modalTitle="食材登録"
-        buttonTitle="モーダルボタン"
         size="4xl"
-        onClick={() => {}}
       >
         <StockEditForm />
       </DefaultModal>

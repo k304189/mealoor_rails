@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { SelectMonth } from "../../molecules/select/SelectMonth";
 import { FoodCategory } from "../../molecules/select/FoodCategory";
@@ -181,10 +182,6 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       isOpen={isOpen}
       onClose={onClose}
       modalTitle={`旬の食材${editType}`}
-      buttonTitle={buttonTitle}
-      buttonDisabled={buttonDisabled}
-      loading={loading}
-      onClick={callFunction}
     >
       <Stack spacing={4}>
         <DefaultInputForm
@@ -242,6 +239,17 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
             </DefaultInputForm>
           </Box>
         </Flex>
+        <Box>
+          <Flex justify="flex-end">
+            <PrimaryButton
+              disabled={buttonDisabled}
+              loading={loading}
+              onClick={callFunction}
+            >
+              {buttonTitle}
+            </PrimaryButton>
+          </Flex>
+        </Box>
       </Stack>
     </DefaultModal>
   );
