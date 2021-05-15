@@ -1,6 +1,6 @@
 export type Stock = {
   id: number;
-  user_id: number;
+  user_id?: number;
   name: string;
   category: string;
   limit: string;

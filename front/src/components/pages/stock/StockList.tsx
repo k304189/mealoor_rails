@@ -1,7 +1,6 @@
 import { memo, useState, VFC } from "react";
 import {
   Box,
-  Checkbox,
   Flex,
   Spacer,
   Table,
@@ -16,12 +15,13 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
+import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 const sampleStocks = [
-  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 2, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
+  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", remain: 100 },
+  { id: 2, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
   { id: 3, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
   { id: 4, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
   { id: 5, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
@@ -43,8 +43,14 @@ const sampleStocks = [
 ];
 
 export const StockList: VFC = memo(() => {
-  const [stockList, setStockList] = useState(sampleStocks);
+  const [havingStockList, setHavingStockList] = useState(sampleStocks);
+  const [havingPagingOffset, setHavingPagingOffset] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const havingPagingDisplayNum = 20;
+  const onChangeHavingPage = (page: {selected: number}) =>
+    setHavingPagingOffset(havingPagingDisplayNum * page.selected);
+
   return (
     <SigninHeaderLayout>
       <Flex className="main">
@@ -65,39 +71,17 @@ export const StockList: VFC = memo(() => {
                   <PrimaryButton size="sm" onClick={onOpen}>食材追加</PrimaryButton>
                   <Spacer />
                   <DefaultPaging
-                    displayNum={1}
-                    dataNum={100}
-                    onPageChange={(page: {selected: number}) => {}}
+                    displayNum={havingPagingDisplayNum}
+                    dataNum={havingStockList.length}
+                    onPageChange={onChangeHavingPage}
                   />
                 </Flex>
-                <Table size="sm">
-                  <Thead>
-                    <Tr>
-                      <Td>選択</Td>
-                      <Td>食材名</Td>
-                      <Td display={{ base: "none", md: "table-cell" }}>カテゴリー</Td>
-                      <Td display={{ base: "none", md: "table-cell" }}>賞味期限</Td>
-                      <Td display={{ base: "none", md: "table-cell" }}>価格</Td>
-                      <Td display={{ base: "none", md: "table-cell" }}>カロリー</Td>
-                      <Td>残量</Td>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {stockList.map((data) => (
-                      <Tr key={data.id}>
-                        <Td>
-                          <Checkbox />
-                        </Td>
-                        <Td>{data.name}</Td>
-                        <Td display={{ base: "none", md: "table-cell" }}>{data.category}</Td>
-                        <Td display={{ base: "none", md: "table-cell" }}>{data.limit}</Td>
-                        <Td display={{ base: "none", md: "table-cell" }}>{data.price.toLocaleString()}<b>円</b></Td>
-                        <Td display={{ base: "none", md: "table-cell" }}>{data.kcal.toLocaleString()}<b>kcal</b></Td>
-                        <Td>{data.remain}<b>%</b></Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                <HavingStockTable
+                  havingStocks={havingStockList}
+                  selectedStock={null}
+                  pagingDisplayNum={havingPagingDisplayNum}
+                  pagingOffset={havingPagingOffset}
+                />
               </Box>
               <Box
                 as="article"
@@ -114,7 +98,7 @@ export const StockList: VFC = memo(() => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {stockList.slice(0, 10).map((data) => (
+                    {havingStockList.slice(0, 10).map((data) => (
                       <Tr key={data.id}>
                         <Td>{data.name}</Td>
                         <Td>{data.remain}<b>%</b></Td>
