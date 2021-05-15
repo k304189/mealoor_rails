@@ -19,6 +19,7 @@ type Props = {
   buttonTitle: string;
   buttonDisabled?: boolean;
   loading?: boolean;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full" | "xs" | "3xl" | "4xl" | "5xl" | "6xl";
   onClick: () => void;
 };
 
@@ -31,10 +32,11 @@ export const DefaultModal: VFC<Props> = memo((props) => {
     buttonTitle,
     buttonDisabled = false,
     loading = false,
+    size = "md",
     onClick,
   } = props;
   return (
-    <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} isCentered>
+    <Modal size={size} isOpen={isOpen} onClose={onClose} autoFocus={false} isCentered>
       <ModalOverlay />
       <ModalContent pb={2}>
         <ModalHeader as="div" bg="#7FDC96" color="#FCFDFE">{modalTitle}</ModalHeader>

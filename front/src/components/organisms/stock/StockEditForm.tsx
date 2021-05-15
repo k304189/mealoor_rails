@@ -1,7 +1,8 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import { Stock } from "../../../types/api/stock";
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
 import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
 import { InputKcal } from "../input/common/InputKcal";
@@ -62,6 +63,9 @@ export const StockEditForm: VFC<Props> = memo((props) => {
 
   return (
     <>
+      <Box className="sectionTitle">
+        基本項目
+      </Box>
       <Grid
         templateRows="repeat(1, 1fr)"
         templateColumns="repeat(6, 1fr)"
@@ -103,10 +107,14 @@ export const StockEditForm: VFC<Props> = memo((props) => {
           />
         </GridItem>
       </Grid>
+      <Box className="sectionTitle">
+        詳細項目
+      </Box>
       <Grid
         templateRows="repeat(2, 1fr)"
         templateColumns="repeat(6, 1fr)"
         gap={4}
+        p={2}
       >
         <GridItem colSpan={{ base: 3, md: 1 }}>
           <InputFoodAmount
@@ -155,6 +163,13 @@ export const StockEditForm: VFC<Props> = memo((props) => {
             note={note}
             onChange={onChangeNote}
           />
+        </GridItem>
+        <GridItem colSpan={6}>
+          <Flex justify="flex-end">
+            <PrimaryButton onClick={() => {}}>
+              登録
+            </PrimaryButton>
+          </Flex>
         </GridItem>
       </Grid>
     </>

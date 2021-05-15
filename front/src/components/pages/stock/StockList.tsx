@@ -9,11 +9,14 @@ import {
   Tbody,
   Tr,
   Td,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
+import { DefaultModal } from "../../molecules/layout/DefaultModal";
+import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 const sampleStocks = [
@@ -41,6 +44,7 @@ const sampleStocks = [
 
 export const StockList: VFC = memo(() => {
   const [stockList, setStockList] = useState(sampleStocks);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <SigninHeaderLayout>
       <Flex className="main">
@@ -58,7 +62,7 @@ export const StockList: VFC = memo(() => {
                 mb={{ base: 3, md: 0 }}
               >
                 <Flex>
-                  <PrimaryButton size="sm" onClick={() => {}}>食材追加</PrimaryButton>
+                  <PrimaryButton size="sm" onClick={onOpen}>食材追加</PrimaryButton>
                   <Spacer />
                   <DefaultPaging
                     displayNum={1}
@@ -132,6 +136,16 @@ export const StockList: VFC = memo(() => {
           </Box>
         </Box>
       </Flex>
+      <DefaultModal
+        isOpen={isOpen}
+        onClose={onClose}
+        modalTitle="食材登録"
+        buttonTitle="モーダルボタン"
+        size="4xl"
+        onClick={() => {}}
+      >
+        <StockEditForm />
+      </DefaultModal>
     </SigninHeaderLayout>
   );
 });

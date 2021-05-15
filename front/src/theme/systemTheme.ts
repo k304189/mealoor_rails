@@ -78,6 +78,12 @@ const systemTheme = extendTheme({
         shadow: "md",
         padding: "16px",
       },
+      ".sectionTitle": {
+        borderLeft: `5px solid ${baseColor}`,
+        paddingLeft: "8px",
+        marginTop: "12px",
+        marginBottom: "12px",
+      },
       ".pagination": {
         display: "flex",
         listStyle: "none",
