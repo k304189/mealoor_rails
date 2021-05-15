@@ -18,6 +18,7 @@ import { InputLimit } from "../input/stock/InputLimit";
 import { InputRemain } from "../input/stock/InputRemain";
 import { InputQuantity } from "../input/stock/InputQuantity";
 import { RadioStockType } from "../input/stock/RadioStockType";
+import { SelectFoodLocation } from "../input/stock/SelectFoodLocation";
 
 type Props = {
   stock?: Stock | null;
@@ -35,6 +36,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   const [foodUnit, setFoodUnit] = useState("");
   const [protein, setProtein] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [location, setLocation] = useState("");
   const [stockType, setStockType] = useState("");
   const [shop, setShop] = useState("");
   const [discounted, setDiscounted] = useState(false);
@@ -51,6 +53,9 @@ export const StockEditForm: VFC<Props> = memo((props) => {
 
   const onChangeFoodUnit = (e: ChangeEvent<HTMLSelectElement>) =>
     setFoodUnit(e.target.value);
+
+  const onChangeLocation = (e: ChangeEvent<HTMLSelectElement>) =>
+    setLocation(e.target.value);
 
   const onChangeShop = (e: ChangeEvent<HTMLInputElement>) =>
     setShop(e.target.value);
@@ -140,7 +145,13 @@ export const StockEditForm: VFC<Props> = memo((props) => {
             onChange={setQuantity}
           />
         </GridItem>
-        <GridItem colSpan={6}>
+        <GridItem colSpan={{ base: 6, md: 3 }}>
+          <SelectFoodLocation
+            location={location}
+            onChange={onChangeLocation}
+          />
+        </GridItem>
+        <GridItem colSpan={{ base: 6, md: 3 }}>
           <RadioStockType
             stockType={stockType}
             onChange={setStockType}
