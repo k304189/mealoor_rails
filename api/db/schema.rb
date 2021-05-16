@@ -23,16 +23,16 @@ ActiveRecord::Schema.define(version: 2021_05_16_061749) do
 
   create_table "stocks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "name"
-    t.string "category"
-    t.date "limit"
-    t.integer "price"
-    t.integer "kcal"
-    t.integer "remain"
-    t.integer "amount"
+    t.string "name", null: false
+    t.string "category", null: false
+    t.date "limit", null: false
+    t.integer "price", default: 0
+    t.integer "kcal", default: 0
+    t.integer "remain", default: 100, null: false
+    t.integer "amount", default: 0
     t.string "unit"
-    t.float "protein"
-    t.integer "quantity"
+    t.float "protein", default: 0.0
+    t.integer "quantity", default: 1
     t.string "location"
     t.string "stock_type"
     t.string "shop"

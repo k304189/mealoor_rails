@@ -16,6 +16,16 @@ RSpec.describe Stock, type: :model do
       stock = FactoryBot.build(:stock_require, user_id: @user.id)
       expect(stock.valid?).to eq true
     end
+
+    it "必須項目のみ入力時、デフォルト値が設定されている" do
+      stock = FactoryBot.create(:stock_require, user_id: @user.id)
+      expect(stock.price).to eq 0
+      expect(stock.kcal).to eq 0
+      expect(stock.remain).to eq 100
+      expect(stock.amount).to eq 0
+      expect(stock.protein).to eq 0
+      expect(stock.quantity).to eq 1
+    end
   end
 
   context "必須項目チェック" do
@@ -86,8 +96,8 @@ RSpec.describe Stock, type: :model do
       expect(stock.valid?).to eq true
     end
 
-    it "個数が0" do
-      stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: 0)
+    it "個数が1" do
+      stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: 1)
       expect(stock.valid?).to eq true
     end
   end
@@ -133,8 +143,8 @@ RSpec.describe Stock, type: :model do
       expect(stock.valid?).to eq false
     end
 
-    it "個数が-1" do
-      stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: -1)
+    it "個数が0" do
+      stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: 0)
       expect(stock.valid?).to eq false
     end
   end
