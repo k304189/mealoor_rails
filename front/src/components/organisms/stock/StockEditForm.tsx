@@ -1,7 +1,9 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import { Stock } from "../../../types/api/stock";
+import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
+import { useStockValidate } from "../../../hooks/validate/useStockValidate";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
 import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
@@ -26,6 +28,14 @@ type Props = {
 
 export const StockEditForm: VFC<Props> = memo((props) => {
   const { stock = null } = props;
+  const {
+    validateName,
+    validateFoodCategory,
+    validateShop,
+    validateNote,
+  } = useCommonValidate();
+  const { validateLimit } = useStockValidate();
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState("");
@@ -41,6 +51,20 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   const [shop, setShop] = useState("");
   const [discounted, setDiscounted] = useState(false);
   const [note, setNote] = useState("");
+
+  const [nameInvalid, setNameInvalid] = useState(false);
+  const [categoryInvalid, setCategoryInvalid] = useState(false);
+  const [limitInvalid, setLimitInvalid] = useState(false);
+  const [shopInvalid, setShopInvalid] = useState(false);
+  const [noteInvalid, setNoteInvalid] = useState(false);
+
+  const [nameError, setNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [limitError, setLimitError] = useState("");
+  const [shopError, setShopError] = useState("");
+  const [noteError, setNoteError] = useState("");
+
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -66,6 +90,41 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   const onChangeNote = (e: ChangeEvent<HTMLInputElement>) =>
     setNote(e.target.value);
 
+  const onBlurName = () => {
+    const { invalid, errorMsg } = validateName(name);
+    setNameInvalid(invalid);
+    setNameError(errorMsg);
+  };
+
+  const onBlurCategory = () => {
+    const { invalid, errorMsg } = validateFoodCategory(category);
+    setCategoryInvalid(invalid);
+    setCategoryError(errorMsg);
+  };
+
+  const onBlurLimit = () => {
+    const { invalid, errorMsg } = validateLimit(limit);
+    setLimitInvalid(invalid);
+    setLimitError(errorMsg);
+  };
+
+  const onBlurShop = () => {
+    const { invalid, errorMsg } = validateShop(shop);
+    setShopInvalid(invalid);
+    setShopError(errorMsg);
+  };
+
+  const onBlurNote = () => {
+    const { invalid, errorMsg } = validateNote(name);
+    setNoteInvalid(invalid);
+    setNoteError(errorMsg);
+  };
+
+  useEffect(() => {
+    setButtonDisabled(nameInvalid || categoryInvalid
+      || limitInvalid || shopInvalid || noteInvalid);
+  }, [nameInvalid, categoryInvalid, limitInvalid, shopInvalid, noteInvalid]);
+
   return (
     <>
       <Box className="sectionTitle">
@@ -80,18 +139,27 @@ export const StockEditForm: VFC<Props> = memo((props) => {
           <InputName
             name={name}
             onChange={onChangeName}
+            invalid={nameInvalid}
+            error={nameError}
+            onBlur={onBlurName}
           />
         </GridItem>
         <GridItem colSpan={{ base: 6, md: 2 }}>
           <SelectFoodCategory
             category={category}
             onChange={onChangeCategory}
+            invalid={categoryInvalid}
+            error={categoryError}
+            onBlur={onBlurCategory}
           />
         </GridItem>
         <GridItem colSpan={{ base: 6, md: 2 }}>
           <InputLimit
             limit={limit}
             onChange={onChangeLimit}
+            invalid={limitInvalid}
+            error={limitError}
+            onBlur={onBlurLimit}
           />
         </GridItem>
         <GridItem colSpan={{ base: 2, md: 1 }}>
@@ -161,6 +229,9 @@ export const StockEditForm: VFC<Props> = memo((props) => {
           <InputShop
             shop={shop}
             onChange={onChangeShop}
+            invalid={shopInvalid}
+            error={shopError}
+            onBlur={onBlurShop}
           />
         </GridItem>
         <GridItem colSpan={1}>
@@ -173,11 +244,17 @@ export const StockEditForm: VFC<Props> = memo((props) => {
           <InputNote
             note={note}
             onChange={onChangeNote}
+            invalid={noteInvalid}
+            error={noteError}
+            onBlur={onBlurNote}
           />
         </GridItem>
         <GridItem colSpan={6}>
           <Flex justify="flex-end">
-            <PrimaryButton onClick={() => {}}>
+            <PrimaryButton
+              disabled={buttonDisabled}
+              onClick={() => {}}
+            >
               登録
             </PrimaryButton>
           </Flex>

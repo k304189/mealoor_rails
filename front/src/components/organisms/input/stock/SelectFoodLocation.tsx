@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 
 import { DefaultInputForm } from "../DefaultInputForm";
 import { FoodLocation } from "../../../molecules/select/FoodLocation";
