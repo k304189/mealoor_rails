@@ -13,6 +13,7 @@ export type Stock = {
   kcal?: number;
   price?: number;
   discounted?: boolean;
+  location?: string;
   note?: string;
   remain?: number;
 };

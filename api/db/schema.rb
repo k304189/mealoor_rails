@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_02_060034) do
+ActiveRecord::Schema.define(version: 2021_05_16_061749) do
 
   create_table "seasonal_foods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -19,6 +19,28 @@ ActiveRecord::Schema.define(version: 2021_05_02_060034) do
     t.integer "end_month"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "stocks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.string "category"
+    t.date "limit"
+    t.integer "price"
+    t.integer "kcal"
+    t.integer "remain"
+    t.integer "amount"
+    t.string "unit"
+    t.float "protein"
+    t.integer "quantity"
+    t.string "location"
+    t.string "stock_type"
+    t.string "shop"
+    t.boolean "discounted"
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_stocks_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -46,4 +68,5 @@ ActiveRecord::Schema.define(version: 2021_05_02_060034) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "stocks", "users"
 end
