@@ -17,4 +17,12 @@ FactoryBot.define do
     discounted { false }
     note { "昼食用" }
   end
+
+  factory :stock_require, class: Stock do
+    user { nil }
+    name { "フランスパン" }
+    category { "パン" }
+    limit { "2021-06-20" }
+    remain { 100 }
+  end
 end
