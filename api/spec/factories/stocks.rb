@@ -1,20 +1,20 @@
 FactoryBot.define do
   factory :stock do
     user { nil }
-    name { "MyString" }
-    category { "MyString" }
+    name { "おにぎり" }
+    category { "米" }
     limit { "2021-05-16" }
-    price { 1 }
-    kcal { 1 }
-    remain { 1 }
-    amount { "" }
-    unit { "MyString" }
+    price { 100 }
+    kcal { 250 }
+    remain { 100 }
+    amount { 150 }
+    unit { "g" }
     protein { 1.5 }
     quantity { 1 }
-    location { "MyString" }
-    stock_type { "MyString" }
-    shop { "MyString" }
+    location { "冷蔵庫" }
+    stock_type { "中食" }
+    shop { "スーパー" }
     discounted { false }
-    note { "MyString" }
+    note { "昼食用" }
   end
 end
