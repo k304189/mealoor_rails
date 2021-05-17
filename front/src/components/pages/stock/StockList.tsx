@@ -51,6 +51,7 @@ export const StockList: VFC = memo(() => {
   const [havingPagingOffset, setHavingPagingOffset] = useState(0);
   const [stock, setStock] = useState<Stock | null>(null);
   const [loading, setLoading] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
   const { showMessage } = useMessage();
   const { allStocks, getHavingStock } = useStockApi();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,6 +59,30 @@ export const StockList: VFC = memo(() => {
   const havingPagingDisplayNum = 20;
   const onChangeHavingPage = (page: {selected: number}) =>
     setHavingPagingOffset(havingPagingDisplayNum * page.selected);
+
+  const openEditModal = (editMode = false) => {
+    let title = "";
+    if (editMode) {
+      title = "食材編集";
+    } else {
+      setStock(null);
+      title = "食材登録";
+    }
+    setModalTitle(title);
+    onOpen();
+  };
+
+  const onClickNameLink = (id = 0) => {
+    const index = allStocks.findIndex((data) => data.id === id);
+    let selectedStock: Stock | null = null;
+    let editMode = false;
+    if (index >= 0) {
+      selectedStock = allStocks[index];
+      editMode = true;
+    }
+    setStock(selectedStock);
+    openEditModal(editMode);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -81,7 +106,7 @@ export const StockList: VFC = memo(() => {
           mb={{ base: 3, md: 0 }}
         >
           <Flex>
-            <PrimaryButton size="sm" onClick={onOpen}>食材追加</PrimaryButton>
+            <PrimaryButton size="sm" onClick={() => { openEditModal(); }}>食材追加</PrimaryButton>
             <Spacer />
             <DefaultPaging
               displayNum={havingPagingDisplayNum}
@@ -91,9 +116,9 @@ export const StockList: VFC = memo(() => {
           </Flex>
           <HavingStockTable
             havingStocks={allStocks}
-            selectedStock={null}
             pagingDisplayNum={havingPagingDisplayNum}
             pagingOffset={havingPagingOffset}
+            onClickNameLink={onClickNameLink}
           />
         </Box>
         <Box
@@ -133,10 +158,10 @@ export const StockList: VFC = memo(() => {
       <DefaultModal
         isOpen={isOpen}
         onClose={onClose}
-        modalTitle="食材登録"
+        modalTitle={modalTitle}
         size="4xl"
       >
-        <StockEditForm allStocks={havingStocks} stock={stock} />
+        <StockEditForm allStocks={allStocks} stock={stock} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

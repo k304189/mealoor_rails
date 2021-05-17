@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       get 'users/currentuser'
       resources :seasonal_foods, only: %i[index create update destroy]
-      resources :stocks, only: %i[index create]
+      resources :stocks, only: %i[index create update]
     end
   end
 end

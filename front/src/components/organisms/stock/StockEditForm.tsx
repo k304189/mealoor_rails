@@ -32,7 +32,7 @@ type Props = {
 
 export const StockEditForm: VFC<Props> = memo((props) => {
   const { allStocks, stock = null } = props;
-  const { addStock } = useStockApi();
+  const { addStock, editStock } = useStockApi();
   const { showMessage } = useMessage();
   const {
     validateName,
@@ -149,6 +149,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   };
 
   const initModal = () => {
+    setId(stock?.id ?? 0);
     setName(stock?.name ?? "");
     setCategory(stock?.category ?? "");
     setLimit(stock?.limit ?? "");
@@ -194,18 +195,30 @@ export const StockEditForm: VFC<Props> = memo((props) => {
       });
   };
 
-  const callEditStock = () => {};
+  const callEditStock = () => {
+    setButtonLoading(true);
+    const editData = getStockApiData();
+    editStock(allStocks, editData)
+      .then(() => {
+        showMessage({ title: "編集に成功しました", status: "success" });
+      })
+      .catch(() => {
+        showMessage({ title: "編集に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
+  };
 
   useEffect(() => {
     initModal();
-  }, []);
+  }, [stock]);
 
   useEffect(() => {
     setButtonDisabled(nameInvalid || categoryInvalid
       || limitInvalid || shopInvalid || noteInvalid);
   }, [nameInvalid, categoryInvalid, limitInvalid, shopInvalid, noteInvalid]);
 
-  const editType = (stock) ? "登録" : "編集";
   const buttonTitle = (id === 0) ? "登録" : "更新";
   const callFunction = (id === 0) ? callAddStock : callEditStock;
 

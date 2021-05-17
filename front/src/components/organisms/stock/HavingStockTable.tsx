@@ -1,22 +1,24 @@
 import { memo, VFC } from "react";
 import { Checkbox, Table, Thead, Tbody, Tr, Td } from "@chakra-ui/react";
 
+import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { Stock } from "../../../types/api/stock";
 
 type Props = {
   havingStocks: Array<Stock>;
-  selectedStock: Stock | null;
   pagingDisplayNum: number;
   pagingOffset: number;
+  onClickNameLink: (id: number) => void;
 };
 
 export const HavingStockTable: VFC<Props> = memo((props) => {
   const {
     havingStocks,
-    selectedStock,
     pagingDisplayNum,
     pagingOffset,
+    onClickNameLink,
   } = props;
+
   return (
     <Table size="sm">
       <Thead>
@@ -38,7 +40,11 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
               <Td>
                 <Checkbox />
               </Td>
-              <Td>{data.name}</Td>
+              <Td>
+                <DefaultLink onClick={() => { onClickNameLink(data.id); }}>
+                  {data.name}
+                </DefaultLink>
+              </Td>
               <Td display={{ base: "none", md: "table-cell" }}>{data.category}</Td>
               <Td display={{ base: "none", md: "table-cell" }}>{data.limit}</Td>
               <Td display={{ base: "none", md: "table-cell" }}>

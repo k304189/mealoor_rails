@@ -15,6 +15,12 @@ class Api::V1::StocksController < ApplicationController
     end
   end
 
+  def update
+    @stock = Stock.find(params[:id])
+    @stock.update!(stock_add_params)
+    render json: @stock
+  end
+
   private
     def stock_add_params
       params.require(:stock)

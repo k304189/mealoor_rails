@@ -8,6 +8,7 @@ type returnType = {
   allStocks: Array<Stock>;
   addStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
   getHavingStock: () => Promise<number>;
+  editStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
 };
 
 export const useStockApi = (): returnType => {
@@ -34,5 +35,21 @@ export const useStockApi = (): returnType => {
       return response.status;
     }, [],
   );
-  return { allStocks, addStock, getHavingStock };
+
+  const editStock = useCallback(
+    async (stocks: Array<Stock>, editData: Stock) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/stocks/${editData.id}`;
+      const json = {
+        stock: editData,
+      };
+      const response = await axios.patch(url, json, { headers: getRequestHeader() });
+      const index = stocks.findIndex((stock) => stock.id === editData.id);
+      if (index !== -1) {
+        const newAllStocks = stocks;
+        newAllStocks[index] = response.data;
+      }
+      return response.status;
+    }, [],
+  );
+  return { allStocks, addStock, getHavingStock, editStock };
 };
