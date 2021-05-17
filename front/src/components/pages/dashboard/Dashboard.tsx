@@ -1,5 +1,5 @@
 import { memo, VFC, useEffect } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { useIsLogin } from "../../../hooks/user/useIsLogin";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";

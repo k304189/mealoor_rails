@@ -1,6 +1,11 @@
 class Api::V1::StocksController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @stock = current_user.stocks.where(remain: 1..100)
+    render json: @stock
+  end
+
   def create
     @stock = current_user.stocks.new(stock_add_params)
     if @stock.save

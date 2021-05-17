@@ -1,4 +1,4 @@
-import { memo, useState, VFC } from "react";
+import { memo, useEffect, useState, VFC } from "react";
 import {
   Box,
   Flex,
@@ -19,6 +19,8 @@ import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
+import { useMessage } from "../../../hooks/common/useMessage";
+import { useStockApi } from "../../../hooks/stock/useStockApi";
 import { Stock } from "../../../types/api/stock";
 
 const sampleStocks = [
@@ -48,14 +50,28 @@ export const StockList: VFC = memo(() => {
   const [havingStocks, setHavingStocks] = useState(sampleStocks);
   const [havingPagingOffset, setHavingPagingOffset] = useState(0);
   const [stock, setStock] = useState<Stock | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { showMessage } = useMessage();
+  const { allStocks, getHavingStock } = useStockApi();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const havingPagingDisplayNum = 20;
   const onChangeHavingPage = (page: {selected: number}) =>
     setHavingPagingOffset(havingPagingDisplayNum * page.selected);
 
+  useEffect(() => {
+    setLoading(true);
+    getHavingStock()
+      .catch(() => {
+        showMessage({ title: "家にある食材の取得に失敗しました", status: "success" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <SigninHeaderLayout title="家にある食材">
+    <SigninHeaderLayout loading={loading} title="家にある食材">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"
@@ -69,12 +85,12 @@ export const StockList: VFC = memo(() => {
             <Spacer />
             <DefaultPaging
               displayNum={havingPagingDisplayNum}
-              dataNum={havingStocks.length}
+              dataNum={allStocks.length}
               onPageChange={onChangeHavingPage}
             />
           </Flex>
           <HavingStockTable
-            havingStocks={havingStocks}
+            havingStocks={allStocks}
             selectedStock={null}
             pagingDisplayNum={havingPagingDisplayNum}
             pagingOffset={havingPagingOffset}

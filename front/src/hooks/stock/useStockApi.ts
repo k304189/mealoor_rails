@@ -7,6 +7,7 @@ import { useRequestHeader } from "../user/useRequestHeader";
 type returnType = {
   allStocks: Array<Stock>;
   addStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
+  getHavingStock: () => Promise<number>;
 };
 
 export const useStockApi = (): returnType => {
@@ -24,5 +25,14 @@ export const useStockApi = (): returnType => {
       return response.status;
     }, [],
   );
-  return { allStocks, addStock };
+
+  const getHavingStock = useCallback(
+    async () => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/stocks`;
+      const response = await axios.get(url, { headers: getRequestHeader() });
+      setAllStocks(response.data);
+      return response.status;
+    }, [],
+  );
+  return { allStocks, addStock, getHavingStock };
 };
