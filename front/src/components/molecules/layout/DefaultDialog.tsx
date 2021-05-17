@@ -44,7 +44,7 @@ export const DefaultDialog: VFC<Props> = memo((props) => {
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <AlertDialogHeader color="gray.800">{headerTitle}</AlertDialogHeader>
+        <AlertDialogHeader as="div" color="gray.800">{headerTitle}</AlertDialogHeader>
         <AlertDialogBody>
           {children}
         </AlertDialogBody>

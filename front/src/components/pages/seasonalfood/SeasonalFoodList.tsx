@@ -2,7 +2,6 @@ import { memo, useEffect, useState, VFC } from "react";
 import {
   Box,
   Flex,
-  Progress,
   Spacer,
   Table,
   Thead,
@@ -92,76 +91,70 @@ export const SeasonalFoodList: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout>
-      { loading ? (
+    <SigninHeaderLayout loading={loading}>
+      <>
         <Flex align="center" justify="center" height="100vh">
-          <Progress size="sm" w="50%" isIndeterminate />
+          <Box as="article" p={4}>
+            <Flex>
+              <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
+              <Spacer />
+              <DefaultPaging
+                displayNum={displayNum}
+                dataNum={allSeasonalFoods.length}
+                onPageChange={onClickPageChange}
+              />
+            </Flex>
+            <Table variant="simple">
+              <Thead>
+                <Tr fontSize={{ base: "sm", md: "md" }}>
+                  <Td w="200px">食材名</Td>
+                  <Td w="200px">カテゴリー</Td>
+                  <Td w="100px">開始月</Td>
+                  <Td w="100px">終了月</Td>
+                  <Td w="30px" />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {allSeasonalFoods
+                  .slice(pagingOffset, pagingOffset + displayNum)
+                  .map((data) => (
+                    <Tr key={data.id}>
+                      <Td p={0}>
+                        <DefaultLink
+                          onClick={() => onClickSeasonalFood(data.id)}
+                        >
+                          {data.name}
+                        </DefaultLink>
+                      </Td>
+                      <Td>{data.category}</Td>
+                      <Td>{data.start_month}</Td>
+                      <Td>{data.end_month}</Td>
+                      <Td>
+                        <DeleteButton
+                          onClick={() => { onClickDeleteSeasonalFood(data.id); }}
+                        />
+                      </Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </Box>
         </Flex>
-      ) : (
-        <>
-          <Flex align="center" justify="center" height="100vh">
-            <Box as="article" p={4}>
-              <Flex>
-                <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
-                <Spacer />
-                <DefaultPaging
-                  displayNum={displayNum}
-                  dataNum={allSeasonalFoods.length}
-                  onPageChange={onClickPageChange}
-                />
-              </Flex>
-              <Table variant="simple">
-                <Thead>
-                  <Tr fontSize={{ base: "sm", md: "md" }}>
-                    <Td w="200px">食材名</Td>
-                    <Td w="200px">カテゴリー</Td>
-                    <Td w="100px">開始月</Td>
-                    <Td w="100px">終了月</Td>
-                    <Td w="30px" />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {allSeasonalFoods
-                    .slice(pagingOffset, pagingOffset + displayNum)
-                    .map((data) => (
-                      <Tr key={data.id}>
-                        <Td p={0}>
-                          <DefaultLink
-                            onClick={() => onClickSeasonalFood(data.id)}
-                          >
-                            {data.name}
-                          </DefaultLink>
-                        </Td>
-                        <Td>{data.category}</Td>
-                        <Td>{data.start_month}</Td>
-                        <Td>{data.end_month}</Td>
-                        <Td>
-                          <DeleteButton
-                            onClick={() => { onClickDeleteSeasonalFood(data.id); }}
-                          />
-                        </Td>
-                      </Tr>
-                    ))}
-                </Tbody>
-              </Table>
-            </Box>
-          </Flex>
-          <SeasonalFoodEditModal
-            allSeasonalFoods={allSeasonalFoods}
-            seasonalFood={selectSeasonalFood}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
-          <DefaultDialog
-            isOpen={isDialogOpen}
-            headerTitle="データ削除確認"
-            onClose={cancelDelete}
-            onClick={callDeleteSeasonalFood}
-          >
-            {deleteConfirmMsg}
-          </DefaultDialog>
-        </>
-      ) }
+        <SeasonalFoodEditModal
+          allSeasonalFoods={allSeasonalFoods}
+          seasonalFood={selectSeasonalFood}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+        <DefaultDialog
+          isOpen={isDialogOpen}
+          headerTitle="データ削除確認"
+          onClose={cancelDelete}
+          onClick={callDeleteSeasonalFood}
+        >
+          {deleteConfirmMsg}
+        </DefaultDialog>
+      </>
     </SigninHeaderLayout>
   );
 });
