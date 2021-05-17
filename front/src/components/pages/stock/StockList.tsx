@@ -19,6 +19,8 @@ import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
+import { Stock } from "../../../types/api/stock";
+
 const sampleStocks = [
   { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", remain: 100 },
   { id: 2, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
@@ -43,8 +45,9 @@ const sampleStocks = [
 ];
 
 export const StockList: VFC = memo(() => {
-  const [havingStockList, setHavingStockList] = useState(sampleStocks);
+  const [havingStocks, setHavingStocks] = useState(sampleStocks);
   const [havingPagingOffset, setHavingPagingOffset] = useState(0);
+  const [stock, setStock] = useState<Stock | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const havingPagingDisplayNum = 20;
@@ -72,12 +75,12 @@ export const StockList: VFC = memo(() => {
                   <Spacer />
                   <DefaultPaging
                     displayNum={havingPagingDisplayNum}
-                    dataNum={havingStockList.length}
+                    dataNum={havingStocks.length}
                     onPageChange={onChangeHavingPage}
                   />
                 </Flex>
                 <HavingStockTable
-                  havingStocks={havingStockList}
+                  havingStocks={havingStocks}
                   selectedStock={null}
                   pagingDisplayNum={havingPagingDisplayNum}
                   pagingOffset={havingPagingOffset}
@@ -98,7 +101,7 @@ export const StockList: VFC = memo(() => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {havingStockList.slice(0, 10).map((data) => (
+                    {havingStocks.slice(0, 10).map((data) => (
                       <Tr key={data.id}>
                         <Td>{data.name}</Td>
                         <Td>{data.remain}<b>%</b></Td>
@@ -126,7 +129,7 @@ export const StockList: VFC = memo(() => {
         modalTitle="食材登録"
         size="4xl"
       >
-        <StockEditForm />
+        <StockEditForm allStocks={havingStocks} stock={stock} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

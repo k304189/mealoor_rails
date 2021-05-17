@@ -4,6 +4,9 @@ import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Stock } from "../../../types/api/stock";
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useStockValidate } from "../../../hooks/validate/useStockValidate";
+import { useStockApi } from "../../../hooks/stock/useStockApi";
+import { useMessage } from "../../../hooks/common/useMessage";
+
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
 import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
@@ -23,11 +26,14 @@ import { RadioStockType } from "../input/stock/RadioStockType";
 import { SelectFoodLocation } from "../input/stock/SelectFoodLocation";
 
 type Props = {
+  allStocks: Array<Stock>;
   stock?: Stock | null;
 };
 
 export const StockEditForm: VFC<Props> = memo((props) => {
-  const { stock = null } = props;
+  const { allStocks, stock = null } = props;
+  const { addStock } = useStockApi();
+  const { showMessage } = useMessage();
   const {
     validateName,
     validateFoodCategory,
@@ -36,6 +42,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   } = useCommonValidate();
   const { validateLimit } = useStockValidate();
 
+  const [id, setId] = useState(0);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState("");
@@ -45,7 +52,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   const [foodAmount, setFoodAmount] = useState(0);
   const [foodUnit, setFoodUnit] = useState("");
   const [protein, setProtein] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [location, setLocation] = useState("");
   const [stockType, setStockType] = useState("");
   const [shop, setShop] = useState("");
@@ -64,6 +71,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
   const [shopError, setShopError] = useState("");
   const [noteError, setNoteError] = useState("");
 
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
@@ -120,10 +128,86 @@ export const StockEditForm: VFC<Props> = memo((props) => {
     setNoteError(errorMsg);
   };
 
+  const getStockApiData = () => {
+    return {
+      id,
+      name,
+      category,
+      limit,
+      kcal,
+      price,
+      amount: foodAmount,
+      unit: foodUnit,
+      protein,
+      quantity,
+      location,
+      stock_type: stockType,
+      shop,
+      discounted,
+      note,
+    };
+  };
+
+  const callAddStock = () => {
+    setButtonLoading(true);
+    const addData = getStockApiData();
+    addStock(allStocks, addData)
+      .then(() => {
+        showMessage({ title: "登録に成功しました", status: "success" });
+        initModal();
+      })
+      .catch(() => {
+        showMessage({ title: "登録に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
+  };
+
+  const callEditStock = () => {};
+
+  const initModal = () => {
+    setName(stock?.name ?? "");
+    setCategory(stock?.category ?? "");
+    setLimit(stock?.limit ?? "");
+    setKcal(stock?.kcal ?? 0);
+    setPrice(stock?.price ?? 0);
+    setRemain(stock?.remain ?? 100);
+    setFoodAmount(stock?.amount ?? 0);
+    setFoodUnit(stock?.unit ?? "");
+    setProtein(stock?.protein ?? 0);
+    setQuantity(stock?.quantity ?? 1);
+    setLocation(stock?.location ?? "");
+    setStockType(stock?.stock_type ?? "");
+    setShop(stock?.shop ?? "");
+    setDiscounted(stock?.discounted ?? false);
+    setNote(stock?.note ?? "");
+
+    setNameInvalid(false);
+    setCategoryInvalid(false);
+    setLimitInvalid(false);
+    setShopInvalid(false);
+    setNoteInvalid(false);
+
+    setNameError("");
+    setCategoryError("");
+    setLimitError("");
+    setShopError("");
+    setNoteError("");
+  };
+
+  useEffect(() => {
+    initModal();
+  }, []);
+
   useEffect(() => {
     setButtonDisabled(nameInvalid || categoryInvalid
       || limitInvalid || shopInvalid || noteInvalid);
   }, [nameInvalid, categoryInvalid, limitInvalid, shopInvalid, noteInvalid]);
+
+  const editType = (stock) ? "登録" : "編集";
+  const buttonTitle = (id === 0) ? "登録" : "更新";
+  const callFunction = (id === 0) ? callAddStock : callEditStock;
 
   return (
     <>
@@ -253,9 +337,10 @@ export const StockEditForm: VFC<Props> = memo((props) => {
           <Flex justify="flex-end">
             <PrimaryButton
               disabled={buttonDisabled}
-              onClick={() => {}}
+              loading={buttonLoading}
+              onClick={callFunction}
             >
-              登録
+              {buttonTitle}
             </PrimaryButton>
           </Flex>
         </GridItem>
