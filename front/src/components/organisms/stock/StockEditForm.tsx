@@ -148,24 +148,6 @@ export const StockEditForm: VFC<Props> = memo((props) => {
     };
   };
 
-  const callAddStock = () => {
-    setButtonLoading(true);
-    const addData = getStockApiData();
-    addStock(allStocks, addData)
-      .then(() => {
-        showMessage({ title: "登録に成功しました", status: "success" });
-        initModal();
-      })
-      .catch(() => {
-        showMessage({ title: "登録に失敗しました", status: "error" });
-      })
-      .finally(() => {
-        setButtonLoading(false);
-      });
-  };
-
-  const callEditStock = () => {};
-
   const initModal = () => {
     setName(stock?.name ?? "");
     setCategory(stock?.category ?? "");
@@ -175,7 +157,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
     setRemain(stock?.remain ?? 100);
     setFoodAmount(stock?.amount ?? 0);
     setFoodUnit(stock?.unit ?? "");
-    setProtein(stock?.protein ?? 0);
+    setProtein(stock?.protein ?? 0.0);
     setQuantity(stock?.quantity ?? 1);
     setLocation(stock?.location ?? "");
     setStockType(stock?.stock_type ?? "");
@@ -195,6 +177,24 @@ export const StockEditForm: VFC<Props> = memo((props) => {
     setShopError("");
     setNoteError("");
   };
+
+  const callAddStock = () => {
+    setButtonLoading(true);
+    const addData = getStockApiData();
+    addStock(allStocks, addData)
+      .then(() => {
+        showMessage({ title: "登録に成功しました", status: "success" });
+        initModal();
+      })
+      .catch(() => {
+        showMessage({ title: "登録に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
+  };
+
+  const callEditStock = () => {};
 
   useEffect(() => {
     initModal();

@@ -35,7 +35,7 @@ export const DefaultNumberInput: VFC<Props> = memo((props) => {
     <InputGroup size={size}>
       <NumberInput
         allowMouseWheel
-        defaultValue={value}
+        value={value}
         min={min}
         max={max}
         step={step}
@@ -45,6 +45,7 @@ export const DefaultNumberInput: VFC<Props> = memo((props) => {
         variant="flushed"
       >
         <NumberInputField
+          type="number"
           textAlign="right"
         />
       </NumberInput>

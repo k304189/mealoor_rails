@@ -18,7 +18,7 @@ export const DefaultRadio: VFC<Props> = memo((props) => {
   const { defaultValue, onChange, buttons } = props;
   return (
     <RadioGroup
-      defaultValue={defaultValue}
+      value={defaultValue}
       onChange={onChange}
     >
       <Stack spacing={5} direction="row">
