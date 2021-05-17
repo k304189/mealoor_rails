@@ -55,72 +55,63 @@ export const StockList: VFC = memo(() => {
     setHavingPagingOffset(havingPagingDisplayNum * page.selected);
 
   return (
-    <SigninHeaderLayout>
-      <Flex className="main">
-        <Box w="95%" h="100%" overflow={{ base: "scroll", md: "auto" }}>
-          <Box className="title">
-            家にある食材
-          </Box>
-          <Box className="contents">
-            <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
-              <Box
-                as="article"
-                h="100%"
-                w={{ base: "100%", md: "70%" }}
-                mr={{ base: 0, md: 3 }}
-                mb={{ base: 3, md: 0 }}
-              >
-                <Flex>
-                  <PrimaryButton size="sm" onClick={onOpen}>食材追加</PrimaryButton>
-                  <Spacer />
-                  <DefaultPaging
-                    displayNum={havingPagingDisplayNum}
-                    dataNum={havingStocks.length}
-                    onPageChange={onChangeHavingPage}
-                  />
-                </Flex>
-                <HavingStockTable
-                  havingStocks={havingStocks}
-                  selectedStock={null}
-                  pagingDisplayNum={havingPagingDisplayNum}
-                  pagingOffset={havingPagingOffset}
-                />
-              </Box>
-              <Box
-                as="article"
-                h="100%"
-                w={{ base: "100%", md: "30%" }}
-              >
-                選択中食材
-                <Table size="sm">
-                  <Thead>
-                    <Tr>
-                      <Td>食材名</Td>
-                      <Td>残量</Td>
-                      <Td>使用量</Td>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {havingStocks.slice(0, 10).map((data) => (
-                      <Tr key={data.id}>
-                        <Td>{data.name}</Td>
-                        <Td>{data.remain}<b>%</b></Td>
-                        <Td>
-                          <DefaultNumberInput
-                            value={30}
-                            onChange={() => {}}
-                            size="xs"
-                            max={100}
-                            unit="%"
-                          />
-                        </Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </Box>
-            </Flex>
-          </Box>
+    <SigninHeaderLayout title="家にある食材">
+      <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
+        <Box
+          as="article"
+          h="100%"
+          w={{ base: "100%", md: "70%" }}
+          mr={{ base: 0, md: 3 }}
+          mb={{ base: 3, md: 0 }}
+        >
+          <Flex>
+            <PrimaryButton size="sm" onClick={onOpen}>食材追加</PrimaryButton>
+            <Spacer />
+            <DefaultPaging
+              displayNum={havingPagingDisplayNum}
+              dataNum={havingStocks.length}
+              onPageChange={onChangeHavingPage}
+            />
+          </Flex>
+          <HavingStockTable
+            havingStocks={havingStocks}
+            selectedStock={null}
+            pagingDisplayNum={havingPagingDisplayNum}
+            pagingOffset={havingPagingOffset}
+          />
+        </Box>
+        <Box
+          as="article"
+          h="100%"
+          w={{ base: "100%", md: "30%" }}
+        >
+          選択中食材
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Td>食材名</Td>
+                <Td>残量</Td>
+                <Td>使用量</Td>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {havingStocks.slice(0, 10).map((data) => (
+                <Tr key={data.id}>
+                  <Td>{data.name}</Td>
+                  <Td>{data.remain}<b>%</b></Td>
+                  <Td>
+                    <DefaultNumberInput
+                      value={30}
+                      onChange={() => {}}
+                      size="xs"
+                      max={100}
+                      unit="%"
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
         </Box>
       </Flex>
       <DefaultModal

@@ -12,11 +12,9 @@ export const Dashboard: VFC = memo(() => {
 
   return (
     <SigninHeaderLayout>
-      <Flex className="main" align="center" justify="center">
-        <Box as="article" w="95%" h="95%">
-          <h1>ログイン後のダッシュボード画面です</h1>
-        </Box>
-      </Flex>
+      <Box as="article" w="95%" h="95%">
+        <h1>ログイン後のダッシュボード画面です</h1>
+      </Box>
     </SigninHeaderLayout>
   );
 });
