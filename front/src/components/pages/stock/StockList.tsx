@@ -3,19 +3,14 @@ import {
   Box,
   Flex,
   Spacer,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
   useDisclosure,
 } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
-import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
+import { UseStockTable } from "../../organisms/stock/UseStockTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
@@ -127,32 +122,7 @@ export const StockList: VFC = memo(() => {
           w={{ base: "100%", md: "30%" }}
         >
           選択中食材
-          <Table size="sm">
-            <Thead>
-              <Tr>
-                <Td>食材名</Td>
-                <Td>残量</Td>
-                <Td>使用量</Td>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {havingStocks.slice(0, 10).map((data) => (
-                <Tr key={data.id}>
-                  <Td>{data.name}</Td>
-                  <Td>{data.remain}<b>%</b></Td>
-                  <Td>
-                    <DefaultNumberInput
-                      value={30}
-                      onChange={() => {}}
-                      size="xs"
-                      max={100}
-                      unit="%"
-                    />
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <UseStockTable useStocks={havingStocks} />
         </Box>
       </Flex>
       <DefaultModal
