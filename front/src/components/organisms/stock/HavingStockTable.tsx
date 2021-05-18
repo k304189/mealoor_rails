@@ -1,4 +1,4 @@
-import { memo, VFC } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 import { Checkbox, Table, Thead, Tbody, Tr, Td } from "@chakra-ui/react";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
@@ -6,17 +6,21 @@ import { Stock } from "../../../types/api/stock";
 
 type Props = {
   havingStocks: Array<Stock>;
+  checkedList: Array<number>;
   pagingDisplayNum: number;
   pagingOffset: number;
   onClickNameLink: (id: number) => void;
+  onChangeCheckbox: (e: ChangeEvent<HTMLInputElement>, id: number) => void;
 };
 
 export const HavingStockTable: VFC<Props> = memo((props) => {
   const {
     havingStocks,
+    checkedList,
     pagingDisplayNum,
     pagingOffset,
     onClickNameLink,
+    onChangeCheckbox,
   } = props;
 
   return (
@@ -38,7 +42,10 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
           .map((data) => (
             <Tr key={data.id}>
               <Td>
-                <Checkbox />
+                <Checkbox
+                  isChecked={checkedList.includes(data.id)}
+                  onChange={(e) => { onChangeCheckbox(e, data.id); }}
+                />
               </Td>
               <Td>
                 <DefaultLink onClick={() => { onClickNameLink(data.id); }}>

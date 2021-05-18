@@ -1,4 +1,4 @@
-import { memo, useEffect, useState, VFC } from "react";
+import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import {
   Box,
   Flex,
@@ -10,40 +10,19 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
-import { UseStockTable } from "../../organisms/stock/UseStockTable";
+import { StockUsageTable } from "../../organisms/stock/StockUsageTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useStockApi } from "../../../hooks/stock/useStockApi";
 import { Stock } from "../../../types/api/stock";
-
-const sampleStocks = [
-  { id: 1, name: "じゃがいも", category: "いも", limit: "2021-06-01", remain: 100 },
-  { id: 2, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 100, kcal: 300, remain: 100 },
-  { id: 3, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 4, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 5, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 6, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 7, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 8, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 9, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 10, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 11, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 12, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 13, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 14, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 15, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 16, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 17, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 18, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 19, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-  { id: 20, name: "じゃがいも", category: "いも", limit: "2021-06-01", price: 1000, kcal: 3000, remain: 100 },
-];
+import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 export const StockList: VFC = memo(() => {
-  const [havingStocks, setHavingStocks] = useState(sampleStocks);
+  const [stockUsageList, setStockUsageList] = useState<Array<StockUsage>>([]);
   const [havingPagingOffset, setHavingPagingOffset] = useState(0);
+  const [checkedList, setCheckedList] = useState<Array<number>>([]);
   const [stock, setStock] = useState<Stock | null>(null);
   const [loading, setLoading] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -54,6 +33,35 @@ export const StockList: VFC = memo(() => {
   const havingPagingDisplayNum = 20;
   const onChangeHavingPage = (page: {selected: number}) =>
     setHavingPagingOffset(havingPagingDisplayNum * page.selected);
+
+  const onChangeCheckbox = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    const checkFlg = e.target.checked;
+    if (checkFlg) {
+      const index = allStocks.findIndex((data) => data.id === id);
+      if (index > -1) {
+        const { name, remain = 0 } = allStocks[index];
+        const addStockUsage = {
+          id,
+          name,
+          remain,
+          used_rate: 0,
+        };
+        setStockUsageList([...stockUsageList, addStockUsage]);
+        setCheckedList([...checkedList, id]);
+      }
+    } else {
+      const index = stockUsageList.findIndex((data) => data.id === id);
+      if (index > -1) {
+        stockUsageList.splice(index, 1);
+        setStockUsageList([...stockUsageList]);
+        const idIndex = checkedList.indexOf(id);
+        if (id > -1) {
+          checkedList.splice(idIndex, 1);
+          setCheckedList([...checkedList]);
+        }
+      }
+    }
+  };
 
   const openEditModal = (editMode = false) => {
     let title = "";
@@ -111,9 +119,11 @@ export const StockList: VFC = memo(() => {
           </Flex>
           <HavingStockTable
             havingStocks={allStocks}
+            checkedList={checkedList}
             pagingDisplayNum={havingPagingDisplayNum}
             pagingOffset={havingPagingOffset}
             onClickNameLink={onClickNameLink}
+            onChangeCheckbox={onChangeCheckbox}
           />
         </Box>
         <Box
@@ -122,7 +132,11 @@ export const StockList: VFC = memo(() => {
           w={{ base: "100%", md: "30%" }}
         >
           選択中食材
-          <UseStockTable useStocks={havingStocks} />
+          <StockUsageTable
+            stockUsageList={stockUsageList}
+            checkedList={checkedList}
+            onChangeCheckbox={onChangeCheckbox}
+          />
         </Box>
       </Flex>
       <DefaultModal
