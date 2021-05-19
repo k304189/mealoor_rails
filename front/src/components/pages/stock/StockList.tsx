@@ -39,11 +39,13 @@ export const StockList: VFC = memo(() => {
     if (checkFlg) {
       const index = allStocks.findIndex((data) => data.id === id);
       if (index > -1) {
-        const { name, remain = 0 } = allStocks[index];
+        const { name, remain = 0, quantity = 1 } = allStocks[index];
         const addStockUsage = {
           id,
           name,
           remain,
+          quantity,
+          per_rate: Math.floor(remain / quantity),
           used_rate: 0,
         };
         setStockUsageList([...stockUsageList, addStockUsage]);
@@ -101,7 +103,7 @@ export const StockList: VFC = memo(() => {
     setLoading(true);
     getHavingStock()
       .catch(() => {
-        showMessage({ title: "家にある食材の取得に失敗しました", status: "success" });
+        showMessage({ title: "家にある食材の取得に失敗しました", status: "error" });
       })
       .finally(() => {
         setLoading(false);
@@ -114,7 +116,7 @@ export const StockList: VFC = memo(() => {
         <Box
           as="article"
           h="100%"
-          w={{ base: "100%", md: "70%" }}
+          w={{ base: "100%", md: "60%" }}
           mr={{ base: 0, md: 3 }}
           mb={{ base: 3, md: 0 }}
         >
@@ -139,7 +141,7 @@ export const StockList: VFC = memo(() => {
         <Box
           as="article"
           h="100%"
-          w={{ base: "100%", md: "30%" }}
+          w={{ base: "100%", md: "40%" }}
         >
           選択中食材
           <StockUsageTable

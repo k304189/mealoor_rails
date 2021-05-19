@@ -19,6 +19,7 @@ export const InputQuantity: VFC<Props> = memo((props) => {
       <DefaultNumberInput
         value={quantity}
         onChange={onChange}
+        min={1}
         unit="コ"
       />
     </DefaultInputForm>
