@@ -63,6 +63,16 @@ export const StockList: VFC = memo(() => {
     }
   };
 
+  const onChangeUsedRate = (value: number, id: number) => {
+    const index = stockUsageList.findIndex((data) => data.id === id);
+    if (index > -1) {
+      const stockUsage = stockUsageList[index];
+      stockUsage.used_rate = value;
+      stockUsageList.splice(index, 1, stockUsage);
+      setStockUsageList([...stockUsageList]);
+    }
+  };
+
   const openEditModal = (editMode = false) => {
     let title = "";
     if (editMode) {
@@ -136,6 +146,7 @@ export const StockList: VFC = memo(() => {
             stockUsageList={stockUsageList}
             checkedList={checkedList}
             onChangeCheckbox={onChangeCheckbox}
+            onChangeUsedRate={onChangeUsedRate}
           />
         </Box>
       </Flex>

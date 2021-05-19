@@ -8,10 +8,16 @@ type Props = {
   stockUsageList: Array<StockUsage>;
   checkedList: Array<number>;
   onChangeCheckbox: (e: ChangeEvent<HTMLInputElement>, id: number) => void;
+  onChangeUsedRate: (value: number, id: number) => void;
 };
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
-  const { stockUsageList, checkedList, onChangeCheckbox } = props;
+  const {
+    stockUsageList,
+    checkedList,
+    onChangeCheckbox,
+    onChangeUsedRate,
+  } = props;
   return (
     <Table size="sm">
       <Thead>
@@ -35,10 +41,10 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
             <Td>{data.remain}<b>%</b></Td>
             <Td>
               <DefaultNumberInput
-                value={30}
-                onChange={() => {}}
+                value={data.used_rate}
+                onChange={(v) => { onChangeUsedRate(v, data.id); }}
                 size="xs"
-                max={100}
+                max={data.remain}
                 unit="%"
               />
             </Td>
