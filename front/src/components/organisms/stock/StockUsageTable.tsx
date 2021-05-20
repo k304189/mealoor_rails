@@ -1,6 +1,17 @@
-import { ChangeEvent, memo, VFC } from "react";
-import { Checkbox, Flex, Table, Thead, Tbody, Tr, Td } from "@chakra-ui/react";
+import { ChangeEvent, memo, useState, VFC } from "react";
+import {
+  Box,
+  Checkbox,
+  Flex,
+  Spacer,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+} from "@chakra-ui/react";
 
+import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { AddButton } from "../../molecules/button/AddButton";
 import { MinusButton } from "../../molecules/button/MinusButton";
@@ -14,6 +25,7 @@ type Props = {
 };
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
+  const [usagePagingOffset, setUsagePagingOffset] = useState(0);
   const {
     stockUsageList,
     checkedList,
@@ -35,74 +47,93 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
     }
   };
 
+  const usagePagingDisplayNum = 10;
+  const onChangeUsagePage = (page: {selected: number}) =>
+    setUsagePagingOffset(usagePagingDisplayNum * page.selected);
+
   return (
-    <Table size="sm">
-      <Thead>
-        <Tr>
-          <Td w={{ base: "15%", md: "10%" }}>選択</Td>
-          <Td w={{ base: "25%", md: "25%" }}>食材名</Td>
-          <Td w={{ base: "15%", md: "10%" }}>残量</Td>
-          <Td w={{ base: "15%", md: "10%" }}>個数</Td>
-          <Td
-            display={{ base: "none", md: "table-cell" }}
-            w={{ base: "0%", md: "15%" }}
-          >
-            ％／1コ
-          </Td>
-          <Td w={{ base: "30%", md: "20%" }}>使用量</Td>
-          <Td
-            display={{ base: "none", md: "table-cell" }}
-            w={{ base: "0%", md: "10%" }}
-          />
-        </Tr>
-      </Thead>
-      <Tbody>
-        {stockUsageList.slice(0, 10).map((data) => (
-          <Tr key={data.id}>
-            <Td w={{ base: "15%", md: "10%" }}>
-              <Checkbox
-                isChecked={checkedList.includes(data.id)}
-                onChange={(e) => { onChangeCheckbox(e, data.id); }}
-              />
-            </Td>
-            <Td w={{ base: "25%", md: "25%" }}>{data.name}</Td>
-            <Td w={{ base: "15%", md: "10%" }}>{data.remain}<b>%</b></Td>
-            <Td w={{ base: "15%", md: "10%" }}>{data.quantity}<b>コ</b></Td>
+    <>
+      <Flex>
+        <Box className="sectionTitle" my={0}>
+          選択中食材
+        </Box>
+        <Spacer />
+        <DefaultPaging
+          displayNum={usagePagingDisplayNum}
+          dataNum={stockUsageList.length}
+          onPageChange={onChangeUsagePage}
+        />
+      </Flex>
+      <Table size="sm">
+        <Thead>
+          <Tr>
+            <Td w={{ base: "15%", md: "10%" }}>選択</Td>
+            <Td w={{ base: "25%", md: "25%" }}>食材名</Td>
+            <Td w={{ base: "15%", md: "10%" }}>残量</Td>
+            <Td w={{ base: "15%", md: "10%" }}>個数</Td>
             <Td
               display={{ base: "none", md: "table-cell" }}
               w={{ base: "0%", md: "15%" }}
             >
-              {data.per_rate}<b>%</b>
+              ％／1コ
             </Td>
-            <Td w={{ base: "30%", md: "20%" }}>
-              <Flex>
-                <DefaultNumberInput
-                  value={data.used_rate}
-                  onChange={(v) => { onChangeUsedRate(v, data.id); }}
-                  size="xs"
-                  max={data.remain}
-                  unit="%"
-                />
-              </Flex>
-            </Td>
+            <Td w={{ base: "30%", md: "20%" }}>使用量</Td>
             <Td
               display={{ base: "none", md: "table-cell" }}
               w={{ base: "0%", md: "10%" }}
-            >
-              <Flex>
-                <MinusButton
-                  size="xs"
-                  onClick={() => { onClickAddRateButton(data.id, true); }}
-                />
-                <AddButton
-                  size="xs"
-                  onClick={() => { onClickAddRateButton(data.id); }}
-                />
-              </Flex>
-            </Td>
+            />
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
+        </Thead>
+        <Tbody>
+          {stockUsageList
+            .slice(usagePagingOffset, usagePagingOffset + usagePagingDisplayNum)
+            .map((data) => (
+              <Tr key={data.id}>
+                <Td w={{ base: "15%", md: "10%" }}>
+                  <Checkbox
+                    isChecked={checkedList.includes(data.id)}
+                    onChange={(e) => { onChangeCheckbox(e, data.id); }}
+                  />
+                </Td>
+                <Td w={{ base: "25%", md: "25%" }}>{data.name}</Td>
+                <Td w={{ base: "15%", md: "10%" }}>{data.remain}<b>%</b></Td>
+                <Td w={{ base: "15%", md: "10%" }}>{data.quantity}<b>コ</b></Td>
+                <Td
+                  display={{ base: "none", md: "table-cell" }}
+                  w={{ base: "0%", md: "15%" }}
+                >
+                  {data.per_rate}<b>%</b>
+                </Td>
+                <Td w={{ base: "30%", md: "20%" }}>
+                  <Flex>
+                    <DefaultNumberInput
+                      value={data.used_rate}
+                      onChange={(v) => { onChangeUsedRate(v, data.id); }}
+                      size="xs"
+                      max={data.remain}
+                      unit="%"
+                    />
+                  </Flex>
+                </Td>
+                <Td
+                  display={{ base: "none", md: "table-cell" }}
+                  w={{ base: "0%", md: "10%" }}
+                >
+                  <Flex>
+                    <MinusButton
+                      size="xs"
+                      onClick={() => { onClickAddRateButton(data.id, true); }}
+                    />
+                    <AddButton
+                      size="xs"
+                      onClick={() => { onClickAddRateButton(data.id); }}
+                    />
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
+        </Tbody>
+      </Table>
+    </>
   );
 });

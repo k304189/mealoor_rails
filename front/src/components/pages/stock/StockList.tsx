@@ -121,7 +121,6 @@ export const StockList: VFC = memo(() => {
           h="100%"
           w={{ base: "100%", md: "40%" }}
         >
-          選択中食材
           <StockUsageTable
             stockUsageList={stockUsageList}
             checkedList={checkedList}
