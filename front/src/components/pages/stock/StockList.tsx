@@ -1,13 +1,6 @@
 import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
-import {
-  Box,
-  Flex,
-  Spacer,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
 
-import { PrimaryButton } from "../../atoms/button/PrimaryButton";
-import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockUsageTable } from "../../organisms/stock/StockUsageTable";
@@ -20,19 +13,14 @@ import { Stock } from "../../../types/api/stock";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 export const StockList: VFC = memo(() => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [stockUsageList, setStockUsageList] = useState<Array<StockUsage>>([]);
-  const [havingPagingOffset, setHavingPagingOffset] = useState(0);
   const [checkedList, setCheckedList] = useState<Array<number>>([]);
   const [stock, setStock] = useState<Stock | null>(null);
   const [loading, setLoading] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const { showMessage } = useMessage();
   const { allStocks, getHavingStock } = useStockApi();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const havingPagingDisplayNum = 20;
-  const onChangeHavingPage = (page: {selected: number}) =>
-    setHavingPagingOffset(havingPagingDisplayNum * page.selected);
 
   const onChangeCheckbox = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     const checkFlg = e.target.checked;
@@ -120,20 +108,10 @@ export const StockList: VFC = memo(() => {
           mr={{ base: 0, md: 3 }}
           mb={{ base: 3, md: 0 }}
         >
-          <Flex>
-            <PrimaryButton size="sm" onClick={() => { openEditModal(); }}>食材追加</PrimaryButton>
-            <Spacer />
-            <DefaultPaging
-              displayNum={havingPagingDisplayNum}
-              dataNum={allStocks.length}
-              onPageChange={onChangeHavingPage}
-            />
-          </Flex>
           <HavingStockTable
             havingStocks={allStocks}
             checkedList={checkedList}
-            pagingDisplayNum={havingPagingDisplayNum}
-            pagingOffset={havingPagingOffset}
+            openEditModal={openEditModal}
             onClickNameLink={onClickNameLink}
             onChangeCheckbox={onChangeCheckbox}
           />
