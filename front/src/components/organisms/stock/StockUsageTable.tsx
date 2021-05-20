@@ -17,6 +17,9 @@ import { AddButton } from "../../molecules/button/AddButton";
 import { MinusButton } from "../../molecules/button/MinusButton";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
+import { RadioUseType } from "../input/usage/RadioUseType";
+import { UseStockForm } from "./UseStockForm";
+
 type Props = {
   stockUsageList: Array<StockUsage>;
   checkedList: Array<number>;
@@ -26,6 +29,8 @@ type Props = {
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
   const [usagePagingOffset, setUsagePagingOffset] = useState(0);
+  const [useType, setUseType] = useState("");
+
   const {
     stockUsageList,
     checkedList,
@@ -134,6 +139,18 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
             ))}
         </Tbody>
       </Table>
+      <Box>
+        <Box className="sectionTitle">
+          使用フォーム
+        </Box>
+        <RadioUseType
+          useType={useType}
+          onChange={setUseType}
+        />
+        <UseStockForm
+          useType="料理"
+        />
+      </Box>
     </>
   );
 });
