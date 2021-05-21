@@ -3,8 +3,10 @@ import { Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useStockValidate } from "../../../hooks/validate/useStockValidate";
+import { useMessage } from "../../../hooks/common/useMessage";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
+import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 import { InputName } from "../input/common/InputName";
 import { DefaultInputForm } from "../input/DefaultInputForm";
@@ -15,21 +17,25 @@ import { InputNote } from "../input/common/InputNote";
 
 type Props = {
   useType: string;
+  stockUsageList: Array<StockUsage>;
+  setStockUsageList: (arr: Array<StockUsage>) => void;
 }
 
 export const UseStockForm: VFC<Props> = memo((props) => {
-  const { useType } = props;
+  const { useType, stockUsageList, setStockUsageList } = props;
   const {
     validateName,
     validateFoodCategory,
     validateNote,
   } = useCommonValidate();
   const { validateLimit } = useStockValidate();
+  const { showMessage } = useMessage();
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState("");
   const [note, setNote] = useState("");
+
   const [eatRate, setEatRate] = useState(100);
 
   const [nameInvalid, setNameInvalid] = useState(false);
@@ -76,6 +82,51 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     const { invalid, errorMsg } = validateNote(note);
     setNoteInvalid(invalid);
     setNoteError(errorMsg);
+  };
+
+  const checkStockUsageList = () => {
+    let checkFlg = false;
+    let title = "";
+    if (stockUsageList.length <= 0) {
+      title = "使用食材が選択されていません";
+      checkFlg = true;
+    } else {
+      const checkedList = stockUsageList.filter((data) => data.used_rate > 0);
+      if (checkedList.length === 0) {
+        title = "選択されている使用食材の使用量がすべて0です";
+        checkFlg = true;
+      } else {
+        setStockUsageList(checkedList);
+      }
+    }
+    return { checkFlg, title };
+  };
+
+  const onClickUseButton = () => {
+    const { checkFlg, title } = checkStockUsageList();
+    if (checkFlg) {
+      showMessage({ title, status: "error" });
+      return;
+    }
+
+    if (useType !== "料理") {
+      const { invalid, errorMsg } = validateNote(note);
+      if (invalid) {
+        showMessage({ title: errorMsg, status: "error" });
+      } else {
+        console.log("料理以外のJsonを作成する");
+      }
+    } else {
+      const nameCheck = validateName(name);
+      const categoryCheck = validateFoodCategory(category);
+      const limitCheck = validateLimit(limit);
+      const cookCheckFlg = nameCheck.invalid || categoryCheck.invalid || limitCheck.invalid;
+      if (cookCheckFlg) {
+        showMessage({ title: "料理の必須項目が不正です", status: "error" });
+      } else {
+        console.log("料理用Jsonを作成する");
+      }
+    }
   };
 
   return (
@@ -154,7 +205,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
           <Flex align="flex-end" justify="end" h="100%" mb={3}>
             <PrimaryButton
               size="sm"
-              onClick={() => {}}
+              onClick={onClickUseButton}
             >
               {useType}
             </PrimaryButton>

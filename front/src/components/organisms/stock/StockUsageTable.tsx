@@ -25,6 +25,7 @@ type Props = {
   checkedList: Array<number>;
   onChangeCheckbox: (e: ChangeEvent<HTMLInputElement>, id: number) => void;
   onChangeUsedRate: (value: number, id: number) => void;
+  setStockUsageList: (arr: Array<StockUsage>) => void;
 };
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
@@ -36,6 +37,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
     checkedList,
     onChangeCheckbox,
     onChangeUsedRate,
+    setStockUsageList,
   } = props;
 
   const onClickAddRateButton = (id: number, isMinus = false) => {
@@ -151,6 +153,8 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
         />
         <UseStockForm
           useType={useType}
+          stockUsageList={stockUsageList}
+          setStockUsageList={setStockUsageList}
         />
       </Box>
     </>

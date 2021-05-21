@@ -126,6 +126,7 @@ export const StockList: VFC = memo(() => {
             checkedList={checkedList}
             onChangeCheckbox={onChangeCheckbox}
             onChangeUsedRate={onChangeUsedRate}
+            setStockUsageList={setStockUsageList}
           />
         </Box>
       </Flex>
