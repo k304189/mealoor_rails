@@ -11,10 +11,10 @@ type Props = {
 export const RadioUseType:VFC<Props> = memo((props) => {
   const { useType = "", onChange } = props;
   const buttons = [
-    { value: "料理" },
     { value: "食事" },
     { value: "処分" },
     { value: "分割" },
+    { value: "料理" },
   ];
   return (
     <DefaultInputForm
@@ -22,7 +22,7 @@ export const RadioUseType:VFC<Props> = memo((props) => {
       require="require"
     >
       <DefaultRadio
-        defaultValue={useType}
+        value={useType}
         onChange={onChange}
         buttons={buttons}
       />

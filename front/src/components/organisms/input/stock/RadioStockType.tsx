@@ -21,7 +21,7 @@ export const RadioStockType:VFC<Props> = memo((props) => {
       require="optional"
     >
       <DefaultRadio
-        defaultValue={stockType}
+        value={stockType}
         onChange={onChange}
         buttons={buttons}
       />

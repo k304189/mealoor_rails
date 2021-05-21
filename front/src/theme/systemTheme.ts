@@ -90,15 +90,15 @@ const systemTheme = extendTheme({
         li: {
           margin: "0",
           padding: "0",
-          borderRadius: "10px",
+          borderRadius: "5px",
+          width: "24px",
+          height: "24px",
           _hover: pagenationColor,
           "&.selected": pagenationColor,
         },
         a: {
           display: "flex",
           margin: "0 2px",
-          width: "32px",
-          height: "32px",
           justifyContent: "center",
           alignItems: "center",
         },

@@ -5,20 +5,20 @@ type ButtonType = {
   value: string;
   displayValue?: string;
   color?: string;
-  isDisabled? : boolean;
+  isDisabled?: boolean;
 };
 
 type Props = {
-  defaultValue: string;
+  value: string;
   onChange: (v: string) => void;
   buttons: Array<ButtonType>
 };
 
 export const DefaultRadio: VFC<Props> = memo((props) => {
-  const { defaultValue, onChange, buttons } = props;
+  const { value, onChange, buttons } = props;
   return (
     <RadioGroup
-      value={defaultValue}
+      value={value}
       onChange={onChange}
     >
       <Stack spacing={5} direction="row">

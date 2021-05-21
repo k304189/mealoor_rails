@@ -29,7 +29,7 @@ type Props = {
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
   const [usagePagingOffset, setUsagePagingOffset] = useState(0);
-  const [useType, setUseType] = useState("");
+  const [useType, setUseType] = useState("食事");
 
   const {
     stockUsageList,
@@ -52,94 +52,96 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
     }
   };
 
-  const usagePagingDisplayNum = 10;
+  const usagePagingDisplayNum = 5;
   const onChangeUsagePage = (page: {selected: number}) =>
     setUsagePagingOffset(usagePagingDisplayNum * page.selected);
 
   return (
     <>
-      <Flex>
-        <Box className="sectionTitle" my={0}>
-          選択中食材
-        </Box>
-        <Spacer />
-        <DefaultPaging
-          displayNum={usagePagingDisplayNum}
-          dataNum={stockUsageList.length}
-          onPageChange={onChangeUsagePage}
-        />
-      </Flex>
-      <Table size="sm">
-        <Thead>
-          <Tr>
-            <Td w={{ base: "15%", md: "10%" }}>選択</Td>
-            <Td w={{ base: "25%", md: "25%" }}>食材名</Td>
-            <Td w={{ base: "15%", md: "10%" }}>残量</Td>
-            <Td w={{ base: "15%", md: "10%" }}>個数</Td>
-            <Td
-              display={{ base: "none", md: "table-cell" }}
-              w={{ base: "0%", md: "15%" }}
-            >
-              ％／1コ
-            </Td>
-            <Td w={{ base: "30%", md: "20%" }}>使用量</Td>
-            <Td
-              display={{ base: "none", md: "table-cell" }}
-              w={{ base: "0%", md: "10%" }}
-            />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {stockUsageList
-            .slice(usagePagingOffset, usagePagingOffset + usagePagingDisplayNum)
-            .map((data) => (
-              <Tr key={data.id}>
-                <Td w={{ base: "15%", md: "10%" }}>
-                  <Checkbox
-                    isChecked={checkedList.includes(data.id)}
-                    onChange={(e) => { onChangeCheckbox(e, data.id); }}
-                  />
-                </Td>
-                <Td w={{ base: "25%", md: "25%" }}>{data.name}</Td>
-                <Td w={{ base: "15%", md: "10%" }}>{data.remain}<b>%</b></Td>
-                <Td w={{ base: "15%", md: "10%" }}>{data.quantity}<b>コ</b></Td>
-                <Td
-                  display={{ base: "none", md: "table-cell" }}
-                  w={{ base: "0%", md: "15%" }}
-                >
-                  {data.per_rate}<b>%</b>
-                </Td>
-                <Td w={{ base: "30%", md: "20%" }}>
-                  <Flex>
-                    <DefaultNumberInput
-                      value={data.used_rate}
-                      onChange={(v) => { onChangeUsedRate(v, data.id); }}
-                      size="xs"
-                      max={data.remain}
-                      unit="%"
+      <Box h="50%">
+        <Flex>
+          <Box className="sectionTitle" my={0}>
+            選択中食材
+          </Box>
+          <Spacer />
+          <DefaultPaging
+            displayNum={usagePagingDisplayNum}
+            dataNum={stockUsageList.length}
+            onPageChange={onChangeUsagePage}
+          />
+        </Flex>
+        <Table size="sm">
+          <Thead>
+            <Tr>
+              <Td w={{ base: "15%", md: "8%" }} />
+              <Td w={{ base: "25%", md: "21%" }}>食材名</Td>
+              <Td w={{ base: "15%", md: "12%" }}>残量</Td>
+              <Td w={{ base: "15%", md: "12%" }}>個数</Td>
+              <Td
+                display={{ base: "none", md: "table-cell" }}
+                w={{ base: "0%", md: "17%" }}
+              >
+                ％／1コ
+              </Td>
+              <Td w={{ base: "30%", md: "20%" }}>使用量</Td>
+              <Td
+                display={{ base: "none", md: "table-cell" }}
+                w={{ base: "0%", md: "10%" }}
+              />
+            </Tr>
+          </Thead>
+          <Tbody>
+            {stockUsageList
+              .slice(usagePagingOffset, usagePagingOffset + usagePagingDisplayNum)
+              .map((data) => (
+                <Tr key={data.id}>
+                  <Td w={{ base: "15%", md: "8%" }}>
+                    <Checkbox
+                      isChecked={checkedList.includes(data.id)}
+                      onChange={(e) => { onChangeCheckbox(e, data.id); }}
                     />
-                  </Flex>
-                </Td>
-                <Td
-                  display={{ base: "none", md: "table-cell" }}
-                  w={{ base: "0%", md: "10%" }}
-                >
-                  <Flex>
-                    <MinusButton
-                      size="xs"
-                      onClick={() => { onClickAddRateButton(data.id, true); }}
-                    />
-                    <AddButton
-                      size="xs"
-                      onClick={() => { onClickAddRateButton(data.id); }}
-                    />
-                  </Flex>
-                </Td>
-              </Tr>
-            ))}
-        </Tbody>
-      </Table>
-      <Box>
+                  </Td>
+                  <Td w={{ base: "25%", md: "20%" }}>{data.name}</Td>
+                  <Td w={{ base: "15%", md: "12%" }}>{data.remain}<b>%</b></Td>
+                  <Td w={{ base: "15%", md: "13%" }}>{data.quantity}<b>コ</b></Td>
+                  <Td
+                    display={{ base: "none", md: "table-cell" }}
+                    w={{ base: "0%", md: "17%" }}
+                  >
+                    {data.per_rate}<b>%</b>
+                  </Td>
+                  <Td w={{ base: "30%", md: "22%" }}>
+                    <Flex>
+                      <DefaultNumberInput
+                        value={data.used_rate}
+                        onChange={(v) => { onChangeUsedRate(v, data.id); }}
+                        size="xs"
+                        max={data.remain}
+                        unit="%"
+                      />
+                    </Flex>
+                  </Td>
+                  <Td
+                    display={{ base: "none", md: "table-cell" }}
+                    w={{ base: "0%", md: "8%" }}
+                  >
+                    <Flex>
+                      <MinusButton
+                        size="xs"
+                        onClick={() => { onClickAddRateButton(data.id, true); }}
+                      />
+                      <AddButton
+                        size="xs"
+                        onClick={() => { onClickAddRateButton(data.id); }}
+                      />
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
+          </Tbody>
+        </Table>
+      </Box>
+      <Box h="50%">
         <Box className="sectionTitle">
           使用フォーム
         </Box>
@@ -148,7 +150,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
           onChange={setUseType}
         />
         <UseStockForm
-          useType="料理"
+          useType={useType}
         />
       </Box>
     </>

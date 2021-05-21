@@ -47,6 +47,7 @@ export const DefaultNumberInput: VFC<Props> = memo((props) => {
         <NumberInputField
           type="number"
           textAlign="right"
+          pr={4}
         />
       </NumberInput>
       { unit
