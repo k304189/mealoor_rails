@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_16_061749) do
+ActiveRecord::Schema.define(version: 2021_05_22_075551) do
 
   create_table "seasonal_foods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -43,6 +43,19 @@ ActiveRecord::Schema.define(version: 2021_05_16_061749) do
     t.index ["user_id"], name: "index_stocks_on_user_id"
   end
 
+  create_table "usages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "stock_id"
+    t.bigint "cook_id"
+    t.date "use_date", null: false
+    t.string "use_type", null: false
+    t.integer "use_rate", null: false
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cook_id"], name: "index_usages_on_cook_id"
+    t.index ["stock_id"], name: "index_usages_on_stock_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -69,4 +82,6 @@ ActiveRecord::Schema.define(version: 2021_05_16_061749) do
   end
 
   add_foreign_key "stocks", "users"
+  add_foreign_key "usages", "stocks"
+  add_foreign_key "usages", "stocks", column: "cook_id"
 end

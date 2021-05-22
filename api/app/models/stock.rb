@@ -1,5 +1,7 @@
 class Stock < ApplicationRecord
   belongs_to :user
+  has_many :stock_usages, class_name: 'Usage', :foreign_key => 'stock_id'
+  has_many :cook_usages, class_name: 'Usage', :foreign_key => 'cook_id'
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 30 }
   validates :category, presence: true, length: { maximum: 30 }
