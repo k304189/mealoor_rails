@@ -4,6 +4,7 @@ import { Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useStockValidate } from "../../../hooks/validate/useStockValidate";
 import { useMessage } from "../../../hooks/common/useMessage";
+import { useStockApi } from "../../../hooks/stock/useStockApi";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
@@ -17,18 +18,20 @@ import { InputNote } from "../input/common/InputNote";
 
 type Props = {
   useType: string;
+  useDate: string;
   stockUsageList: Array<StockUsage>;
   setStockUsageList: (arr: Array<StockUsage>) => void;
 }
 
 export const UseStockForm: VFC<Props> = memo((props) => {
-  const { useType, stockUsageList, setStockUsageList } = props;
+  const { useType, useDate, stockUsageList, setStockUsageList } = props;
   const {
     validateName,
     validateFoodCategory,
     validateNote,
   } = useCommonValidate();
   const { validateLimit } = useStockValidate();
+  const { disposeStock } = useStockApi();
   const { showMessage } = useMessage();
 
   const [name, setName] = useState("");
@@ -84,22 +87,30 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     setNoteError(errorMsg);
   };
 
+  const getUseStockList = () => {
+    return stockUsageList.map((data) => {
+      return { id: data.id, use_rate: data.use_rate };
+    });
+  };
+
   const getUsageApiData = () => {
     return {
-      note,
       use_type: useType,
-      usages: stockUsageList,
+      use_date: useDate,
+      note,
+      use_stocks: getUseStockList(),
     };
   };
 
   const getCookUsageApiData = () => {
     return {
-      name,
-      category,
-      limit,
       use_type: useType,
+      use_date: useDate,
+      cook_name: name,
+      cook_category: category,
+      limit,
       eat_rate: eatRate,
-      usages: stockUsageList,
+      use_stocks: getUseStockList(),
     };
   };
 
@@ -110,7 +121,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
       title = "使用食材が選択されていません";
       checkFlg = true;
     } else {
-      const checkedList = stockUsageList.filter((data) => data.used_rate > 0);
+      const checkedList = stockUsageList.filter((data) => data.use_rate > 0);
       if (checkedList.length === 0) {
         title = "選択されている使用食材の使用量がすべて0です";
         checkFlg = true;
@@ -133,7 +144,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
       if (invalid) {
         showMessage({ title: errorMsg, status: "error" });
       } else {
-        console.log(getUsageApiData());
+        disposeStock(getUsageApiData());
       }
     } else {
       const nameCheck = validateName(name);
@@ -164,6 +175,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                 invalid={nameInvalid}
                 error={nameError}
                 onBlur={onBlurName}
+                size="sm"
               />
             </GridItem>
             <GridItem colSpan={{ base: 6, md: 2 }}>
@@ -173,6 +185,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                 invalid={categoryInvalid}
                 error={categoryError}
                 onBlur={onBlurCategory}
+                size="sm"
               />
             </GridItem>
             <GridItem colSpan={{ base: 2, md: 2 }}>
@@ -182,9 +195,10 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                 invalid={limitInvalid}
                 error={limitError}
                 onBlur={onBlurLimit}
+                size="sm"
               />
             </GridItem>
-            <GridItem colSpan={{ base: 2, md: 3 }}>
+            <GridItem colSpan={{ base: 2, md: 2 }}>
               <Flex h="100%">
                 <DefaultInputForm
                   label="食事量"
@@ -194,6 +208,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                     onChange={setEatRate}
                     max={100}
                     unit="%"
+                    size="sm"
                   />
                 </DefaultInputForm>
                 <Flex align="center" h="100%" ms={1}>
@@ -217,6 +232,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
               invalid={noteInvalid}
               error={noteError}
               onBlur={onBlurNote}
+              size="sm"
             />
           </GridItem>
         )}

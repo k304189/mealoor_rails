@@ -3,6 +3,8 @@ import {
   Box,
   Checkbox,
   Flex,
+  Grid,
+  GridItem,
   Spacer,
   Table,
   Thead,
@@ -12,9 +14,11 @@ import {
 } from "@chakra-ui/react";
 
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
+import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { AddButton } from "../../molecules/button/AddButton";
 import { MinusButton } from "../../molecules/button/MinusButton";
+import { DefaultInputForm } from "../input/DefaultInputForm";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 import { RadioUseType } from "../input/usage/RadioUseType";
@@ -31,6 +35,7 @@ type Props = {
 export const StockUsageTable: VFC<Props> = memo((props) => {
   const [usagePagingOffset, setUsagePagingOffset] = useState(0);
   const [useType, setUseType] = useState("食事");
+  const [useDate, setUseDate] = useState("");
 
   const {
     stockUsageList,
@@ -40,11 +45,14 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
     setStockUsageList,
   } = props;
 
+  const onChangeUseDate = (e: ChangeEvent<HTMLInputElement>) =>
+    setUseDate(e.target.value);
+
   const onClickAddRateButton = (id: number, isMinus = false) => {
     const index = stockUsageList.findIndex((data) => data.id === id);
     if (index > -1) {
       const { remain, per_rate } = stockUsageList[index];
-      let usedRate = stockUsageList[index].used_rate;
+      let usedRate = stockUsageList[index].use_rate;
       if (isMinus) {
         usedRate = ((usedRate - per_rate * 2) > 0) ? usedRate - per_rate : 0;
       } else {
@@ -115,7 +123,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
                   <Td w={{ base: "30%", md: "22%" }}>
                     <Flex>
                       <DefaultNumberInput
-                        value={data.used_rate}
+                        value={data.use_rate}
                         onChange={(v) => { onChangeUsedRate(v, data.id); }}
                         size="xs"
                         max={data.remain}
@@ -147,12 +155,34 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
         <Box className="sectionTitle">
           使用フォーム
         </Box>
-        <RadioUseType
-          useType={useType}
-          onChange={setUseType}
-        />
+        <Grid
+          templateRows="repeat(1, 1fr)"
+          templateColumns="repeat(6, 1fr)"
+        >
+          <GridItem colSpan={4}>
+            <RadioUseType
+              useType={useType}
+              onChange={setUseType}
+              size="sm"
+            />
+          </GridItem>
+          <GridItem colSpan={2}>
+            <DefaultInputForm
+              require="require"
+              label="使用日"
+            >
+              <DefaultInput
+                value={useDate}
+                onChange={onChangeUseDate}
+                size="sm"
+                type="date"
+              />
+            </DefaultInputForm>
+          </GridItem>
+        </Grid>
         <UseStockForm
           useType={useType}
+          useDate={useDate}
           stockUsageList={stockUsageList}
           setStockUsageList={setStockUsageList}
         />

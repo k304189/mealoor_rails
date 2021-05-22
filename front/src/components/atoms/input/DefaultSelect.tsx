@@ -9,6 +9,7 @@ type optionType = {
 type Props = {
   selectedValue?: string | number;
   focusBorderColor?: string;
+  size?: "xs" | "sm" | "md" | "lg";
   optionList: Array<optionType>;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   onBlur?: () => void;
@@ -18,6 +19,7 @@ export const DefaultSelect: VFC<Props> = memo((props) => {
   const {
     selectedValue = "",
     focusBorderColor = "#7FDC96",
+    size = "md",
     optionList,
     onChange,
     onBlur = () => {},
@@ -29,6 +31,7 @@ export const DefaultSelect: VFC<Props> = memo((props) => {
       focusBorderColor={focusBorderColor}
       onChange={onChange}
       onBlur={onBlur}
+      size={size}
     >
       <option aria-label="Select" value="" />
       {optionList.map((data) => (

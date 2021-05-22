@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 
 import { Stock } from "../../types/api/stock";
+import { Usage } from "../../types/api/usage";
 import { useRequestHeader } from "../user/useRequestHeader";
 
 type returnType = {
@@ -9,6 +10,7 @@ type returnType = {
   addStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
   getHavingStock: () => Promise<number>;
   editStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
+  disposeStock: (usage: Usage) => Promise<number>;
 };
 
 export const useStockApi = (): returnType => {
@@ -51,5 +53,16 @@ export const useStockApi = (): returnType => {
       return response.status;
     }, [],
   );
-  return { allStocks, addStock, getHavingStock, editStock };
+
+  const disposeStock = useCallback(
+    async (usage: Usage) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/stocks/dispose`;
+      const json = {
+        usage,
+      };
+      const response = await axios.post(url, json, { headers: getRequestHeader() });
+      return response.status;
+    }, [],
+  );
+  return { allStocks, addStock, getHavingStock, editStock, disposeStock };
 };

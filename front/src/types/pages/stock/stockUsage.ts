@@ -4,5 +4,5 @@ export type StockUsage = {
   remain: number;
   quantity: number;
   per_rate: number;
-  used_rate: number;
+  use_rate: number;
 };

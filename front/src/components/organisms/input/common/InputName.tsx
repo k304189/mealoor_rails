@@ -8,11 +8,12 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   invalid: boolean;
   error: string;
+  size?: "xs" | "sm" | "md" | "lg";
   onBlur: () => void
 };
 
 export const InputName: VFC<Props> = memo((props) => {
-  const { name, onChange, invalid, error, onBlur } = props;
+  const { name, onChange, invalid, error, size = "md", onBlur } = props;
 
   return (
     <DefaultInputForm
@@ -25,6 +26,7 @@ export const InputName: VFC<Props> = memo((props) => {
         value={name}
         onChange={onChange}
         onBlur={onBlur}
+        size={size}
       />
     </DefaultInputForm>
   );

@@ -12,10 +12,11 @@ type Props = {
   value: string;
   onChange: (v: string) => void;
   buttons: Array<ButtonType>
+  size?: "sm" | "md" | "lg";
 };
 
 export const DefaultRadio: VFC<Props> = memo((props) => {
-  const { value, onChange, buttons } = props;
+  const { value, onChange, buttons, size = "md" } = props;
   return (
     <RadioGroup
       value={value}
@@ -29,6 +30,7 @@ export const DefaultRadio: VFC<Props> = memo((props) => {
               value={data.value}
               colorScheme={data.color || "green"}
               isDisabled={data.isDisabled || false}
+              size={size}
             >
               {data.displayValue || data.value}
             </Radio>

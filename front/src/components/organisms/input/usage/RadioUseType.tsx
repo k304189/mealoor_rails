@@ -5,11 +5,12 @@ import { DefaultInputForm } from "../DefaultInputForm";
 
 type Props = {
   useType? : string;
+  size? : "sm" | "md" | "lg";
   onChange: (v: string) => void;
 };
 
 export const RadioUseType:VFC<Props> = memo((props) => {
-  const { useType = "", onChange } = props;
+  const { useType = "", size = "md", onChange } = props;
   const buttons = [
     { value: "食事" },
     { value: "処分" },
@@ -25,6 +26,7 @@ export const RadioUseType:VFC<Props> = memo((props) => {
         value={useType}
         onChange={onChange}
         buttons={buttons}
+        size={size}
       />
     </DefaultInputForm>
   );

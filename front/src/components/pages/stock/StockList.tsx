@@ -33,8 +33,8 @@ export const StockList: VFC = memo(() => {
           name,
           remain,
           quantity,
-          per_rate: Math.floor(remain / quantity),
-          used_rate: 0,
+          per_rate: Math.floor(100 / quantity),
+          use_rate: 0,
         };
         setStockUsageList([...stockUsageList, addStockUsage]);
         setCheckedList([...checkedList, id]);
@@ -57,7 +57,7 @@ export const StockList: VFC = memo(() => {
     const index = stockUsageList.findIndex((data) => data.id === id);
     if (index > -1) {
       const stockUsage = stockUsageList[index];
-      stockUsage.used_rate = value;
+      stockUsage.use_rate = value;
       stockUsageList.splice(index, 1, stockUsage);
       setStockUsageList([...stockUsageList]);
     }

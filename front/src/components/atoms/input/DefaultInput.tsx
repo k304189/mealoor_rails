@@ -4,6 +4,7 @@ import { Input } from "@chakra-ui/react";
 type Props = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  size?: "xs" | "sm" | "md" | "lg";
   type?: string;
   placeholder?: string;
   focusBorderColor?: string;
@@ -16,6 +17,7 @@ export const DefaultInput: VFC<Props> = memo((props) => {
     placeholder = "",
     type = "text",
     focusBorderColor = "#7FDC96",
+    size = "md",
     onBlur = () => {},
   } = props;
 
@@ -27,6 +29,7 @@ export const DefaultInput: VFC<Props> = memo((props) => {
       placeholder={placeholder}
       focusBorderColor={focusBorderColor}
       onBlur={onBlur}
+      size={size}
       variant="flushed"
     />
   );
