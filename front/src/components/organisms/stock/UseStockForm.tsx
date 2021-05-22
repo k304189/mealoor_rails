@@ -84,6 +84,25 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     setNoteError(errorMsg);
   };
 
+  const getUsageApiData = () => {
+    return {
+      note,
+      use_type: useType,
+      usages: stockUsageList,
+    };
+  };
+
+  const getCookUsageApiData = () => {
+    return {
+      name,
+      category,
+      limit,
+      use_type: useType,
+      eat_rate: eatRate,
+      usages: stockUsageList,
+    };
+  };
+
   const checkStockUsageList = () => {
     let checkFlg = false;
     let title = "";
@@ -114,7 +133,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
       if (invalid) {
         showMessage({ title: errorMsg, status: "error" });
       } else {
-        console.log("料理以外のJsonを作成する");
+        console.log(getUsageApiData());
       }
     } else {
       const nameCheck = validateName(name);
@@ -124,7 +143,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
       if (cookCheckFlg) {
         showMessage({ title: "料理の必須項目が不正です", status: "error" });
       } else {
-        console.log("料理用Jsonを作成する");
+        console.log(getCookUsageApiData());
       }
     }
   };
