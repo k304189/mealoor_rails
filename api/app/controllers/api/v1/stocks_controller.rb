@@ -26,7 +26,7 @@ class Api::V1::StocksController < ApplicationController
     ActiveRecord::Base.transaction do
       use_stocks = create_usage
     end
-    puts use_stocks
+    render json: use_stocks
   end
 
   private
@@ -42,6 +42,7 @@ class Api::V1::StocksController < ApplicationController
                               .permit(:use_type, :use_date, :note,
                                       use_stocks: [:id, :use_rate])
       use_stocks = use_stocks_param[:use_stocks]
+      stocks = []
       for use_stock in use_stocks do
         stock = current_user.stocks.find(use_stock[:id])
         usage = stock.stock_usages.new
@@ -52,8 +53,9 @@ class Api::V1::StocksController < ApplicationController
 
         stock.remain -= use_stock[:use_rate]
         stock.save!
+        stocks.push(stock)
         usage.save!
       end
-      return use_stocks
+      return stocks
     end
 end

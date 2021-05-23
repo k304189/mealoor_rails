@@ -14,7 +14,7 @@ export const useCommonValidate = (): returnType => {
     let errorMsg = "";
     if (name === "") {
       invalid = true;
-      errorMsg = "必須項目です。入力してください";
+      errorMsg = "名前は必須項目です";
     } else if (name.length > allowNameLength) {
       invalid = true;
       errorMsg = `名前は${allowNameLength}文字までです`;
@@ -27,7 +27,7 @@ export const useCommonValidate = (): returnType => {
     let errorMsg = "";
     if (category === "") {
       invalid = true;
-      errorMsg = "必須項目です。入力してください";
+      errorMsg = "カテゴリーは必須項目です";
     }
     return { invalid, errorMsg };
   }, []);

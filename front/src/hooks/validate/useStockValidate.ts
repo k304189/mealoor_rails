@@ -10,7 +10,7 @@ export const useStockValidate = (): returnType => {
     let errorMsg = "";
     if (limit === "") {
       invalid = true;
-      errorMsg = "必須項目です。入力してください";
+      errorMsg = "賞味期限は必須項目です";
     }
     return { invalid, errorMsg };
   }, []);

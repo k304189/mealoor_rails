@@ -18,6 +18,7 @@ type Props = {
   headerTitle?: string;
   noButtonTitle?: string;
   yesButtonTitle?: string;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full" | "xs" | "3xl" | "4xl" | "5xl" | "6xl";
   onClose: () => void;
   onClick: () => void;
 };
@@ -30,6 +31,7 @@ export const DefaultDialog: VFC<Props> = memo((props) => {
     headerTitle = "",
     noButtonTitle = "いいえ",
     yesButtonTitle = "はい",
+    size = "md",
     onClose,
     onClick,
   } = props;
@@ -40,6 +42,7 @@ export const DefaultDialog: VFC<Props> = memo((props) => {
       leastDestructiveRef={cancelRef}
       onClose={onClose}
       isOpen={isOpen}
+      size={size}
       isCentered
     >
       <AlertDialogOverlay />

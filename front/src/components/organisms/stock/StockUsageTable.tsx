@@ -3,8 +3,6 @@ import {
   Box,
   Checkbox,
   Flex,
-  Grid,
-  GridItem,
   Spacer,
   Table,
   Thead,
@@ -13,40 +11,37 @@ import {
   Td,
 } from "@chakra-ui/react";
 
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
-import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { AddButton } from "../../molecules/button/AddButton";
 import { MinusButton } from "../../molecules/button/MinusButton";
-import { DefaultInputForm } from "../input/DefaultInputForm";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 import { RadioUseType } from "../input/usage/RadioUseType";
-import { UseStockForm } from "./UseStockForm";
 
 type Props = {
   stockUsageList: Array<StockUsage>;
   checkedList: Array<number>;
+  useType: string;
+  setUseType: (v: string) => void;
   onChangeCheckbox: (e: ChangeEvent<HTMLInputElement>, id: number) => void;
   onChangeUsedRate: (value: number, id: number) => void;
-  setStockUsageList: (arr: Array<StockUsage>) => void;
+  onClickUseButton: () => void;
 };
 
 export const StockUsageTable: VFC<Props> = memo((props) => {
   const [usagePagingOffset, setUsagePagingOffset] = useState(0);
-  const [useType, setUseType] = useState("食事");
-  const [useDate, setUseDate] = useState("");
 
   const {
     stockUsageList,
     checkedList,
+    useType,
+    setUseType,
     onChangeCheckbox,
     onChangeUsedRate,
-    setStockUsageList,
+    onClickUseButton,
   } = props;
-
-  const onChangeUseDate = (e: ChangeEvent<HTMLInputElement>) =>
-    setUseDate(e.target.value);
 
   const onClickAddRateButton = (id: number, isMinus = false) => {
     const index = stockUsageList.findIndex((data) => data.id === id);
@@ -62,7 +57,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
     }
   };
 
-  const usagePagingDisplayNum = 5;
+  const usagePagingDisplayNum = 10;
   const onChangeUsagePage = (page: {selected: number}) =>
     setUsagePagingOffset(usagePagingDisplayNum * page.selected);
 
@@ -150,42 +145,12 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
               ))}
           </Tbody>
         </Table>
-      </Box>
-      <Box h="50%">
-        <Box className="sectionTitle">
-          使用フォーム
-        </Box>
-        <Grid
-          templateRows="repeat(1, 1fr)"
-          templateColumns="repeat(6, 1fr)"
-        >
-          <GridItem colSpan={4}>
-            <RadioUseType
-              useType={useType}
-              onChange={setUseType}
-              size="sm"
-            />
-          </GridItem>
-          <GridItem colSpan={2}>
-            <DefaultInputForm
-              require="require"
-              label="使用日"
-            >
-              <DefaultInput
-                value={useDate}
-                onChange={onChangeUseDate}
-                size="sm"
-                type="date"
-              />
-            </DefaultInputForm>
-          </GridItem>
-        </Grid>
-        <UseStockForm
-          useType={useType}
-          useDate={useDate}
-          stockUsageList={stockUsageList}
-          setStockUsageList={setStockUsageList}
-        />
+        <Flex mt={5} align="end">
+          <RadioUseType useType={useType} onChange={setUseType} />
+          <PrimaryButton onClick={onClickUseButton}>
+            {useType}
+          </PrimaryButton>
+        </Flex>
       </Box>
     </>
   );

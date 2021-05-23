@@ -10,7 +10,7 @@ type returnType = {
   addStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
   getHavingStock: () => Promise<number>;
   editStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
-  disposeStock: (usage: Usage) => Promise<number>;
+  useStock: (stocks: Array<Stock>, usage: Usage, useType: string) => Promise<number>;
 };
 
 export const useStockApi = (): returnType => {
@@ -54,15 +54,29 @@ export const useStockApi = (): returnType => {
     }, [],
   );
 
-  const disposeStock = useCallback(
-    async (usage: Usage) => {
-      const url = `${process.env.REACT_APP_API_V1_URL}/stocks/dispose`;
+  const useStock = useCallback(
+    async (stocks: Array<Stock>, usage: Usage, useType: string) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/stocks/${useType}`;
       const json = {
         usage,
       };
       const response = await axios.post(url, json, { headers: getRequestHeader() });
+      const tempStocks = stocks;
+      response.data.forEach((target: Stock) => {
+        const index = tempStocks.findIndex((stock) => target.id === stock.id);
+        const checkRemain = target?.remain ?? -1;
+        if (index > -1 && checkRemain !== -1) {
+          if (checkRemain > 0) {
+            tempStocks[index] = target;
+          } else {
+            tempStocks.splice(index, 1);
+          }
+        } else {
+          tempStocks.push(target);
+        }
+      });
       return response.status;
     }, [],
   );
-  return { allStocks, addStock, getHavingStock, editStock, disposeStock };
+  return { allStocks, addStock, getHavingStock, editStock, useStock };
 };

@@ -5,6 +5,7 @@ import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockUsageTable } from "../../organisms/stock/StockUsageTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
+import { UseStockForm } from "../../organisms/stock/UseStockForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 import { useMessage } from "../../../hooks/common/useMessage";
@@ -14,11 +15,13 @@ import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
 export const StockList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [useDialogIsOpen, setUseDialogIsOpen] = useState(false);
   const [stockUsageList, setStockUsageList] = useState<Array<StockUsage>>([]);
   const [checkedList, setCheckedList] = useState<Array<number>>([]);
   const [stock, setStock] = useState<Stock | null>(null);
   const [loading, setLoading] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const [useType, setUseType] = useState("食事");
   const { showMessage } = useMessage();
   const { allStocks, getHavingStock } = useStockApi();
 
@@ -87,6 +90,26 @@ export const StockList: VFC = memo(() => {
     openEditModal(editMode);
   };
 
+  const onClickUseButton = () => {
+    let title = "";
+    if (stockUsageList.length <= 0) {
+      title = "使用食材が選択されていません";
+    } else {
+      const useRate0List = stockUsageList.filter((data) => data.use_rate > 0);
+      if (useRate0List.length === 0) {
+        title = "選択されている使用食材の使用量がすべて0です";
+      } else {
+        setStockUsageList([...useRate0List]);
+        setCheckedList([...useRate0List.map((data) => { return data.id; })]);
+      }
+    }
+    if (title) {
+      showMessage({ title, status: "error" });
+    } else {
+      setUseDialogIsOpen(true);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     getHavingStock()
@@ -124,9 +147,11 @@ export const StockList: VFC = memo(() => {
           <StockUsageTable
             stockUsageList={stockUsageList}
             checkedList={checkedList}
+            useType={useType}
+            setUseType={setUseType}
             onChangeCheckbox={onChangeCheckbox}
             onChangeUsedRate={onChangeUsedRate}
-            setStockUsageList={setStockUsageList}
+            onClickUseButton={onClickUseButton}
           />
         </Box>
       </Flex>
@@ -137,6 +162,18 @@ export const StockList: VFC = memo(() => {
         size="4xl"
       >
         <StockEditForm allStocks={allStocks} stock={stock} />
+      </DefaultModal>
+      <DefaultModal
+        isOpen={useDialogIsOpen}
+        onClose={() => { setUseDialogIsOpen(false); }}
+        modalTitle={`${useType}確認`}
+        size="3xl"
+      >
+        <UseStockForm
+          allStocks={allStocks}
+          useType={useType}
+          stockUsageList={stockUsageList}
+        />
       </DefaultModal>
     </SigninHeaderLayout>
   );

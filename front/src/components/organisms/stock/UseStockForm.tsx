@@ -1,37 +1,38 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
-import { Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useStockValidate } from "../../../hooks/validate/useStockValidate";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useStockApi } from "../../../hooks/stock/useStockApi";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
-import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
+import { Stock } from "../../../types/api/stock";
+import { Usage } from "../../../types/api/usage";
 
 import { InputName } from "../input/common/InputName";
+import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { DefaultInputForm } from "../input/DefaultInputForm";
-import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
 import { InputLimit } from "../input/stock/InputLimit";
 import { InputNote } from "../input/common/InputNote";
+import { RadioEatTiming } from "../input/common/RadioEatTiming";
 
 type Props = {
   useType: string;
-  useDate: string;
+  allStocks: Array<Stock>;
   stockUsageList: Array<StockUsage>;
-  setStockUsageList: (arr: Array<StockUsage>) => void;
 }
 
 export const UseStockForm: VFC<Props> = memo((props) => {
-  const { useType, useDate, stockUsageList, setStockUsageList } = props;
+  const { useType, allStocks, stockUsageList } = props;
   const {
     validateName,
     validateFoodCategory,
     validateNote,
   } = useCommonValidate();
   const { validateLimit } = useStockValidate();
-  const { disposeStock } = useStockApi();
+  const { useStock } = useStockApi();
   const { showMessage } = useMessage();
 
   const [name, setName] = useState("");
@@ -39,17 +40,22 @@ export const UseStockForm: VFC<Props> = memo((props) => {
   const [limit, setLimit] = useState("");
   const [note, setNote] = useState("");
 
-  const [eatRate, setEatRate] = useState(100);
+  const [useDate, setUseDate] = useState("");
+  const [eatTiming, setEatTiming] = useState("朝食");
+  const [useUrl, setUseUrl] = useState("");
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const [nameInvalid, setNameInvalid] = useState(false);
   const [categoryInvalid, setCategoryInvalid] = useState(false);
   const [limitInvalid, setLimitInvalid] = useState(false);
   const [noteInvalid, setNoteInvalid] = useState(false);
+  const [useDateInvalid, setUseDateInvalid] = useState(false);
 
   const [nameError, setNameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [limitError, setLimitError] = useState("");
   const [noteError, setNoteError] = useState("");
+  const [useDateError, setUseDateError] = useState("");
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -62,6 +68,9 @@ export const UseStockForm: VFC<Props> = memo((props) => {
 
   const onChangeNote = (e: ChangeEvent<HTMLInputElement>) =>
     setNote(e.target.value);
+
+  const onChangeUseDate = (e: ChangeEvent<HTMLInputElement>) =>
+    setUseDate(e.target.value);
 
   const onBlurName = () => {
     const { invalid, errorMsg } = validateName(name);
@@ -87,6 +96,17 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     setNoteError(errorMsg);
   };
 
+  const onBlurUseDate = () => {
+    let msg = "";
+    let invalid = false;
+    if (useDate === "") {
+      msg = "使用日は必須項目です";
+      invalid = true;
+    }
+    setUseDateInvalid(invalid);
+    setUseDateError(msg);
+  };
+
   const getUseStockList = () => {
     return stockUsageList.map((data) => {
       return { id: data.id, use_rate: data.use_rate };
@@ -102,70 +122,123 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     };
   };
 
-  const getCookUsageApiData = () => {
-    return {
-      use_type: useType,
-      use_date: useDate,
-      cook_name: name,
-      cook_category: category,
-      limit,
-      eat_rate: eatRate,
-      use_stocks: getUseStockList(),
-    };
-  };
-
-  const checkStockUsageList = () => {
-    let checkFlg = false;
-    let title = "";
-    if (stockUsageList.length <= 0) {
-      title = "使用食材が選択されていません";
-      checkFlg = true;
-    } else {
-      const checkedList = stockUsageList.filter((data) => data.use_rate > 0);
-      if (checkedList.length === 0) {
-        title = "選択されている使用食材の使用量がすべて0です";
-        checkFlg = true;
-      } else {
-        setStockUsageList(checkedList);
+  const validateUse = () => {
+    let isError = false;
+    onBlurUseDate();
+    if (useDateInvalid) {
+      showMessage({ title: useDateError, status: "error" });
+      isError = true;
+    }
+    onBlurNote();
+    if (noteInvalid) {
+      showMessage({ title: noteError, status: "error" });
+      isError = true;
+    }
+    if (useType === "料理") {
+      onBlurName();
+      if (nameInvalid) {
+        showMessage({ title: nameError, status: "error" });
+        isError = true;
+      }
+      onBlurCategory();
+      if (categoryInvalid) {
+        showMessage({ title: categoryError, status: "error" });
+        isError = true;
+      }
+      onBlurLimit();
+      if (limitInvalid) {
+        showMessage({ title: limitError, status: "error" });
+        isError = true;
       }
     }
-    return { checkFlg, title };
+    return isError;
   };
 
   const onClickUseButton = () => {
-    const { checkFlg, title } = checkStockUsageList();
-    if (checkFlg) {
-      showMessage({ title, status: "error" });
+    const usage: Usage = getUsageApiData();
+    const validateFlg = validateUse();
+    if (validateFlg) {
       return;
     }
-
-    if (useType !== "料理") {
-      const { invalid, errorMsg } = validateNote(note);
-      if (invalid) {
-        showMessage({ title: errorMsg, status: "error" });
-      } else {
-        disposeStock(getUsageApiData());
-      }
-    } else {
-      const nameCheck = validateName(name);
-      const categoryCheck = validateFoodCategory(category);
-      const limitCheck = validateLimit(limit);
-      const cookCheckFlg = nameCheck.invalid || categoryCheck.invalid || limitCheck.invalid;
-      if (cookCheckFlg) {
-        showMessage({ title: "料理の必須項目が不正です", status: "error" });
-      } else {
-        console.log(getCookUsageApiData());
-      }
+    if (useType === "食事") {
+      usage.eat_timing = eatTiming;
+    } else if (useType === "料理") {
+      usage.cook_name = name;
+      usage.cook_category = category;
+      usage.limit = limit;
     }
+    useStock(allStocks, usage, useUrl)
+      .then(() => {
+        showMessage({ title: "処理に成功しました", status: "success" });
+      })
+      .catch(() => {
+        showMessage({ title: "処理に失敗しました", status: "error" });
+      });
   };
+
+  useEffect(() => {
+    let msg = "";
+    let url = "";
+    if (useType === "処分") {
+      msg = "選択した食材の残量を減らします";
+      url = "dispose";
+    } else if (useType === "分割") {
+      msg = "選択した食材の残量を減らし、別の食材データを作成します";
+      url = "split";
+    } else if (useType === "食事") {
+      msg = "選択した食材の残量を減らし、食事データを作成します";
+      url = "eat";
+    } else if (useType === "料理") {
+      msg = "選択した食材を利用して、料理データを作成します";
+      url = "cook";
+    }
+    setConfirmMessage(msg);
+    setUseUrl(url);
+  }, [useType]);
 
   return (
     <>
+      <Box mb={10}>
+        {confirmMessage}
+        <br />
+        必須項目を入力して、実行ボタンを押して下さい
+      </Box>
       <Grid
         templateRows="repeat(1, 1fr)"
         templateColumns="repeat(6, 1fr)"
         gap={4}
       >
+        <GridItem colSpan={2}>
+          <DefaultInputForm
+            require="require"
+            label="使用日"
+            isInvalid={useDateInvalid}
+            errorMsg={useDateError}
+          >
+            <DefaultInput
+              value={useDate}
+              onChange={onChangeUseDate}
+              onBlur={onBlurUseDate}
+              type="date"
+            />
+          </DefaultInputForm>
+        </GridItem>
+        <GridItem colSpan={4}>
+          <InputNote
+            note={note}
+            onChange={onChangeNote}
+            invalid={noteInvalid}
+            error={noteError}
+            onBlur={onBlurNote}
+          />
+        </GridItem>
+        {useType === "食事" ? (
+          <GridItem colSpan={6}>
+            <RadioEatTiming eatTiming={eatTiming} onChange={setEatTiming} />
+          </GridItem>
+        ) : (
+          <></>
+        )}
         {useType === "料理" ? (
           <>
             <GridItem colSpan={{ base: 6, md: 3 }}>
@@ -175,7 +248,6 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                 invalid={nameInvalid}
                 error={nameError}
                 onBlur={onBlurName}
-                size="sm"
               />
             </GridItem>
             <GridItem colSpan={{ base: 6, md: 2 }}>
@@ -185,66 +257,23 @@ export const UseStockForm: VFC<Props> = memo((props) => {
                 invalid={categoryInvalid}
                 error={categoryError}
                 onBlur={onBlurCategory}
-                size="sm"
               />
             </GridItem>
-            <GridItem colSpan={{ base: 2, md: 2 }}>
+            <GridItem colSpan={{ base: 6, md: 1 }}>
               <InputLimit
                 limit={limit}
                 onChange={onChangeLimit}
                 invalid={limitInvalid}
                 error={limitError}
                 onBlur={onBlurLimit}
-                size="sm"
               />
-            </GridItem>
-            <GridItem colSpan={{ base: 2, md: 2 }}>
-              <Flex h="100%">
-                <DefaultInputForm
-                  label="食事量"
-                >
-                  <DefaultNumberInput
-                    value={eatRate}
-                    onChange={setEatRate}
-                    max={100}
-                    unit="%"
-                    size="sm"
-                  />
-                </DefaultInputForm>
-                <Flex align="center" h="100%" ms={1}>
-                  <VStack spacing={1} align="strech">
-                    <SecondaryButton size="xs" onClick={() => { setEatRate(100); }}>
-                      100%
-                    </SecondaryButton>
-                    <SecondaryButton size="xs" onClick={() => { setEatRate(0); }}>
-                      0%
-                    </SecondaryButton>
-                  </VStack>
-                </Flex>
-              </Flex>
             </GridItem>
           </>
         ) : (
-          <GridItem colSpan={5}>
-            <InputNote
-              note={note}
-              onChange={onChangeNote}
-              invalid={noteInvalid}
-              error={noteError}
-              onBlur={onBlurNote}
-              size="sm"
-            />
-          </GridItem>
+          <></>
         )}
         <GridItem colSpan={1} colStart={6}>
-          <Flex align="flex-end" justify="end" h="100%" mb={3}>
-            <PrimaryButton
-              size="sm"
-              onClick={onClickUseButton}
-            >
-              {useType}
-            </PrimaryButton>
-          </Flex>
+          <PrimaryButton onClick={onClickUseButton}>実行</PrimaryButton>
         </GridItem>
       </Grid>
     </>
