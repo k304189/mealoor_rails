@@ -24,7 +24,28 @@ class Api::V1::StocksController < ApplicationController
   def dispose
     use_stocks = nil
     ActiveRecord::Base.transaction do
-      use_stocks = create_usage
+      use_stocks, use_info = create_usage
+    end
+    render json: use_stocks
+  end
+
+  def split
+    use_stocks = nil
+    ActiveRecord::Base.transaction do
+     use_stocks, use_rate = create_usage
+
+      for use_info in use_rate do
+        use_rate = use_info[:use_rate]
+        copy_stock = current_user.stocks.find(use_info[:id]).dup
+        copy_stock.price = (copy_stock.price * use_rate / 100.to_f).ceil
+        copy_stock.kcal = (copy_stock.kcal * use_rate / 100.to_f).ceil
+        copy_stock.amount = (copy_stock.amount * use_rate / 100.to_f).ceil
+        copy_stock.protein = BigDecimal((copy_stock.protein * use_rate / 100).to_s).ceil(1).to_f
+        copy_stock.quantity = 1
+        copy_stock.remain = 100
+        copy_stock.save!
+        use_stocks.push(copy_stock)
+      end
     end
     render json: use_stocks
   end
@@ -56,6 +77,7 @@ class Api::V1::StocksController < ApplicationController
         stocks.push(stock)
         usage.save!
       end
-      return stocks
+      return stocks, use_stocks_param[:use_stocks]
     end
+
 end

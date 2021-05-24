@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :seasonal_foods, only: %i[index create update destroy]
       resources :stocks, only: %i[index create update]
       post "stocks/dispose"
+      post "stocks/split"
     end
   end
 end
