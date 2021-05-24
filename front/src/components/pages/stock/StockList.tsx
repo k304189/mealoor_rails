@@ -110,6 +110,12 @@ export const StockList: VFC = memo(() => {
     }
   };
 
+  const initStockUsageList = () => {
+    setStockUsageList([]);
+    setCheckedList([]);
+    setUseDialogIsOpen(false);
+  };
+
   useEffect(() => {
     setLoading(true);
     getHavingStock()
@@ -173,6 +179,7 @@ export const StockList: VFC = memo(() => {
           allStocks={allStocks}
           useType={useType}
           stockUsageList={stockUsageList}
+          initStockUsageList={initStockUsageList}
         />
       </DefaultModal>
     </SigninHeaderLayout>

@@ -22,10 +22,11 @@ type Props = {
   useType: string;
   allStocks: Array<Stock>;
   stockUsageList: Array<StockUsage>;
+  initStockUsageList: () => void;
 }
 
 export const UseStockForm: VFC<Props> = memo((props) => {
-  const { useType, allStocks, stockUsageList } = props;
+  const { useType, allStocks, stockUsageList, initStockUsageList } = props;
   const {
     validateName,
     validateFoodCategory,
@@ -170,6 +171,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
     useStock(allStocks, usage, useUrl)
       .then(() => {
         showMessage({ title: "処理に成功しました", status: "success" });
+        initStockUsageList();
       })
       .catch(() => {
         showMessage({ title: "処理に失敗しました", status: "error" });
@@ -272,7 +274,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
         ) : (
           <></>
         )}
-        <GridItem colSpan={1} colStart={6}>
+        <GridItem colSpan={1} colStart={6} textAlign="right">
           <PrimaryButton onClick={onClickUseButton}>実行</PrimaryButton>
         </GridItem>
       </Grid>
