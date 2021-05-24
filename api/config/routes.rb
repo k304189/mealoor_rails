@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :stocks, only: %i[index create update]
       post "stocks/dispose"
       post "stocks/split"
+      post "stocks/cook"
     end
   end
 end

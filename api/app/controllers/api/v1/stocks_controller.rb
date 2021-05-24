@@ -22,19 +22,19 @@ class Api::V1::StocksController < ApplicationController
   end
 
   def dispose
-    use_stocks = nil
+    updated_stocks = nil
     ActiveRecord::Base.transaction do
-      use_stocks, use_info = create_usage
+      updated_stocks, use_rate_info = create_usage
     end
-    render json: use_stocks
+    render json: updated_stocks
   end
 
   def split
-    use_stocks = nil
+    updated_stocks = nil
     ActiveRecord::Base.transaction do
-     use_stocks, use_rate = create_usage
+     updated_stocks, use_rate_info = create_usage
 
-      for use_info in use_rate do
+      for use_info in use_rate_info do
         use_rate = use_info[:use_rate]
         copy_stock = current_user.stocks.find(use_info[:id]).dup
         copy_stock.price = (copy_stock.price * use_rate / 100.to_f).ceil
@@ -44,10 +44,40 @@ class Api::V1::StocksController < ApplicationController
         copy_stock.quantity = 1
         copy_stock.remain = 100
         copy_stock.save!
-        use_stocks.push(copy_stock)
+        updated_stocks.push(copy_stock)
       end
     end
-    render json: use_stocks
+    render json: updated_stocks
+  end
+
+  def cook
+    updated_stocks = nil
+    ActiveRecord::Base.transaction do
+      updated_stocks, use_rate_info = create_usage
+      cook_info = params.require(:usage).permit(:cook_name, :cook_category, :limit)
+      cooked_stock = current_user.stocks.new(
+        name: cook_info[:cook_name],
+        category: cook_info[:cook_category],
+        limit: cook_info[:limit],
+        stock_type: "料理",
+        unit: "g"
+      )
+
+      for use_info in use_rate_info do
+        use_rate = use_info[:use_rate]
+        foodstuff_stock = current_user.stocks.find(use_info[:id])
+        cooked_stock.price += (foodstuff_stock.price * use_rate / 100.to_f).ceil
+        cooked_stock.kcal += (foodstuff_stock.kcal * use_rate / 100.to_f).ceil
+        # 単位がgのものだけは量に加算する
+        if foodstuff_stock.unit == "g"
+          cooked_stock.amount += (foodstuff_stock.amount * use_rate / 100.to_f).ceil
+        end
+        cooked_stock.protein += BigDecimal((foodstuff_stock.protein * use_rate / 100).to_s).ceil(1).to_f
+      end
+      cooked_stock.save!
+      updated_stocks.push(cooked_stock);
+    end
+    render json: updated_stocks
   end
 
   private
