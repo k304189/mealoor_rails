@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 
 import { Stock } from "../../types/api/stock";
-import { Usage } from "../../types/api/usage";
+import { StockUse } from "../../types/api/stockUse";
 import { useRequestHeader } from "../user/useRequestHeader";
 
 type returnType = {
@@ -10,7 +10,7 @@ type returnType = {
   addStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
   getHavingStock: () => Promise<number>;
   editStock: (stocks: Array<Stock>, addData: Stock) => Promise<number>;
-  useStock: (stocks: Array<Stock>, usage: Usage, useType: string) => Promise<number>;
+  useStock: (stocks: Array<Stock>, usage: StockUse, useType: string) => Promise<number>;
 };
 
 export const useStockApi = (): returnType => {
@@ -55,7 +55,7 @@ export const useStockApi = (): returnType => {
   );
 
   const useStock = useCallback(
-    async (stocks: Array<Stock>, usage: Usage, useType: string) => {
+    async (stocks: Array<Stock>, usage: StockUse, useType: string) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/stocks/${useType}`;
       const json = {
         usage,

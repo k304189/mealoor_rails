@@ -8,7 +8,7 @@ import { useStockApi } from "../../../hooks/stock/useStockApi";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 import { Stock } from "../../../types/api/stock";
-import { Usage } from "../../../types/api/usage";
+import { StockUse } from "../../../types/api/stockUse";
 
 import { InputName } from "../input/common/InputName";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
@@ -156,7 +156,7 @@ export const UseStockForm: VFC<Props> = memo((props) => {
   };
 
   const onClickUseButton = () => {
-    const usage: Usage = getUsageApiData();
+    const usage: StockUse = getUsageApiData();
     const validateFlg = validateUse();
     if (validateFlg) {
       return;

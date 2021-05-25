@@ -165,9 +165,16 @@ export const StockList: VFC = memo(() => {
         isOpen={isOpen}
         onClose={onClose}
         modalTitle={modalTitle}
-        size="4xl"
+        size="full"
       >
-        <StockEditForm allStocks={allStocks} stock={stock} />
+        <Flex>
+          <Box w={{ base: "100%", md: "60%" }}>
+            <StockEditForm allStocks={allStocks} stock={stock} />
+          </Box>
+          <Box w={{ base: "0%", md: "40%" }}>
+            <Box bg="blue" />
+          </Box>
+        </Flex>
       </DefaultModal>
       <DefaultModal
         isOpen={useDialogIsOpen}

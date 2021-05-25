@@ -316,7 +316,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
             onChange={onChangeLocation}
           />
         </GridItem>
-        <GridItem colSpan={{ base: 6, md: 3 }}>
+        <GridItem colSpan={{ base: 6, md: 2 }}>
           <RadioStockType
             stockType={stockType}
             onChange={setStockType}
@@ -337,7 +337,7 @@ export const StockEditForm: VFC<Props> = memo((props) => {
             onChange={onChangeDiscounted}
           />
         </GridItem>
-        <GridItem colSpan={6}>
+        <GridItem colSpan={5}>
           <InputNote
             note={note}
             onChange={onChangeNote}
@@ -346,8 +346,8 @@ export const StockEditForm: VFC<Props> = memo((props) => {
             onBlur={onBlurNote}
           />
         </GridItem>
-        <GridItem colSpan={6}>
-          <Flex justify="flex-end">
+        <GridItem h="100%" colSpan={1} alignItems="end">
+          <Flex h="100%" align="end" justify="flex-end">
             <PrimaryButton
               disabled={buttonDisabled}
               loading={buttonLoading}

@@ -1,10 +1,10 @@
 export type Usage = {
+  stock_id: number;
+  cook_id?: number;
+  date: string;
   use_type: string;
-  use_date: string;
+  use_rate: string;
   note?: string;
-  eat_timing?: string;
-  cook_name?: string;
-  cook_category?: string;
-  limit?: string;
-  use_stocks: Array<{ id: number, use_rate: number }>;
+  created_at?: string;
+  updated_at?: string;
 };
