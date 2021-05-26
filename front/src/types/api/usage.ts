@@ -1,7 +1,7 @@
 export type Usage = {
   stock_id: number;
   cook_id?: number;
-  date: string;
+  use_date: string;
   use_type: string;
   use_rate: string;
   note?: string;

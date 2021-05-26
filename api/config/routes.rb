@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       post "stocks/dispose"
       post "stocks/split"
       post "stocks/cook"
+      get 'usages/history/:id', to: "usages#history"
+      get 'usages/foodstuff/:id', to: "usages#foodstuff"
     end
   end
 end

@@ -6,6 +6,7 @@ import { HavingStockTable } from "../../organisms/stock/HavingStockTable";
 import { StockUsageTable } from "../../organisms/stock/StockUsageTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { UseStockForm } from "../../organisms/stock/UseStockForm";
+import { UsageListTable } from "../../organisms/stock/UsageListTable";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 import { useMessage } from "../../../hooks/common/useMessage";
@@ -168,11 +169,18 @@ export const StockList: VFC = memo(() => {
         size="full"
       >
         <Flex>
-          <Box w={{ base: "100%", md: "60%" }}>
+          <Box w={{ base: "100%", md: "60%" }} h="100%">
             <StockEditForm allStocks={allStocks} stock={stock} />
           </Box>
-          <Box w={{ base: "0%", md: "40%" }}>
-            <Box bg="blue" />
+          <Box
+            w={{ base: "0%", md: "40%" }}
+            h="100%"
+            ml={5}
+            pl={1}
+            borderLeft="1px"
+            borderLeftColor="gray.100"
+          >
+            <UsageListTable stock={stock} />
           </Box>
         </Flex>
       </DefaultModal>
