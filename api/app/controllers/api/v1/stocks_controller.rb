@@ -53,9 +53,8 @@ class Api::V1::StocksController < ApplicationController
   def cook
     updated_stocks = nil
     ActiveRecord::Base.transaction do
-      updated_stocks, use_rate_info = create_usage
       cook_info = params.require(:usage).permit(:cook_name, :cook_category, :limit)
-      cooked_stock = current_user.stocks.new(
+      cooked_stock = current_user.stocks.create(
         name: cook_info[:cook_name],
         category: cook_info[:cook_category],
         limit: cook_info[:limit],
@@ -63,6 +62,7 @@ class Api::V1::StocksController < ApplicationController
         unit: "g"
       )
 
+      updated_stocks, use_rate_info = create_usage(cooked_stock.id)
       for use_info in use_rate_info do
         use_rate = use_info[:use_rate]
         foodstuff_stock = current_user.stocks.find(use_info[:id])
@@ -88,7 +88,7 @@ class Api::V1::StocksController < ApplicationController
                     :discounted, :note)
     end
 
-    def create_usage
+    def create_usage(cook_id=nil)
       use_stocks_param = params.require(:usage)
                               .permit(:use_type, :use_date, :note,
                                       use_stocks: [:id, :use_rate])
@@ -101,6 +101,7 @@ class Api::V1::StocksController < ApplicationController
         usage.use_type = use_stocks_param[:use_type]
         usage.note = use_stocks_param[:note]
         usage.use_rate = use_stock[:use_rate]
+        usage.cook_id = cook_id
 
         stock.remain -= use_stock[:use_rate]
         stock.save!
