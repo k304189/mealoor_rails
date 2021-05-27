@@ -2,11 +2,12 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 
 import { Usage } from "../../types/api/usage";
+import { UsageFoodstuff } from "../../types/api/usageFoodstuff";
 import { useRequestHeader } from "../user/useRequestHeader";
 
 type returnType = {
   historyUsages: Array<Usage>;
-  foodstuffUsages: Array<Usage>;
+  foodstuffUsages: Array<UsageFoodstuff>;
   getHistoryUsage: (id: number) => Promise<number>;
   getFoodstuffUsage: (id: number) => Promise<number>;
 };
@@ -14,7 +15,7 @@ type returnType = {
 export const useUsageApi = (): returnType => {
   const { getRequestHeader } = useRequestHeader();
   const [historyUsages, setHistoryUsages] = useState<Array<Usage>>([]);
-  const [foodstuffUsages, setFoodsutuffUsages] = useState<Array<Usage>>([]);
+  const [foodstuffUsages, setFoodsutuffUsages] = useState<Array<UsageFoodstuff>>([]);
   const getHistoryUsage = useCallback(
     async (id: number) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/usages/history/${id}`;

@@ -169,12 +169,11 @@ export const StockList: VFC = memo(() => {
         size="full"
       >
         <Flex>
-          <Box w={{ base: "100%", md: "60%" }} h="100%">
+          <Box w={{ base: "100%", md: "60%" }}>
             <StockEditForm allStocks={allStocks} stock={stock} />
           </Box>
           <Box
             w={{ base: "0%", md: "40%" }}
-            h="100%"
             ml={5}
             pl={1}
             borderLeft="1px"
