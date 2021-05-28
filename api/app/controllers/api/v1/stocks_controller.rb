@@ -1,4 +1,5 @@
 class Api::V1::StocksController < ApplicationController
+  include CommonActions
   before_action :authenticate_user!
 
   def index
@@ -35,12 +36,13 @@ class Api::V1::StocksController < ApplicationController
      updated_stocks, use_rate_info = create_usage
 
       for use_info in use_rate_info do
-        use_rate = use_info[:use_rate]
-        copy_stock = current_user.stocks.find(use_info[:id]).dup
-        copy_stock.price = (copy_stock.price * use_rate / 100.to_f).ceil
-        copy_stock.kcal = (copy_stock.kcal * use_rate / 100.to_f).ceil
-        copy_stock.amount = (copy_stock.amount * use_rate / 100.to_f).ceil
-        copy_stock.protein = BigDecimal((copy_stock.protein * use_rate / 100).to_s).ceil(1).to_f
+        target_stock_id = use_info[:id]
+        calced_stock_param = calc_stock_param(target_stock_id, use_info[:use_rate])
+        copy_stock = current_user.stocks.find(target_stock_id).dup
+        copy_stock.price = calced_stock_param[:price]
+        copy_stock.kcal = calced_stock_param[:kcal]
+        copy_stock.amount = calced_stock_param[:amount]
+        copy_stock.protein = calced_stock_param[:protein]
         copy_stock.quantity = 1
         copy_stock.remain = 100
         copy_stock.save!
@@ -64,15 +66,14 @@ class Api::V1::StocksController < ApplicationController
 
       updated_stocks, use_rate_info = create_usage(cooked_stock.id)
       for use_info in use_rate_info do
-        use_rate = use_info[:use_rate]
-        foodstuff_stock = current_user.stocks.find(use_info[:id])
-        cooked_stock.price += (foodstuff_stock.price * use_rate / 100.to_f).ceil
-        cooked_stock.kcal += (foodstuff_stock.kcal * use_rate / 100.to_f).ceil
+        calced_stock_param = calc_stock_param(use_info[:id], use_info[:use_rate])
+        cooked_stock.price += calced_stock_param[:price]
+        cooked_stock.kcal += calced_stock_param[:kcal]
         # 単位がgのものだけは量に加算する
-        if foodstuff_stock.unit == "g"
-          cooked_stock.amount += (foodstuff_stock.amount * use_rate / 100.to_f).ceil
+        if calced_stock_param[:unit] == "g"
+          cooked_stock.amount += calced_stock_param[:amount]
         end
-        cooked_stock.protein += BigDecimal((foodstuff_stock.protein * use_rate / 100).to_s).ceil(1).to_f
+        cooked_stock.protein += calced_stock_param[:protein]
       end
       cooked_stock.save!
       updated_stocks.push(cooked_stock);

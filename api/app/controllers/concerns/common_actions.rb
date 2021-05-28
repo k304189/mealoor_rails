@@ -10,7 +10,7 @@ module CommonActions
         name: stock.name,
         category: stock.category,
         price: (stock.price * use_rate / 100.to_f).ceil,
-        kcal: (stock.price * use_rate / 100.to_f).ceil,
+        kcal: (stock.kcal * use_rate / 100.to_f).ceil,
         amount: (stock.amount * use_rate / 100.to_f).ceil,
         protein: BigDecimal((stock.protein * use_rate / 100).to_s).ceil(1).to_f,
         unit: stock.unit,
