@@ -174,6 +174,7 @@ export const StockList: VFC = memo(() => {
           </Box>
           <Box
             w={{ base: "0%", md: "40%" }}
+            display={{ base: "none", md: "block" }}
             ml={5}
             pl={1}
             borderLeft="1px"
