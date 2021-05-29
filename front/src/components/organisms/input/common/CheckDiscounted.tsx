@@ -1,5 +1,7 @@
 import { ChangeEvent, memo, VFC } from "react";
-import { Box, Checkbox } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+
+import { DefaultCheckbox } from "../../../atoms/button/DefaultCheckbox";
 
 type Props = {
   discounted: boolean;
@@ -9,23 +11,14 @@ type Props = {
 export const CheckDiscounted: VFC<Props> = memo((props) => {
   const { discounted, onChange } = props;
   return (
-    <Box
-      position="relative"
-      height="100%"
-    >
-      <Box
-        position="absolute"
-        bottom="5px"
+    <Flex h="100%" align="end">
+      <DefaultCheckbox
+        isChecked={discounted}
+        onChange={onChange}
+        size="lg"
       >
-        <Checkbox
-          isChecked={discounted}
-          onChange={onChange}
-          size="lg"
-          colorScheme="green"
-        >
-          割引
-        </Checkbox>
-      </Box>
-    </Box>
+        割引
+      </DefaultCheckbox>
+    </Flex>
   );
 });

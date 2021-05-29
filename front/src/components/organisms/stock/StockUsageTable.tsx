@@ -1,7 +1,6 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
 import {
   Box,
-  Checkbox,
   Flex,
   Spacer,
   Table,
@@ -13,6 +12,7 @@ import {
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
+import { DefaultCheckbox } from "../../atoms/button/DefaultCheckbox";
 import { DefaultNumberInput } from "../../molecules/input/DefaultNumberInput";
 import { AddButton } from "../../molecules/button/AddButton";
 import { MinusButton } from "../../molecules/button/MinusButton";
@@ -101,7 +101,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
               .map((data) => (
                 <Tr key={data.id}>
                   <Td w={{ base: "15%", md: "8%" }}>
-                    <Checkbox
+                    <DefaultCheckbox
                       isChecked={checkedList.includes(data.id)}
                       onChange={(e) => { onChangeCheckbox(e, data.id); }}
                     />

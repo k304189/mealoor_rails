@@ -1,6 +1,5 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
 import {
-  Checkbox,
   Flex,
   Spacer,
   Table,
@@ -13,6 +12,7 @@ import {
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { DefaultCheckbox } from "../../atoms/button/DefaultCheckbox";
 import { Stock } from "../../../types/api/stock";
 
 type Props = {
@@ -66,7 +66,7 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
             .map((data) => (
               <Tr key={data.id}>
                 <Td>
-                  <Checkbox
+                  <DefaultCheckbox
                     isChecked={checkedList.includes(data.id)}
                     onChange={(e) => { onChangeCheckbox(e, data.id); }}
                   />
