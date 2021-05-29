@@ -10,20 +10,23 @@ type Props = {
 
 export const RadioStockType:VFC<Props> = memo((props) => {
   const { stockType = "", onChange } = props;
+  const stockTypeCook = "料理";
   const buttons = [
     { value: "食材" },
     { value: "中食" },
-    { value: "料理" },
+    { value: stockTypeCook, isReadOnly: true },
   ];
   return (
     <DefaultInputForm
       label="食料タイプ"
       require="optional"
+      helperMsg="「料理」は選択・変更ができません"
     >
       <DefaultRadio
         value={stockType}
         onChange={onChange}
         buttons={buttons}
+        isReadOnly={stockType === stockTypeCook}
       />
     </DefaultInputForm>
   );
