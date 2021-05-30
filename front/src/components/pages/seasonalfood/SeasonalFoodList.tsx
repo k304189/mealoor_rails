@@ -121,6 +121,7 @@ export const SeasonalFoodList: VFC = memo(() => {
                     <Tr key={data.id}>
                       <Td p={0}>
                         <DefaultLink
+                          tooltipText="編集画面へ"
                           onClick={() => onClickSeasonalFood(data.id)}
                         >
                           {data.name}

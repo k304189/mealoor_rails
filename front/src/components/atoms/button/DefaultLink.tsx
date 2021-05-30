@@ -1,21 +1,24 @@
 import { memo, ReactNode, VFC } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, Tooltip } from "@chakra-ui/react";
 
 type Props = {
   children: ReactNode;
+  tooltipText: string;
   onClick: () => void;
 };
 
 export const DefaultLink: VFC<Props> = memo((props) => {
-  const { children, onClick } = props;
+  const { children, tooltipText, onClick } = props;
   return (
-    <Button
-      bg="transparent"
-      variant="link"
-      boxShadow="none"
-      onClick={onClick}
-    >
-      {children}
-    </Button>
+    <Tooltip label={tooltipText}>
+      <Button
+        bg="transparent"
+        variant="link"
+        boxShadow="none"
+        onClick={onClick}
+      >
+        {children}
+      </Button>
+    </Tooltip>
   );
 });

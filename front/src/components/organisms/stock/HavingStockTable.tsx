@@ -94,7 +94,10 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
                   />
                 </Td>
                 <Td>
-                  <DefaultLink onClick={() => { onClickNameLink(data.id); }}>
+                  <DefaultLink
+                    tooltipText="詳細画面へ"
+                    onClick={() => { onClickNameLink(data.id); }}
+                  >
                     {data.name}
                   </DefaultLink>
                 </Td>
