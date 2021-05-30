@@ -3,7 +3,7 @@ class Api::V1::StocksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @stock = current_user.stocks.where(remain: 1..100)
+    @stock = current_user.stocks.where(remain: 1..100).order(:limit)
     render json: @stock
   end
 

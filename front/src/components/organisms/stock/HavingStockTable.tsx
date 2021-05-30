@@ -33,6 +33,28 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
     onChangeCheckbox,
   } = props;
 
+  const getDiffDaysFromToday = (targetDate: string) => {
+    const splitedTarget = targetDate.split("-").map(Number);
+    const target = new Date(splitedTarget[0], splitedTarget[1] - 1, splitedTarget[2]);
+    const diff = (
+      (target.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    ) + 1;
+    return diff;
+  };
+
+  const getTrClassName = (limitStr: string) => {
+    const diffDaysFromToday = getDiffDaysFromToday(limitStr);
+    let className;
+    if (diffDaysFromToday < 0) {
+      className = "passedLimitRow";
+    } else if (diffDaysFromToday >= 0 && diffDaysFromToday < 2) {
+      className = "nearlyLimitRow";
+    } else {
+      className = "";
+    }
+    return className;
+  };
+
   const havingPagingDisplayNum = 10;
   const onChangeHavingPage = (page: {selected: number}) =>
     setHavingPagingOffset(havingPagingDisplayNum * page.selected);
@@ -48,7 +70,7 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
           onPageChange={onChangeHavingPage}
         />
       </Flex>
-      <Table size="sm">
+      <Table className="HavingStockTable" size="sm">
         <Thead>
           <Tr>
             <Td>選択</Td>
@@ -64,7 +86,7 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
           {havingStocks
             .slice(havingPagingOffset, havingPagingOffset + havingPagingDisplayNum)
             .map((data) => (
-              <Tr key={data.id}>
+              <Tr key={data.id} className={getTrClassName(data.limit)}>
                 <Td>
                   <DefaultCheckbox
                     isChecked={checkedList.includes(data.id)}
@@ -77,7 +99,12 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
                   </DefaultLink>
                 </Td>
                 <Td display={{ base: "none", md: "table-cell" }}>{data.category}</Td>
-                <Td display={{ base: "none", md: "table-cell" }}>{data.limit}</Td>
+                <Td
+                  className="limitColumn"
+                  display={{ base: "none", md: "table-cell" }}
+                >
+                  {data.limit}
+                </Td>
                 <Td display={{ base: "none", md: "table-cell" }}>
                   {data.price
                     ? `${data.price.toLocaleString()}円`

@@ -84,6 +84,22 @@ const systemTheme = extendTheme({
         marginTop: "12px",
         marginBottom: "12px",
       },
+      ".HavingStockTable": {
+        ".passedLimitRow": {
+          backgroundColor: "#EDF2F7",
+          ".limitColumn": {
+            fontWeight: "bold",
+            color: "#4A5568",
+          },
+        },
+        ".nearlyLimitRow": {
+          backgroundColor: "#FED7D7",
+          ".limitColumn": {
+            fontWeight: "bold",
+            color: "#E53E3E",
+          },
+        },
+      },
       ".pagination": {
         display: "flex",
         listStyle: "none",
