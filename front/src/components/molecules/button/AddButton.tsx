@@ -9,6 +9,7 @@ type Props = {
   isLoading?: boolean;
   colorScheme?: string;
   size?: "xs" | "sm" | "md" | "lg";
+  tooltipText?: string;
 };
 
 export const AddButton: VFC<Props> = memo((props) => {
@@ -18,6 +19,7 @@ export const AddButton: VFC<Props> = memo((props) => {
     isLoading = false,
     colorScheme = "green",
     size = "sm",
+    tooltipText = "",
   } = props;
   return (
     <DefaultIcon
@@ -27,6 +29,7 @@ export const AddButton: VFC<Props> = memo((props) => {
       isLoading={isLoading}
       colorScheme={colorScheme}
       size={size}
+      tooltipText={tooltipText}
     >
       <AddIcon />
     </DefaultIcon>

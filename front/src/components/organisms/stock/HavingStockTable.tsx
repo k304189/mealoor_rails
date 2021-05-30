@@ -90,6 +90,7 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
                 <Td>
                   <DefaultCheckbox
                     isChecked={checkedList.includes(data.id)}
+                    tooltipText="選択中食材に追加・解除する"
                     onChange={(e) => { onChangeCheckbox(e, data.id); }}
                   />
                 </Td>

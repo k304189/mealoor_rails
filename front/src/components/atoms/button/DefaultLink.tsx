@@ -3,12 +3,12 @@ import { Button, Tooltip } from "@chakra-ui/react";
 
 type Props = {
   children: ReactNode;
-  tooltipText: string;
+  tooltipText?: string;
   onClick: () => void;
 };
 
 export const DefaultLink: VFC<Props> = memo((props) => {
-  const { children, tooltipText, onClick } = props;
+  const { children, tooltipText = "", onClick } = props;
   return (
     <Tooltip label={tooltipText}>
       <Button

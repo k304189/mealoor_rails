@@ -1,5 +1,5 @@
 import { memo, ReactElement, VFC } from "react";
-import { IconButton } from "@chakra-ui/react";
+import { IconButton, Tooltip } from "@chakra-ui/react";
 
 type Props = {
   aria_label: string;
@@ -8,6 +8,7 @@ type Props = {
   isLoading?: boolean;
   colorScheme?: string;
   size?: "xs" | "sm" | "md" | "lg";
+  tooltipText?: string;
   children: ReactElement;
 };
 
@@ -19,18 +20,21 @@ export const DefaultIcon: VFC<Props> = memo((props) => {
     isLoading = false,
     colorScheme = "green",
     size = "sm",
+    tooltipText = "",
     children,
   } = props;
   return (
-    <IconButton
-      aria-label={aria_label}
-      icon={children}
-      variant="outline"
-      isDisabled={isDisabled}
-      isLoading={isLoading}
-      colorScheme={colorScheme}
-      size={size}
-      onClick={onClick}
-    />
+    <Tooltip label={tooltipText}>
+      <IconButton
+        aria-label={aria_label}
+        icon={children}
+        variant="outline"
+        isDisabled={isDisabled}
+        isLoading={isLoading}
+        colorScheme={colorScheme}
+        size={size}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 });

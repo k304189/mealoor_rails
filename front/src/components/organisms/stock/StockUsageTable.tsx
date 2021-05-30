@@ -103,6 +103,7 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
                   <Td w={{ base: "15%", md: "8%" }}>
                     <DefaultCheckbox
                       isChecked={checkedList.includes(data.id)}
+                      tooltipText="選択から解除"
                       onChange={(e) => { onChangeCheckbox(e, data.id); }}
                     />
                   </Td>
@@ -133,10 +134,12 @@ export const StockUsageTable: VFC<Props> = memo((props) => {
                     <Flex>
                       <MinusButton
                         size="xs"
+                        tooltipText="1コ分の量を減らす"
                         onClick={() => { onClickAddRateButton(data.id, true); }}
                       />
                       <AddButton
                         size="xs"
+                        tooltipText="1コ分の量を増やす"
                         onClick={() => { onClickAddRateButton(data.id); }}
                       />
                     </Flex>
