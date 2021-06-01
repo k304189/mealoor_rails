@@ -100,6 +100,17 @@ const systemTheme = extendTheme({
           },
         },
       },
+      ".calendar": {
+        ".sunday": {
+          backgroundColor: "#FFD6D6",
+        },
+        ".saturday": {
+          backgroundColor: "#D6EAFF",
+        },
+        ".notTargetMonth": {
+          backgroundColor: "#F3F3F3",
+        },
+      },
       ".pagination": {
         display: "flex",
         listStyle: "none",

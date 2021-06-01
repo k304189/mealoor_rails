@@ -9,9 +9,27 @@ type returnType = {
 }
 
 export const useCalendar = (): returnType => {
-  const weekDayArray = ["日", "月", "火", "水", "木", "金", "土"];
+  const dayNumSunday = 0;
+  const dayNumSaturday = 6;
+  const classNameSunday = "sunday";
+  const classNameSaturday = "saturday";
+  const classNameNotTargetMonth = "notTargetMonth";
   const calendarWeekNum = 6;
   const dateNumInWeek = 7;
+
+  const weekDayArray = ["日", "月", "火", "水", "木", "金", "土"];
+
+  const getClassName = (dayNum: number, isNotTargetMonth = false) => {
+    const className: Array<string> = [];
+    if (isNotTargetMonth) {
+      className.push(classNameNotTargetMonth);
+    } else if (dayNum === dayNumSunday) {
+      className.push(classNameSunday);
+    } else if (dayNum === dayNumSaturday) {
+      className.push(classNameSaturday);
+    }
+    return className.join(" ");
+  };
 
   const getFormatDateString = (date: Date) => {
     const splitedDate = date.toLocaleDateString("ja").split("/");
@@ -22,10 +40,11 @@ export const useCalendar = (): returnType => {
     return `${year}-${month}-${day}`;
   };
 
-  const getCalendarDate = (targetDate: Date) => {
+  const getCalendarDate = (targetDate: Date, isNotTargetMonth = false) => {
     const date = getFormatDateString(targetDate);
     const dayNum = targetDate.getDay();
-    return { date, dayNum };
+    const className = getClassName(dayNum, isNotTargetMonth);
+    return { date, dayNum, className };
   };
 
   const getFormatYearMonth = (targetDate: Date) => {
@@ -49,17 +68,20 @@ export const useCalendar = (): returnType => {
         const dateArray = [];
         for (let d = 0; d < dateNumInWeek; d += 1) {
           let date: Date;
+          let isNotTargetMonth = false;
           if (w === 0 && d < thisMonthStartDay) {
             date = new Date(year, month - 1, prevMonthDateCount);
+            isNotTargetMonth = true;
             prevMonthDateCount += 1;
           } else if (thisMonthDateCount > thisMonthEndDate.getDate()) {
             date = new Date(year, month, nextMonthDateCount);
+            isNotTargetMonth = true;
             nextMonthDateCount += 1;
           } else {
             date = new Date(year, month - 1, thisMonthDateCount);
             thisMonthDateCount += 1;
           }
-          dateArray.push(getCalendarDate(date));
+          dateArray.push(getCalendarDate(date, isNotTargetMonth));
         }
         monthlyCalendar.push({ weekNo: w + 1, dateArray });
       }
