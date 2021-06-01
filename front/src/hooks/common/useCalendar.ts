@@ -1,17 +1,20 @@
 import { useCallback } from "react";
 
-type CalendarArrayType = {
-  date: string;
-  weekNum: number;
-}
+import { CalendarWeekType } from "../../types/pages/calendar/calendarWeekType";
 
 type returnType = {
   weekDayArray: Array<string>
-  getCalendarArray: (yearMonth: string) => Array<Array<CalendarArrayType>>
+  getCalendarArray: (yearMonth: string) => Array<CalendarWeekType>
 }
 
 export const useCalendar = (): returnType => {
   const weekDayArray = ["日", "月", "火", "水", "木", "金", "土"];
+  const calendarWeekNum = 6;
+  const dateNumInWeek = 7;
+
+  const getCalendarDate = (date: string, dayNum: number) => {
+    return { date, dayNum };
+  };
 
   const getFormatDateString = (date: Date) => {
     const splitedDate = date.toLocaleDateString("ja").split("/");
@@ -23,7 +26,7 @@ export const useCalendar = (): returnType => {
   };
 
   const getCalendarArray = useCallback(
-    (yearMonth: string): Array<Array<CalendarArrayType>> => {
+    (yearMonth: string): Array<CalendarWeekType> => {
       const param = yearMonth.split("-").map(Number);
       const startDate = new Date(param[0], param[1] - 1, 1);
       const startDay = startDate.getDay();
@@ -32,23 +35,22 @@ export const useCalendar = (): returnType => {
       let dateCount = 1;
       const monthlyCalendar = [];
 
-      for (let w = 0; w < 6; w += 1) {
-        const weekArray = [];
-        for (let d = 0; d < 7; d += 1) {
+      for (let w = 0; w < calendarWeekNum; w += 1) {
+        const dateArray = [];
+        for (let d = 0; d < dateNumInWeek; d += 1) {
           if (w === 0 && d < startDay) {
-            weekArray.push({ date: "", weekNum: d });
+            dateArray.push(getCalendarDate("", d));
           } else if (dateCount > endDate.getDate()) {
-            weekArray.push({ date: "", weekNum: d });
+            dateArray.push(getCalendarDate("", d));
           } else {
-            weekArray.push({
-              date: getFormatDateString(startDate),
-              weekNum: startDate.getDay(),
-            });
+            dateArray.push(
+              getCalendarDate(getFormatDateString(startDate), startDate.getDay()),
+            );
             dateCount = startDate.getDate() + 1;
             startDate.setDate(dateCount);
           }
         }
-        monthlyCalendar.push(weekArray);
+        monthlyCalendar.push({ weekNo: w + 1, dateArray });
       }
       return monthlyCalendar;
     }, [],
