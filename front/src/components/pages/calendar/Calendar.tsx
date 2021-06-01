@@ -7,16 +7,15 @@ import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 export const Calendar: VFC = memo(() => {
   const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
-  const { weekDayArray, getCalendarArray } = useCalendar();
+  const { weekDayArray, getFormatYearMonth, getCalendarArray } = useCalendar();
 
   useEffect(() => {
-    setMonthlyCalendar(getCalendarArray("2021-05"));
+    setMonthlyCalendar(getCalendarArray(getFormatYearMonth(new Date())));
   }, []);
 
   return (
-    <SigninHeaderLayout>
-      <Box as="article" w="95%" h="95%">
-        <h1>カレンダー画面です。</h1>
+    <SigninHeaderLayout title="カレンダー">
+      <Box as="article" w="100%" h="100%">
         {monthlyCalendar ? (
           <Table>
             <Thead>

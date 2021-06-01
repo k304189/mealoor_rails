@@ -4,6 +4,7 @@ import { CalendarWeekType } from "../../types/pages/calendar/calendarWeekType";
 
 type returnType = {
   weekDayArray: Array<string>
+  getFormatYearMonth: (targetDate: Date) => string;
   getCalendarArray: (yearMonth: string) => Array<CalendarWeekType>
 }
 
@@ -11,10 +12,6 @@ export const useCalendar = (): returnType => {
   const weekDayArray = ["日", "月", "火", "水", "木", "金", "土"];
   const calendarWeekNum = 6;
   const dateNumInWeek = 7;
-
-  const getCalendarDate = (date: string, dayNum: number) => {
-    return { date, dayNum };
-  };
 
   const getFormatDateString = (date: Date) => {
     const splitedDate = date.toLocaleDateString("ja").split("/");
@@ -25,35 +22,49 @@ export const useCalendar = (): returnType => {
     return `${year}-${month}-${day}`;
   };
 
+  const getCalendarDate = (targetDate: Date) => {
+    const date = getFormatDateString(targetDate);
+    const dayNum = targetDate.getDay();
+    return { date, dayNum };
+  };
+
+  const getFormatYearMonth = (targetDate: Date) => {
+    return getFormatDateString(targetDate).slice(0, -3);
+  };
+
   const getCalendarArray = useCallback(
     (yearMonth: string): Array<CalendarWeekType> => {
-      const param = yearMonth.split("-").map(Number);
-      const startDate = new Date(param[0], param[1] - 1, 1);
-      const startDay = startDate.getDay();
-      const endDate = new Date(param[0], param[1], 0);
+      const [year, month] = yearMonth.split("-").map(Number);
 
-      let dateCount = 1;
+      const thisMonthStartDate = new Date(year, month - 1, 1);
+      const thisMonthStartDay = thisMonthStartDate.getDay();
+      const thisMonthEndDate = new Date(year, month, 0);
+      let thisMonthDateCount = 1;
+      let nextMonthDateCount = 1;
+      let prevMonthDateCount = -1 * (thisMonthStartDay - 1);
+
       const monthlyCalendar = [];
 
       for (let w = 0; w < calendarWeekNum; w += 1) {
         const dateArray = [];
         for (let d = 0; d < dateNumInWeek; d += 1) {
-          if (w === 0 && d < startDay) {
-            dateArray.push(getCalendarDate("", d));
-          } else if (dateCount > endDate.getDate()) {
-            dateArray.push(getCalendarDate("", d));
+          let date: Date;
+          if (w === 0 && d < thisMonthStartDay) {
+            date = new Date(year, month - 1, prevMonthDateCount);
+            prevMonthDateCount += 1;
+          } else if (thisMonthDateCount > thisMonthEndDate.getDate()) {
+            date = new Date(year, month, nextMonthDateCount);
+            nextMonthDateCount += 1;
           } else {
-            dateArray.push(
-              getCalendarDate(getFormatDateString(startDate), startDate.getDay()),
-            );
-            dateCount = startDate.getDate() + 1;
-            startDate.setDate(dateCount);
+            date = new Date(year, month - 1, thisMonthDateCount);
+            thisMonthDateCount += 1;
           }
+          dateArray.push(getCalendarDate(date));
         }
         monthlyCalendar.push({ weekNo: w + 1, dateArray });
       }
       return monthlyCalendar;
     }, [],
   );
-  return { weekDayArray, getCalendarArray };
+  return { weekDayArray, getFormatYearMonth, getCalendarArray };
 };
