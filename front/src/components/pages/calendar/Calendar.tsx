@@ -22,23 +22,23 @@ export const Calendar: VFC = memo(() => {
   return (
     <SigninHeaderLayout title="カレンダー">
       <Box as="article" w="100%" h="100%">
-        <Box h="10%">ボタンエリア</Box>
+        <Box w="100%" h="10%">ボタンエリア</Box>
         {monthlyCalendar ? (
-          <Table h="90%" className="calendar">
-            <Thead h="4%">
+          <Table className="calendar" w="100%" h="90%">
+            <Thead w="100%" h="4%">
               <Tr>
                 {weekDayArray.map((day) => (
-                  <Td key={day} textAlign="center">
+                  <Td key={day} p={0} textAlign="center">
                     {day}
                   </Td>
                 ))}
               </Tr>
             </Thead>
-            <Tbody h="90%">
+            <Tbody w="100%" h="90%">
               {monthlyCalendar.map((week) => (
                 <Tr key={week.weekNo}>
                   {week.dateArray.map((date) => (
-                    <Td key={date.date} valign="top" className={date.className}>
+                    <Td key={date.date} p={0} valign="top" className={date.className}>
                       <DefaultLink
                         tooltipText={`${date.date}の詳細画面`}
                         onClick={() => {}}
