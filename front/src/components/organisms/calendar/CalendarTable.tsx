@@ -2,13 +2,19 @@ import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 
 import { useCalendar } from "../../../hooks/common/useCalendar";
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
 
-export const CalendarTable: VFC = memo(() => {
+type Props = {
+  openEditModal: () => void;
+};
+
+export const CalendarTable: VFC<Props> = memo((props) => {
+  const { openEditModal } = props;
   const {
     weekDayArray,
     getFormatYearMonth,
@@ -55,6 +61,9 @@ export const CalendarTable: VFC = memo(() => {
             <SecondaryButton onClick={() => { addDisplayYearMonth(0); }}>
               翌月
             </SecondaryButton>
+          </GridItem>
+          <GridItem>
+            <PrimaryButton onClick={openEditModal}>食事登録</PrimaryButton>
           </GridItem>
         </Grid>
       </Box>
