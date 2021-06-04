@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { Eat } from "../../types/api/eat";
 import { useRequestHeader } from "../user/useRequestHeader";

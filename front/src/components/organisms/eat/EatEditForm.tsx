@@ -167,7 +167,19 @@ export const EatEditForm: VFC<Props> = memo((props) => {
   };
 
   const callAddEat = () => {
-    console.log(getEatApiData());
+    setButtonLoading(true);
+    const addData = getEatApiData();
+    addEat(addData)
+      .then(() => {
+        showMessage({ title: "登録に成功しました", status: "success" });
+        initModal();
+      })
+      .catch(() => {
+        showMessage({ title: "登録に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
   };
 
   const callEditEat = () => {
