@@ -12,9 +12,9 @@ type Props = {
 export const RadioEatType:VFC<Props> = memo((props) => {
   const { eatType = "", size = "md", onChange } = props;
   const buttons = [
-    { value: "自炊" },
+    { value: "外食" },
     { value: "中食" },
-    { value: "間食" },
+    { value: "自炊" },
   ];
   return (
     <DefaultInputForm

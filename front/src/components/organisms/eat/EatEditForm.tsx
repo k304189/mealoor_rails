@@ -1,8 +1,9 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useMessage } from "../../../hooks/common/useMessage";
+import { Eat } from "../../../types/api/eat";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
@@ -19,7 +20,12 @@ import { InputProtein } from "../input/common/InputProtein";
 import { InputShop } from "../input/common/InputShop";
 import { CheckDiscounted } from "../input/common/CheckDiscounted";
 
-export const EatEditForm: VFC = memo(() => {
+type Props = {
+  eat?: Eat | null;
+};
+
+export const EatEditForm: VFC<Props> = memo((props) => {
+  const { eat = null } = props;
   const { showMessage } = useMessage();
   const {
     validateName,
@@ -34,8 +40,8 @@ export const EatEditForm: VFC = memo(() => {
   const [category, setCategory] = useState("");
   const [kcal, setKcal] = useState(0);
   const [price, setPrice] = useState(0);
-  const [eatType, setEatType] = useState("");
-  const [eatTiming, setEatTiming] = useState("");
+  const [eatType, setEatType] = useState("外食");
+  const [eatTiming, setEatTiming] = useState("朝食");
   const [eatDate, setEatDate] = useState("");
   const [foodAmount, setFoodAmount] = useState(0);
   const [foodUnit, setFoodUnit] = useState("");
@@ -109,6 +115,46 @@ export const EatEditForm: VFC = memo(() => {
     setNoteInvalid(invalid);
     setNoteError(errorMsg);
   };
+
+  const initModal = () => {
+    setId(eat?.id ?? 0);
+    setName(eat?.name ?? "");
+    setCategory(eat?.category ?? "");
+    setKcal(eat?.kcal ?? 0);
+    setPrice(eat?.price ?? 0);
+    setEatType(eat?.eat_type ?? "");
+    setEatTiming(eat?.eat_timing ?? "");
+    setEatDate(eat?.eat_date ?? "");
+    setFoodAmount(eat?.amount ?? 0);
+    setFoodUnit(eat?.unit ?? "");
+    setProtein(eat?.protein ?? 0.0);
+    setShop(eat?.shop ?? "");
+    setDiscounted(eat?.discounted ?? false);
+    setNote(eat?.note ?? "");
+
+    setNameInvalid(false);
+    setCategoryInvalid(false);
+    setEatDateInvalid(false);
+    setShopInvalid(false);
+    setNoteInvalid(false);
+
+    setNameError("");
+    setCategoryError("");
+    setEatDateError("");
+    setShopError("");
+    setNoteError("");
+  };
+
+  useEffect(() => {
+    initModal();
+  }, [eat]);
+
+  useEffect(() => {
+    setButtonDisabled(nameInvalid || categoryInvalid
+      || shopInvalid || noteInvalid || eatDateInvalid);
+  }, [nameInvalid, categoryInvalid, shopInvalid, noteInvalid, eatDateInvalid]);
+
+  const buttonTitle = (id === 0) ? "登録" : "更新";
 
   return (
     <>
@@ -230,7 +276,7 @@ export const EatEditForm: VFC = memo(() => {
               loading={buttonLoading}
               onClick={() => {}}
             >
-              登録
+              {buttonTitle}
             </PrimaryButton>
           </Flex>
         </GridItem>
