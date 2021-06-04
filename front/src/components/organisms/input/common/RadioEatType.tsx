@@ -4,26 +4,25 @@ import { DefaultRadio } from "../../../atoms/button/DefaultRadio";
 import { DefaultInputForm } from "../DefaultInputForm";
 
 type Props = {
-  eatTiming? : string;
+  eatType? : string;
   size? : "sm" | "md" | "lg";
   onChange: (v: string) => void;
 };
 
-export const RadioEatTiming:VFC<Props> = memo((props) => {
-  const { eatTiming = "", size = "md", onChange } = props;
+export const RadioEatType:VFC<Props> = memo((props) => {
+  const { eatType = "", size = "md", onChange } = props;
   const buttons = [
-    { value: "朝食" },
-    { value: "昼食" },
-    { value: "夕食" },
+    { value: "自炊" },
+    { value: "中食" },
     { value: "間食" },
   ];
   return (
     <DefaultInputForm
-      label="食事タイミング"
+      label="食事タイプ"
       require="require"
     >
       <DefaultRadio
-        value={eatTiming}
+        value={eatType}
         onChange={onChange}
         buttons={buttons}
         size={size}

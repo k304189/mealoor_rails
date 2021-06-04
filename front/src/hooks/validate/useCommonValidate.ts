@@ -5,6 +5,7 @@ type returnType = {
   validateFoodCategory: (category: string) => { invalid: boolean, errorMsg: string };
   validateShop: (shop: string) => { invalid: boolean, errorMsg: string };
   validateNote: (note: string) => { invalid: boolean, errorMsg: string };
+  validateEatDate: (eatDate: string) => { invalid: boolean, errorMsg: string };
 };
 
 export const useCommonValidate = (): returnType => {
@@ -53,5 +54,21 @@ export const useCommonValidate = (): returnType => {
     }
     return { invalid, errorMsg };
   }, []);
-  return { validateName, validateFoodCategory, validateShop, validateNote };
+
+  const validateEatDate = useCallback((eatDate: string) => {
+    let invalid = false;
+    let errorMsg = "";
+    if (eatDate === "") {
+      invalid = true;
+      errorMsg = "食事日は必須項目です";
+    }
+    return { invalid, errorMsg };
+  }, []);
+  return {
+    validateName,
+    validateFoodCategory,
+    validateShop,
+    validateNote,
+    validateEatDate,
+  };
 };

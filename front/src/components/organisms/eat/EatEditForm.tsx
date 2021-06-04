@@ -7,6 +7,9 @@ import { useMessage } from "../../../hooks/common/useMessage";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
 import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
+import { InputEatDate } from "../input/common/InputEatDate";
+import { RadioEatType } from "../input/common/RadioEatType";
+import { RadioEatTiming } from "../input/common/RadioEatTiming";
 import { InputKcal } from "../input/common/InputKcal";
 import { InputPrice } from "../input/common/InputPrice";
 import { InputFoodAmount } from "../input/common/InputFoodAmount";
@@ -23,6 +26,7 @@ export const EatEditForm: VFC = memo(() => {
     validateFoodCategory,
     validateShop,
     validateNote,
+    validateEatDate,
   } = useCommonValidate();
 
   const [id, setId] = useState(0);
@@ -30,6 +34,9 @@ export const EatEditForm: VFC = memo(() => {
   const [category, setCategory] = useState("");
   const [kcal, setKcal] = useState(0);
   const [price, setPrice] = useState(0);
+  const [eatType, setEatType] = useState("");
+  const [eatTiming, setEatTiming] = useState("");
+  const [eatDate, setEatDate] = useState("");
   const [foodAmount, setFoodAmount] = useState(0);
   const [foodUnit, setFoodUnit] = useState("");
   const [protein, setProtein] = useState(0);
@@ -39,11 +46,13 @@ export const EatEditForm: VFC = memo(() => {
 
   const [nameInvalid, setNameInvalid] = useState(false);
   const [categoryInvalid, setCategoryInvalid] = useState(false);
+  const [eatDateInvalid, setEatDateInvalid] = useState(false);
   const [shopInvalid, setShopInvalid] = useState(false);
   const [noteInvalid, setNoteInvalid] = useState(false);
 
   const [nameError, setNameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
+  const [eatDateError, setEatDateError] = useState("");
   const [shopError, setShopError] = useState("");
   const [noteError, setNoteError] = useState("");
 
@@ -55,6 +64,9 @@ export const EatEditForm: VFC = memo(() => {
 
   const onChangeCategory = (e: ChangeEvent<HTMLSelectElement>) =>
     setCategory(e.target.value);
+
+  const onChangeEatDate = (e: ChangeEvent<HTMLInputElement>) =>
+    setEatDate(e.target.value);
 
   const onChangeFoodUnit = (e: ChangeEvent<HTMLSelectElement>) =>
     setFoodUnit(e.target.value);
@@ -78,6 +90,12 @@ export const EatEditForm: VFC = memo(() => {
     const { invalid, errorMsg } = validateFoodCategory(category);
     setCategoryInvalid(invalid);
     setCategoryError(errorMsg);
+  };
+
+  const onBlurEatDate = () => {
+    const { invalid, errorMsg } = validateEatDate(eatDate);
+    setEatDateInvalid(invalid);
+    setEatDateError(errorMsg);
   };
 
   const onBlurShop = () => {
@@ -120,7 +138,28 @@ export const EatEditForm: VFC = memo(() => {
             onBlur={onBlurCategory}
           />
         </GridItem>
-        <GridItem colSpan={{ base: 2, md: 2 }}>
+        <GridItem colSpan={{ base: 6, md: 2 }}>
+          <InputEatDate
+            eatDate={eatDate}
+            onChange={onChangeEatDate}
+            invalid={eatDateInvalid}
+            error={eatDateError}
+            onBlur={onBlurEatDate}
+          />
+        </GridItem>
+        <GridItem colSpan={{ base: 6, md: 3 }}>
+          <RadioEatTiming
+            eatTiming={eatTiming}
+            onChange={setEatTiming}
+          />
+        </GridItem>
+        <GridItem colSpan={{ base: 6, md: 2 }}>
+          <RadioEatType
+            eatType={eatType}
+            onChange={setEatType}
+          />
+        </GridItem>
+        <GridItem colSpan={{ base: 5, md: 3 }}>
           <InputShop
             shop={shop}
             onChange={onChangeShop}
@@ -129,19 +168,19 @@ export const EatEditForm: VFC = memo(() => {
             onBlur={onBlurShop}
           />
         </GridItem>
-        <GridItem colSpan={1}>
+        <GridItem colSpan={{ base: 2, md: 1 }}>
           <CheckDiscounted
             discounted={discounted}
             onChange={onChangeDiscounted}
           />
         </GridItem>
-        <GridItem colSpan={{ base: 2, md: 1 }}>
+        <GridItem colSpan={{ base: 3, md: 2 }}>
           <InputPrice
             price={price}
             onChange={setPrice}
           />
         </GridItem>
-        <GridItem colSpan={{ base: 2, md: 1 }}>
+        <GridItem colSpan={{ base: 3, md: 2 }}>
           <InputKcal
             kcal={kcal}
             onChange={setKcal}

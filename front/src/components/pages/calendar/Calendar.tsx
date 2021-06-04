@@ -20,7 +20,7 @@ export const Calendar: VFC = memo(() => {
         isOpen={eatEditFormIsOpen}
         onClose={() => { setEatEditFormIsOpen(false); }}
         modalTitle="食事登録"
-        size="3xl"
+        size="4xl"
       >
         <EatEditForm />
       </DefaultModal>
