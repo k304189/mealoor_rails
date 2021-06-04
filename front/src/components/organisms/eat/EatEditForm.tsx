@@ -1,6 +1,7 @@
 import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
+import { useEatApi } from "../../../hooks/eat/useEatApi";
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { Eat } from "../../../types/api/eat";
@@ -27,6 +28,7 @@ type Props = {
 export const EatEditForm: VFC<Props> = memo((props) => {
   const { eat = null } = props;
   const { showMessage } = useMessage();
+  const { addEat } = useEatApi();
   const {
     validateName,
     validateFoodCategory,
@@ -116,6 +118,25 @@ export const EatEditForm: VFC<Props> = memo((props) => {
     setNoteError(errorMsg);
   };
 
+  const getEatApiData = () => {
+    return {
+      id,
+      name,
+      category,
+      kcal,
+      price,
+      eat_type: eatType,
+      eat_timing: eatTiming,
+      eat_date: eatDate,
+      amount: foodAmount,
+      unit: foodUnit,
+      protein,
+      shop,
+      discounted,
+      note,
+    };
+  };
+
   const initModal = () => {
     setId(eat?.id ?? 0);
     setName(eat?.name ?? "");
@@ -145,6 +166,14 @@ export const EatEditForm: VFC<Props> = memo((props) => {
     setNoteError("");
   };
 
+  const callAddEat = () => {
+    console.log(getEatApiData());
+  };
+
+  const callEditEat = () => {
+    console.log(getEatApiData());
+  };
+
   useEffect(() => {
     initModal();
   }, [eat]);
@@ -155,6 +184,7 @@ export const EatEditForm: VFC<Props> = memo((props) => {
   }, [nameInvalid, categoryInvalid, shopInvalid, noteInvalid, eatDateInvalid]);
 
   const buttonTitle = (id === 0) ? "登録" : "更新";
+  const callFunction = (id === 0) ? callAddEat : callEditEat;
 
   return (
     <>
@@ -274,7 +304,7 @@ export const EatEditForm: VFC<Props> = memo((props) => {
             <PrimaryButton
               disabled={buttonDisabled}
               loading={buttonLoading}
-              onClick={() => {}}
+              onClick={callFunction}
             >
               {buttonTitle}
             </PrimaryButton>
