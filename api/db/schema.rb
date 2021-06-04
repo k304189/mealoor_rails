@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_22_075551) do
+ActiveRecord::Schema.define(version: 2021_06_04_223143) do
+
+  create_table "eats", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "eat_date", null: false
+    t.string "eat_timing", null: false
+    t.string "eat_type", null: false
+    t.string "name", null: false
+    t.string "category", null: false
+    t.integer "kcal", default: 0
+    t.integer "price", default: 0
+    t.string "shop"
+    t.boolean "discounted"
+    t.integer "amount", default: 0
+    t.string "unit"
+    t.string "note"
+    t.float "protein", default: 0.0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_eats_on_user_id"
+  end
 
   create_table "seasonal_foods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -81,6 +101,7 @@ ActiveRecord::Schema.define(version: 2021_05_22_075551) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "eats", "users"
   add_foreign_key "stocks", "users"
   add_foreign_key "usages", "stocks"
   add_foreign_key "usages", "stocks", column: "cook_id"
