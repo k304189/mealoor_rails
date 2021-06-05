@@ -6,7 +6,8 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 
-import { useCalendar } from "../../../hooks/common/useCalendar";
+import { useCalendar } from "../../../hooks/calendar/useCalendar";
+import { useCalendarApi } from "../../../hooks/calendar/useCalendarApi";
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
 
 type Props = {
@@ -15,10 +16,13 @@ type Props = {
 
 export const CalendarTable: VFC<Props> = memo((props) => {
   const { openEditModal } = props;
+  const { getMonthlySummary } = useCalendarApi();
   const {
     weekDayArray,
     getFormatYearMonth,
     getCalendarArray,
+    getCalendarStartDate,
+    getCalendarEndDate,
   } = useCalendar();
 
   const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
@@ -34,7 +38,15 @@ export const CalendarTable: VFC<Props> = memo((props) => {
   };
 
   useEffect(() => {
-    setMonthlyCalendar(getCalendarArray(displayYearMonth));
+    const calendar = getCalendarArray(displayYearMonth);
+    setMonthlyCalendar(calendar);
+    if (calendar) {
+      const startDate = getCalendarStartDate(calendar);
+      const endDate = getCalendarEndDate(calendar);
+      if (startDate && endDate) {
+        getMonthlySummary(startDate, endDate);
+      }
+    }
   }, [displayYearMonth]);
 
   return (

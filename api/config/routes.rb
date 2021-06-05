@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get 'usages/history/:id', to: "usages#history"
       get 'usages/foodstuff/:id', to: "usages#foodstuff"
       resources :eats, only: %i[create]
+      resources :calendars, only: %i[index]
     end
   end
 end

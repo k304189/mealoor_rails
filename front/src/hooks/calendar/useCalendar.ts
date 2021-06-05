@@ -6,6 +6,8 @@ type returnType = {
   weekDayArray: Array<string>
   getFormatYearMonth: (targetDate: Date) => string;
   getCalendarArray: (yearMonth: string) => Array<CalendarWeekType>
+  getCalendarStartDate: (calendar: Array<CalendarWeekType>) => string | null;
+  getCalendarEndDate: (calendar: Array<CalendarWeekType>) => string | null;
 }
 
 export const useCalendar = (): returnType => {
@@ -88,5 +90,28 @@ export const useCalendar = (): returnType => {
       return monthlyCalendar;
     }, [],
   );
-  return { weekDayArray, getFormatYearMonth, getCalendarArray };
+
+  const getCalendarStartDate = (calendar: Array<CalendarWeekType>) => {
+    let startDate: string | null = calendar[0].dateArray[0].date;
+    if (!startDate) {
+      startDate = null;
+    }
+    return startDate;
+  };
+
+  const getCalendarEndDate = (calendar: Array<CalendarWeekType>) => {
+    let endDate: string | null = calendar.slice(-1)[0].dateArray.slice(-1)[0].date;
+    if (!endDate) {
+      endDate = null;
+    }
+    return endDate;
+  };
+
+  return {
+    weekDayArray,
+    getFormatYearMonth,
+    getCalendarArray,
+    getCalendarStartDate,
+    getCalendarEndDate,
+  };
 };
