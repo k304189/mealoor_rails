@@ -1,5 +1,7 @@
 import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHandHoldingUsd, faDrumstickBite } from "@fortawesome/free-solid-svg-icons";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
@@ -121,10 +123,10 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                     className={date.className}
                   >
                     <Grid
-                      templateColumns="repeat(6, 1fr)"
+                      templateColumns="repeat(8, 1fr)"
                       gap={1}
                     >
-                      <GridItem colSpan={6}>
+                      <GridItem colSpan={8}>
                         <DefaultLink
                           tooltipText={`${date.date}の詳細画面`}
                           onClick={() => {}}
@@ -132,16 +134,16 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                           {Number(date.date.slice(-2))}
                         </DefaultLink>
                       </GridItem>
-                      <GridItem colSpan={2}>
-                        カロリー
-                      </GridItem>
                       <GridItem colSpan={1}>
+                        <FontAwesomeIcon icon={faDrumstickBite} />
+                      </GridItem>
+                      <GridItem colSpan={3}>
                         {getKcalFromMonthlySummary(date.date) || null}
                       </GridItem>
-                      <GridItem colSpan={2}>
-                        金額
-                      </GridItem>
                       <GridItem colSpan={1}>
+                        <FontAwesomeIcon icon={faHandHoldingUsd} />
+                      </GridItem>
+                      <GridItem colSpan={3}>
                         {getPriceFromMonthlySummary(date.date) || null}
                       </GridItem>
                     </Grid>

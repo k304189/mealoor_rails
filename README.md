@@ -70,4 +70,12 @@ docker-compose run --rm front sh -c "npm i react-paginate"
 
 docker-compose run --rm front sh -c "npm i @types/react-paginate"
 
+docker-compose run --rm front sh -c "npm i @fortawesome/fontawesome-svg-core"
+
+docker-compose run --rm front sh -c "npm i @fortawesome/free-solid-svg-icons"
+
+docker-compose run --rm front sh -c "npm i @fortawesome/react-fontawesome"
+
+docker-compose run --rm front sh -c "npm audit fix" # fontawesome関連のライブラリを入れた後、エラーが出たため、実行
+
 ```
