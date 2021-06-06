@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
+import { ChangeEvent, memo, VFC } from "react";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
 import {
   faHandHoldingUsd,
@@ -13,41 +13,52 @@ import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
-import { useCalendarApi } from "../../../hooks/calendar/useCalendarApi";
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
+import { MonthlySummary } from "../../../types/api/monthlySummary";
 
 type Props = {
+  displayYearMonth: string;
+  setDisplayYearMonth: (displayYearMonth: string) => void;
+  monthlyCalendar: Array<CalendarWeekType> | null;
+  monthlySummary: Array<MonthlySummary> | null;
   openEditModal: () => void;
 };
 
 export const CalendarTable: VFC<Props> = memo((props) => {
-  const { openEditModal } = props;
-  const { monthlySummary, getMonthlySummary } = useCalendarApi();
+  const {
+    displayYearMonth,
+    setDisplayYearMonth,
+    monthlyCalendar,
+    monthlySummary,
+    openEditModal,
+  } = props;
+
   const {
     weekDayArray,
     getFormatYearMonth,
-    getCalendarArray,
-    getCalendarStartDate,
-    getCalendarEndDate,
   } = useCalendar();
 
-  const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
-  const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
+  // const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
+  // const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
 
   const getKcalFromMonthlySummary = (date: string):string | null => {
-    const summary = monthlySummary.find((data) => data.date === date);
     let value:string | null = null;
-    if (summary && summary.kcal) {
-      value = `${summary.kcal.toLocaleString()}kcal`;
+    if (monthlySummary) {
+      const summary = monthlySummary.find((data) => data.date === date);
+      if (summary && summary.kcal) {
+        value = `${summary.kcal.toLocaleString()}kcal`;
+      }
     }
     return value;
   };
 
   const getPriceFromMonthlySummary = (date: string):string | null => {
-    const summary = monthlySummary.find((data) => data.date === date);
     let value:string | null = null;
-    if (summary && summary.price) {
-      value = `${summary.price.toLocaleString()}円`;
+    if (monthlySummary) {
+      const summary = monthlySummary.find((data) => data.date === date);
+      if (summary && summary.price) {
+        value = `${summary.price.toLocaleString()}円`;
+      }
     }
     return value;
   };
@@ -61,17 +72,17 @@ export const CalendarTable: VFC<Props> = memo((props) => {
     setDisplayYearMonth(getFormatYearMonth(new Date(year, month + addMonth, 1)));
   };
 
-  useEffect(() => {
-    const calendar = getCalendarArray(displayYearMonth);
-    setMonthlyCalendar(calendar);
-    if (calendar) {
-      const startDate = getCalendarStartDate(calendar);
-      const endDate = getCalendarEndDate(calendar);
-      if (startDate && endDate) {
-        getMonthlySummary(startDate, endDate);
-      }
-    }
-  }, [displayYearMonth]);
+  // useEffect(() => {
+  //   const calendar = getCalendarArray(displayYearMonth);
+  //   setMonthlyCalendar(calendar);
+  //   if (calendar) {
+  //     const startDate = getCalendarStartDate(calendar);
+  //     const endDate = getCalendarEndDate(calendar);
+  //     if (startDate && endDate) {
+  //       getMonthlySummary(startDate, endDate);
+  //     }
+  //   }
+  // }, [displayYearMonth]);
 
   return (
     <>
