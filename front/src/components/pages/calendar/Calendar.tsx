@@ -7,6 +7,7 @@ import { CalendarTable } from "../../organisms/calendar/CalendarTable";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
 
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
+import { useMessage } from "../../../hooks/common/useMessage";
 import { useCalendarApi } from "../../../hooks/calendar/useCalendarApi";
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
 
@@ -18,7 +19,9 @@ export const Calendar: VFC = memo(() => {
     getCalendarEndDate,
   } = useCalendar();
   const { monthlySummary, getMonthlySummary } = useCalendarApi();
+  const { showMessage } = useMessage();
 
+  const [loading, setLoading] = useState(false);
   const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
   const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
   const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType> | null>(null);
@@ -30,13 +33,20 @@ export const Calendar: VFC = memo(() => {
       const startDate = getCalendarStartDate(calendar);
       const endDate = getCalendarEndDate(calendar);
       if (startDate && endDate) {
-        getMonthlySummary(startDate, endDate);
+        setLoading(true);
+        getMonthlySummary(startDate, endDate)
+          .catch(() => {
+            showMessage({ title: "日々のデータの取得に失敗しました", status: "error" });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       }
     }
   }, [displayYearMonth]);
 
   return (
-    <SigninHeaderLayout title="カレンダー">
+    <SigninHeaderLayout loading={loading} title="カレンダー">
       <Box as="article" w="100%" h="100%">
         <CalendarTable
           displayYearMonth={displayYearMonth}
