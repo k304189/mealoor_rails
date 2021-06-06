@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get 'usages/foodstuff/:id', to: "usages#foodstuff"
       resources :eats, only: %i[create]
       resources :calendars, only: %i[index]
+      get 'daily_data/:date', to: "daily_data#index"
     end
   end
 end
