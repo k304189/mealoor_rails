@@ -1,9 +1,9 @@
 import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandHoldingUsd, faDrumstickBite } from "@fortawesome/free-solid-svg-icons";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
@@ -135,13 +135,21 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                         </DefaultLink>
                       </GridItem>
                       <GridItem colSpan={1}>
-                        <FontAwesomeIcon icon={faDrumstickBite} />
+                        <DefaultFontIcon
+                          icon={faDrumstickBite}
+                          tooltipText="摂取カロリー"
+                          color="orange.300"
+                        />
                       </GridItem>
                       <GridItem colSpan={3}>
                         {getKcalFromMonthlySummary(date.date) || null}
                       </GridItem>
                       <GridItem colSpan={1}>
-                        <FontAwesomeIcon icon={faHandHoldingUsd} />
+                        <DefaultFontIcon
+                          icon={faHandHoldingUsd}
+                          tooltipText="食費"
+                          color="yellow.400"
+                        />
                       </GridItem>
                       <GridItem colSpan={3}>
                         {getPriceFromMonthlySummary(date.date) || null}
