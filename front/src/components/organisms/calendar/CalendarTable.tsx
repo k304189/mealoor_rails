@@ -16,7 +16,7 @@ type Props = {
 
 export const CalendarTable: VFC<Props> = memo((props) => {
   const { openEditModal } = props;
-  const { getMonthlySummary } = useCalendarApi();
+  const { monthlySummary, getMonthlySummary } = useCalendarApi();
   const {
     weekDayArray,
     getFormatYearMonth,
@@ -27,6 +27,24 @@ export const CalendarTable: VFC<Props> = memo((props) => {
 
   const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
   const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
+
+  const getKcalFromMonthlySummary = (date: string):string | null => {
+    const summary = monthlySummary.find((data) => data.date === date);
+    let value:string | null = null;
+    if (summary && summary.kcal) {
+      value = `${summary.kcal.toLocaleString()}kcal`;
+    }
+    return value;
+  };
+
+  const getPriceFromMonthlySummary = (date: string):string | null => {
+    const summary = monthlySummary.find((data) => data.date === date);
+    let value:string | null = null;
+    if (summary && summary.price) {
+      value = `${summary.price.toLocaleString()}円`;
+    }
+    return value;
+  };
 
   const onChangeDisplayYearMonth = (e: ChangeEvent<HTMLInputElement>) => {
     setDisplayYearMonth(e.target.value);
@@ -92,15 +110,41 @@ export const CalendarTable: VFC<Props> = memo((props) => {
           </Thead>
           <Tbody w="100%" h="90%">
             {monthlyCalendar.map((week) => (
-              <Tr key={week.weekNo}>
+              <Tr key={week.weekNo} w="100%">
                 {week.dateArray.map((date) => (
-                  <Td key={date.date} p={0} valign="top" className={date.className}>
-                    <DefaultLink
-                      tooltipText={`${date.date}の詳細画面`}
-                      onClick={() => {}}
+                  <Td
+                    key={date.date}
+                    p={0}
+                    w="14%"
+                    h="15%"
+                    valign="top"
+                    className={date.className}
+                  >
+                    <Grid
+                      templateColumns="repeat(6, 1fr)"
+                      gap={1}
                     >
-                      {Number(date.date.slice(-2))}
-                    </DefaultLink>
+                      <GridItem colSpan={6}>
+                        <DefaultLink
+                          tooltipText={`${date.date}の詳細画面`}
+                          onClick={() => {}}
+                        >
+                          {Number(date.date.slice(-2))}
+                        </DefaultLink>
+                      </GridItem>
+                      <GridItem colSpan={2}>
+                        カロリー
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        {getKcalFromMonthlySummary(date.date) || null}
+                      </GridItem>
+                      <GridItem colSpan={2}>
+                        金額
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        {getPriceFromMonthlySummary(date.date) || null}
+                      </GridItem>
+                    </Grid>
                   </Td>
                 ))}
               </Tr>
