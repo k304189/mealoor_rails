@@ -1,6 +1,10 @@
 import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
-import { faHandHoldingUsd, faDrumstickBite } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHandHoldingUsd,
+  faDrumstickBite,
+  faUtensils,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
@@ -95,7 +99,13 @@ export const CalendarTable: VFC<Props> = memo((props) => {
             </SecondaryButton>
           </GridItem>
           <GridItem>
-            <PrimaryButton onClick={openEditModal}>食事登録</PrimaryButton>
+            <PrimaryButton bg="orange.400" onClick={openEditModal}>
+              <DefaultFontIcon
+                icon={faUtensils}
+                tooltipText="食事登録"
+                color="white"
+              />
+            </PrimaryButton>
           </GridItem>
         </Grid>
       </Box>

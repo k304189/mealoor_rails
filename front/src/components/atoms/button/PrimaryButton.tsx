@@ -3,6 +3,8 @@ import { Button } from "@chakra-ui/react";
 
 type Props = {
   children: ReactNode;
+  bg?: string;
+  color?: string;
   disabled?: boolean;
   loading?: boolean;
   size?: "sm" | "md" | "lg" | "xs";
@@ -12,6 +14,8 @@ type Props = {
 export const PrimaryButton: VFC<Props> = memo((props) => {
   const {
     children,
+    bg = "#FF6D62",
+    color = "white",
     disabled = false,
     loading = false,
     size = "md",
@@ -19,8 +23,8 @@ export const PrimaryButton: VFC<Props> = memo((props) => {
   } = props;
   return (
     <Button
-      bg="#FF6D62"
-      color="white"
+      bg={bg}
+      color={color}
       _hover={{ opacity: "0.8" }}
       disabled={disabled || loading}
       isLoading={loading}

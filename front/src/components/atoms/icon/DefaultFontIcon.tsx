@@ -12,7 +12,7 @@ type Props = {
 export const DefaultFontIcon: VFC<Props> = memo((props) => {
   const {
     icon,
-    color = "#FFFFFF",
+    color = "#000000",
     tooltipText = "",
   } = props;
   return (
