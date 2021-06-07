@@ -1,7 +1,8 @@
 import { memo, VFC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
+import { EatButton } from "../../molecules/button/EatButton";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { EatTable } from "../../organisms/dailydata/EatTable";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
@@ -37,9 +38,12 @@ export const DailyData: VFC = memo(() => {
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         デイリーデータの画面
-        <Box className="sectionTitle">
-          食事
-        </Box>
+        <Flex>
+          <Box className="sectionTitle">
+            食事
+          </Box>
+          <EatButton onClick={() => { setEatEditFormIsOpen(true); }} />
+        </Flex>
         <Grid
           templateColumns="repeat(8, 1fr)"
           gap={1}
