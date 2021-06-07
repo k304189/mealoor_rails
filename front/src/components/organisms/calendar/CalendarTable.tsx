@@ -72,18 +72,6 @@ export const CalendarTable: VFC<Props> = memo((props) => {
     setDisplayYearMonth(getFormatYearMonth(new Date(year, month + addMonth, 1)));
   };
 
-  // useEffect(() => {
-  //   const calendar = getCalendarArray(displayYearMonth);
-  //   setMonthlyCalendar(calendar);
-  //   if (calendar) {
-  //     const startDate = getCalendarStartDate(calendar);
-  //     const endDate = getCalendarEndDate(calendar);
-  //     if (startDate && endDate) {
-  //       getMonthlySummary(startDate, endDate);
-  //     }
-  //   }
-  // }, [displayYearMonth]);
-
   return (
     <>
       <Box h="10%">
