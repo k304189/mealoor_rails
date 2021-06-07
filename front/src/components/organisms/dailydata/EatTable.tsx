@@ -1,4 +1,4 @@
-import { memo, useState, VFC } from "react";
+import { memo, useEffect, useState, VFC } from "react";
 import {
   Box,
   Flex,
@@ -14,31 +14,38 @@ import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { Eat } from "../../../types/api/eat";
 
 type Props = {
-  label: string;
+  eatTiming: "朝食" | "昼食" | "夕食" | "間食";
   eatData: Array<Eat> | null;
 };
 
 export const EatTable: VFC<Props> = memo((props) => {
-  const { label, eatData } = props;
+  const { eatTiming, eatData } = props;
 
+  const [displayEatData, setDisplayEatData] = useState<Array<Eat> | null>(null);
   const [pagingOffset, setPagingOffset] = useState(0);
 
   const pagingDisplayNum = 5;
   const onChangePaging = (page: {selected: number}) =>
     setPagingOffset(pagingDisplayNum * page.selected);
 
+  useEffect(() => {
+    if (eatData) {
+      setDisplayEatData(eatData.filter((data) => data.eat_timing === eatTiming));
+    }
+  }, []);
+
   return (
     <>
-      { (eatData && eatData.length > 0) ? (
+      { (displayEatData && displayEatData.length > 0) ? (
         <>
           <Flex>
             <Box className="sectionTitle">
-              {label}
+              {eatTiming}
             </Box>
             <Spacer />
             <DefaultPaging
               displayNum={pagingDisplayNum}
-              dataNum={eatData.length}
+              dataNum={displayEatData.length}
               onPageChange={onChangePaging}
             />
           </Flex>
@@ -54,7 +61,7 @@ export const EatTable: VFC<Props> = memo((props) => {
               </Tr>
             </Thead>
             <Tbody>
-              {eatData
+              {displayEatData
                 .slice(pagingOffset, pagingOffset + pagingDisplayNum)
                 .map((data) => (
                   <Tr key={data.id}>
@@ -78,7 +85,7 @@ export const EatTable: VFC<Props> = memo((props) => {
           </Table>
         </>
       ) : (
-        <Box>{label}の食事データはありません</Box>
+        <Box>{eatTiming}の食事データはありません</Box>
       ) }
     </>
   );

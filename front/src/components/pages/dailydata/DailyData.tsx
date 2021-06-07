@@ -2,7 +2,9 @@ import { memo, VFC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 
+import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { EatTable } from "../../organisms/dailydata/EatTable";
+import { EatEditForm } from "../../organisms/eat/EatEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDailyDataApi } from "../../../hooks/dailydata/useDailyDataApi";
@@ -15,17 +17,24 @@ type UrlParams = {
 export const DailyData: VFC = memo(() => {
   const { date } = useParams<UrlParams>();
   const { showMessage } = useMessage();
-  const { getDailyData, breakfast, lunch, dinner, snack } = useDailyDataApi();
+  const { getDailyData, eatData } = useDailyDataApi();
+
+  const [loading, setLoading] = useState(false);
+  const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     getDailyData(date)
       .catch(() => {
         showMessage({ title: "データの取得に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
   return (
-    <SigninHeaderLayout title={`デイリーデータ：${date}`}>
+    <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         デイリーデータの画面
         <Box className="sectionTitle">
@@ -36,19 +45,27 @@ export const DailyData: VFC = memo(() => {
           gap={1}
         >
           <GridItem colSpan={4}>
-            <EatTable label="朝食" eatData={breakfast} />
+            <EatTable eatTiming="朝食" eatData={eatData} />
           </GridItem>
           <GridItem colSpan={4}>
-            <EatTable label="昼食" eatData={lunch} />
+            <EatTable eatTiming="昼食" eatData={eatData} />
           </GridItem>
           <GridItem colSpan={4}>
-            <EatTable label="夕食" eatData={dinner} />
+            <EatTable eatTiming="夕食" eatData={eatData} />
           </GridItem>
           <GridItem colSpan={4}>
-            <EatTable label="間食" eatData={snack} />
+            <EatTable eatTiming="間食" eatData={eatData} />
           </GridItem>
         </Grid>
       </Box>
+      <DefaultModal
+        isOpen={eatEditFormIsOpen}
+        onClose={() => { setEatEditFormIsOpen(false); }}
+        modalTitle="食事登録"
+        size="4xl"
+      >
+        <EatEditForm />
+      </DefaultModal>
     </SigninHeaderLayout>
   );
 });
