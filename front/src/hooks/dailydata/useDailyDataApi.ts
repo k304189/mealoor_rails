@@ -7,6 +7,7 @@ import { Eat } from "../../types/api/eat";
 type returnType = {
   getDailyData: (date: string) => Promise<number>;
   eatData: Array<Eat> | null;
+  setEatData: (eatData: Array<Eat> | null) => void;
 };
 
 export const useDailyDataApi = (): returnType => {
@@ -24,5 +25,5 @@ export const useDailyDataApi = (): returnType => {
       return response.status;
     }, [],
   );
-  return { getDailyData, eatData };
+  return { getDailyData, eatData, setEatData };
 };

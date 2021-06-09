@@ -1,10 +1,9 @@
 import { memo, VFC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
-import { EatButton } from "../../molecules/button/EatButton";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
-import { EatTable } from "../../organisms/dailydata/EatTable";
+import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
@@ -18,10 +17,16 @@ type UrlParams = {
 export const DailyData: VFC = memo(() => {
   const { date } = useParams<UrlParams>();
   const { showMessage } = useMessage();
-  const { getDailyData, eatData } = useDailyDataApi();
+  const { getDailyData, eatData, setEatData } = useDailyDataApi();
 
   const [loading, setLoading] = useState(false);
   const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
+
+  const addEatDataToDailyData = (eat: Eat) => {
+    if (eatData) {
+      setEatData([...eatData, eat]);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -38,29 +43,7 @@ export const DailyData: VFC = memo(() => {
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         デイリーデータの画面
-        <Flex>
-          <Box className="sectionTitle">
-            食事
-          </Box>
-          <EatButton onClick={() => { setEatEditFormIsOpen(true); }} />
-        </Flex>
-        <Grid
-          templateColumns="repeat(8, 1fr)"
-          gap={1}
-        >
-          <GridItem colSpan={4}>
-            <EatTable eatTiming="朝食" eatData={eatData} />
-          </GridItem>
-          <GridItem colSpan={4}>
-            <EatTable eatTiming="昼食" eatData={eatData} />
-          </GridItem>
-          <GridItem colSpan={4}>
-            <EatTable eatTiming="夕食" eatData={eatData} />
-          </GridItem>
-          <GridItem colSpan={4}>
-            <EatTable eatTiming="間食" eatData={eatData} />
-          </GridItem>
-        </Grid>
+        <EatDataArea eatData={eatData} openEditModal={() => { setEatEditFormIsOpen(true); }} />
       </Box>
       <DefaultModal
         isOpen={eatEditFormIsOpen}
@@ -68,7 +51,7 @@ export const DailyData: VFC = memo(() => {
         modalTitle="食事登録"
         size="4xl"
       >
-        <EatEditForm />
+        <EatEditForm setEatData={addEatDataToDailyData} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

@@ -32,7 +32,7 @@ export const EatTable: VFC<Props> = memo((props) => {
     if (eatData) {
       setDisplayEatData(eatData.filter((data) => data.eat_timing === eatTiming));
     }
-  }, []);
+  }, [eatData]);
 
   return (
     <>

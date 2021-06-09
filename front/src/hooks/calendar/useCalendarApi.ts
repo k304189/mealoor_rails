@@ -7,6 +7,7 @@ import { MonthlySummary } from "../../types/api/monthlySummary";
 type returnType = {
   monthlySummary: Array<MonthlySummary>;
   getMonthlySummary: (from: string, to: string) => Promise<number>;
+  setMonthlySummary: (monthlySummary: Array<MonthlySummary>) => void;
 };
 
 export const useCalendarApi = (): returnType => {
@@ -21,5 +22,5 @@ export const useCalendarApi = (): returnType => {
       return response.status;
     }, [],
   );
-  return { monthlySummary, getMonthlySummary };
+  return { monthlySummary, getMonthlySummary, setMonthlySummary };
 };

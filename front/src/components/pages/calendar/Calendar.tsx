@@ -7,6 +7,7 @@ import { CalendarTable } from "../../organisms/calendar/CalendarTable";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
 
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
+import { Eat } from "../../../types/api/eat";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useCalendarApi } from "../../../hooks/calendar/useCalendarApi";
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
@@ -18,13 +19,33 @@ export const Calendar: VFC = memo(() => {
     getCalendarStartDate,
     getCalendarEndDate,
   } = useCalendar();
-  const { monthlySummary, getMonthlySummary } = useCalendarApi();
+  const { monthlySummary, getMonthlySummary, setMonthlySummary } = useCalendarApi();
   const { showMessage } = useMessage();
 
   const [loading, setLoading] = useState(false);
   const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
   const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
   const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType> | null>(null);
+
+  const addEatDataToCalendar = (eat: Eat) => {
+    const tmpMonthlySummary = [...monthlySummary];
+    const targetIndex = tmpMonthlySummary.findIndex((data) => data.date === eat.eat_date);
+    if (targetIndex > -1) {
+      const targetSummary = tmpMonthlySummary[targetIndex];
+      if (targetSummary) {
+        targetSummary.kcal = (targetSummary.kcal ?? 0) + (eat.kcal ?? 0);
+        targetSummary.price = (targetSummary.price ?? 0) + (eat.price ?? 0);
+        tmpMonthlySummary[targetIndex] = targetSummary;
+      }
+    } else {
+      tmpMonthlySummary.push({
+        date: eat.eat_date,
+        kcal: eat.kcal ?? 0,
+        price: eat.price ?? 0,
+      });
+    }
+    setMonthlySummary([...tmpMonthlySummary]);
+  };
 
   useEffect(() => {
     const calendar = getCalendarArray(displayYearMonth);
@@ -62,7 +83,7 @@ export const Calendar: VFC = memo(() => {
         modalTitle="食事登録"
         size="4xl"
       >
-        <EatEditForm monthlySummary={monthlySummary} />
+        <EatEditForm setEatData={addEatDataToCalendar} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

@@ -5,7 +5,6 @@ import { useEatApi } from "../../../hooks/eat/useEatApi";
 import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { Eat } from "../../../types/api/eat";
-import { MonthlySummary } from "../../../types/api/monthlySummary";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { InputName } from "../input/common/InputName";
@@ -24,11 +23,11 @@ import { CheckDiscounted } from "../input/common/CheckDiscounted";
 
 type Props = {
   eat?: Eat | null;
-  monthlySummary?: Array<MonthlySummary> | null;
+  setEatData: (eat: Eat) => void;
 };
 
 export const EatEditForm: VFC<Props> = memo((props) => {
-  const { eat = null, monthlySummary = null } = props;
+  const { eat = null, setEatData } = props;
   const { showMessage } = useMessage();
   const { addEat } = useEatApi();
   const {
@@ -171,9 +170,10 @@ export const EatEditForm: VFC<Props> = memo((props) => {
   const callAddEat = () => {
     setButtonLoading(true);
     const addData = getEatApiData();
-    addEat(addData, monthlySummary)
-      .then(() => {
+    addEat(addData)
+      .then((res) => {
         showMessage({ title: "登録に成功しました", status: "success" });
+        setEatData(res);
         initModal();
       })
       .catch(() => {
