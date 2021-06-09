@@ -12,21 +12,23 @@ import {
 
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { DeleteButton } from "../../molecules/button/DeleteButton";
 import { Eat } from "../../../types/api/eat";
 
 type Props = {
   eatTiming: "朝食" | "昼食" | "夕食" | "間食";
   eatData: Array<Eat> | null;
   onClickEatNameLink: (id: number) => void;
+  onClickDeleteButton: (id: number) => void;
 };
 
 export const EatTable: VFC<Props> = memo((props) => {
-  const { eatTiming, eatData, onClickEatNameLink } = props;
+  const { eatTiming, eatData, onClickEatNameLink, onClickDeleteButton } = props;
 
   const [displayEatData, setDisplayEatData] = useState<Array<Eat> | null>(null);
   const [pagingOffset, setPagingOffset] = useState(0);
 
-  const pagingDisplayNum = 5;
+  const pagingDisplayNum = 3;
   const onChangePaging = (page: {selected: number}) =>
     setPagingOffset(pagingDisplayNum * page.selected);
 
@@ -59,7 +61,7 @@ export const EatTable: VFC<Props> = memo((props) => {
                 <Td>食事タイプ</Td>
                 <Td>値段</Td>
                 <Td>カロリー</Td>
-                <Td>店</Td>
+                <Td />
               </Tr>
             </Thead>
             <Tbody>
@@ -84,7 +86,12 @@ export const EatTable: VFC<Props> = memo((props) => {
                         ? `${data.kcal.toLocaleString()}kcal`
                         : ""}
                     </Td>
-                    <Td>{data.shop}</Td>
+                    <Td>
+                      <DeleteButton
+                        tooltipText="食事データ削除"
+                        onClick={() => { onClickDeleteButton(data.id); }}
+                      />
+                    </Td>
                   </Tr>
                 ))}
             </Tbody>

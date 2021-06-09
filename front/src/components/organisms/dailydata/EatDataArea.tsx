@@ -9,10 +9,11 @@ type Props = {
   eatData: Array<Eat> | null;
   openEditModal: () => void;
   onClickEatNameLink: (id: number) => void;
+  onClickDeleteButton: (id: number) => void;
 };
 
 export const EatDataArea: VFC<Props> = memo((props) => {
-  const { eatData, openEditModal, onClickEatNameLink } = props;
+  const { eatData, openEditModal, onClickEatNameLink, onClickDeleteButton } = props;
 
   return (
     <Box>
@@ -30,6 +31,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
           <EatTable
             eatTiming="朝食"
             onClickEatNameLink={onClickEatNameLink}
+            onClickDeleteButton={onClickDeleteButton}
             eatData={eatData}
           />
         </GridItem>
@@ -37,6 +39,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
           <EatTable
             eatTiming="昼食"
             onClickEatNameLink={onClickEatNameLink}
+            onClickDeleteButton={onClickDeleteButton}
             eatData={eatData}
           />
         </GridItem>
@@ -44,6 +47,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
           <EatTable
             eatTiming="夕食"
             onClickEatNameLink={onClickEatNameLink}
+            onClickDeleteButton={onClickDeleteButton}
             eatData={eatData}
           />
         </GridItem>
@@ -51,6 +55,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
           <EatTable
             eatTiming="間食"
             onClickEatNameLink={onClickEatNameLink}
+            onClickDeleteButton={onClickDeleteButton}
             eatData={eatData}
           />
         </GridItem>

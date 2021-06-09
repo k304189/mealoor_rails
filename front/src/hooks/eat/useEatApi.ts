@@ -7,6 +7,7 @@ import { useRequestHeader } from "../user/useRequestHeader";
 type returnType = {
   addEat: (addData: Eat) => Promise<Eat>;
   editEat: (editData: Eat) => Promise<Eat>;
+  deleteEat: (id: number) => Promise<number>;
 };
 
 export const useEatApi = (): returnType => {
@@ -22,6 +23,7 @@ export const useEatApi = (): returnType => {
       return eat;
     }, [],
   );
+
   const editEat = useCallback(
     async (editData: Eat) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/eats/${editData.id}`;
@@ -33,5 +35,13 @@ export const useEatApi = (): returnType => {
       return eat;
     }, [],
   );
-  return { addEat, editEat };
+
+  const deleteEat = useCallback(
+    async (id: number) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/eats/${id}`;
+      const response = await axios.delete(url, { headers: getRequestHeader() });
+      return response.status;
+    }, [],
+  );
+  return { addEat, editEat, deleteEat };
 };

@@ -16,6 +16,12 @@ class Api::V1::EatsController < ApplicationController
     render json: @eat
   end
 
+  def destroy
+    @eat = current_user.eats.find(params[:id])
+    @eat.destroy!
+    render json: {}, status: :ok
+  end
+
   private
     def eat_add_param
       params.require(:eat)
