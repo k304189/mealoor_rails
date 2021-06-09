@@ -5,9 +5,8 @@ import { Eat } from "../../types/api/eat";
 import { useRequestHeader } from "../user/useRequestHeader";
 
 type returnType = {
-  addEat: (
-    addData: Eat,
-  ) => Promise<Eat>;
+  addEat: (addData: Eat) => Promise<Eat>;
+  editEat: (editData: Eat) => Promise<Eat>;
 };
 
 export const useEatApi = (): returnType => {
@@ -23,5 +22,16 @@ export const useEatApi = (): returnType => {
       return eat;
     }, [],
   );
-  return { addEat };
+  const editEat = useCallback(
+    async (editData: Eat) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/eats/${editData.id}`;
+      const json = {
+        eat: editData,
+      };
+      const response = await axios.patch(url, json, { headers: getRequestHeader() });
+      const eat: Eat = response.data;
+      return eat;
+    }, [],
+  );
+  return { addEat, editEat };
 };

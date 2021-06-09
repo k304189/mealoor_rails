@@ -11,15 +11,17 @@ import {
 } from "@chakra-ui/react";
 
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
+import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { Eat } from "../../../types/api/eat";
 
 type Props = {
   eatTiming: "朝食" | "昼食" | "夕食" | "間食";
   eatData: Array<Eat> | null;
+  onClickEatNameLink: (id: number) => void;
 };
 
 export const EatTable: VFC<Props> = memo((props) => {
-  const { eatTiming, eatData } = props;
+  const { eatTiming, eatData, onClickEatNameLink } = props;
 
   const [displayEatData, setDisplayEatData] = useState<Array<Eat> | null>(null);
   const [pagingOffset, setPagingOffset] = useState(0);
@@ -65,7 +67,11 @@ export const EatTable: VFC<Props> = memo((props) => {
                 .slice(pagingOffset, pagingOffset + pagingDisplayNum)
                 .map((data) => (
                   <Tr key={data.id}>
-                    <Td>{data.name}</Td>
+                    <Td>
+                      <DefaultLink onClick={() => { onClickEatNameLink(data.id); }}>
+                        {data.name}
+                      </DefaultLink>
+                    </Td>
                     <Td>{data.category}</Td>
                     <Td>{data.eat_type}</Td>
                     <Td>

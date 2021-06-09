@@ -21,10 +21,47 @@ export const DailyData: VFC = memo(() => {
 
   const [loading, setLoading] = useState(false);
   const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
+  const [editEat, setEditEat] = useState<Eat | null>(null);
+  const [eatEditFormTitle, setEatEditFormTitle] = useState("");
 
-  const addEatDataToDailyData = (eat: Eat) => {
+  const updateEatDataInDailyData = (eat: Eat) => {
+    if (eat.eat_date === date && eatData) {
+      const tmpEatData = [...eatData];
+      const index = tmpEatData.findIndex((data) => data.id === eat.id);
+      if (index > -1) {
+        tmpEatData[index] = eat;
+      } else {
+        tmpEatData.push(eat);
+      }
+      setEatData([...tmpEatData]);
+    }
+  };
+
+  const openEatEditModal = (editMode = false) => {
+    let title = "";
+    if (editMode) {
+      title = "食事編集";
+    } else {
+      setEditEat(null);
+      title = "食事登録";
+    }
+    setEatEditFormTitle(title);
+    setEatEditFormIsOpen(true);
+  };
+
+  const onClickEatNameLink = (id = 0) => {
     if (eatData) {
-      setEatData([...eatData, eat]);
+      const index = eatData.findIndex((data) => data.id === id);
+      let selectedEat: Eat | null = null;
+      let editMode = false;
+      if (index > 0) {
+        selectedEat = eatData[index];
+        editMode = true;
+      }
+      setEditEat(selectedEat);
+      openEatEditModal(editMode);
+    } else {
+      showMessage({ title: "選択された食事データを開くことができません", status: "error" });
     }
   };
 
@@ -43,15 +80,19 @@ export const DailyData: VFC = memo(() => {
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         デイリーデータの画面
-        <EatDataArea eatData={eatData} openEditModal={() => { setEatEditFormIsOpen(true); }} />
+        <EatDataArea
+          eatData={eatData}
+          openEditModal={openEatEditModal}
+          onClickEatNameLink={onClickEatNameLink}
+        />
       </Box>
       <DefaultModal
         isOpen={eatEditFormIsOpen}
         onClose={() => { setEatEditFormIsOpen(false); }}
-        modalTitle="食事登録"
+        modalTitle={eatEditFormTitle}
         size="4xl"
       >
-        <EatEditForm setEatData={addEatDataToDailyData} />
+        <EatEditForm eat={editEat} setEatData={updateEatDataInDailyData} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

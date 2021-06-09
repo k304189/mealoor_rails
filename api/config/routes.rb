@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       post "stocks/cook"
       get 'usages/history/:id', to: "usages#history"
       get 'usages/foodstuff/:id', to: "usages#foodstuff"
-      resources :eats, only: %i[create]
+      resources :eats, only: %i[create update]
       resources :calendars, only: %i[index]
       get 'daily_data/:date', to: "daily_data#index"
     end

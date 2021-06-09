@@ -29,7 +29,7 @@ type Props = {
 export const EatEditForm: VFC<Props> = memo((props) => {
   const { eat = null, setEatData } = props;
   const { showMessage } = useMessage();
-  const { addEat } = useEatApi();
+  const { addEat, editEat } = useEatApi();
   const {
     validateName,
     validateFoodCategory,
@@ -185,7 +185,20 @@ export const EatEditForm: VFC<Props> = memo((props) => {
   };
 
   const callEditEat = () => {
-    console.log(getEatApiData());
+    setButtonLoading(true);
+    const eatData = getEatApiData();
+    editEat(eatData)
+      .then((res) => {
+        showMessage({ title: "更新に成功しました", status: "success" });
+        setEatData(res);
+        initModal();
+      })
+      .catch(() => {
+        showMessage({ title: "更新に失敗しました", status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
   };
 
   useEffect(() => {

@@ -10,6 +10,12 @@ class Api::V1::EatsController < ApplicationController
     end
   end
 
+  def update
+    @eat = current_user.eats.find(params[:id])
+    @eat.update!(eat_add_param)
+    render json: @eat
+  end
+
   private
     def eat_add_param
       params.require(:eat)
