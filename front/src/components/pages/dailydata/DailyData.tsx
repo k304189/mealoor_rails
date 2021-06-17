@@ -95,6 +95,7 @@ export const DailyData: VFC = memo(() => {
               setEatData([...tmpEatData]);
             }
           }
+          setEatDeleteDialogIsOpen(false);
         })
         .catch(() => {
           showMessage({ title: "食事データの削除に失敗しました", status: "error" });

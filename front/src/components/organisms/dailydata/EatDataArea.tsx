@@ -1,7 +1,18 @@
-import { memo, VFC } from "react";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { memo, useState, VFC } from "react";
+import {
+  Box,
+  Flex,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  Spacer,
+} from "@chakra-ui/react";
 
-import { EatTable } from "./EatTable";
+import { DefaultPaging } from "../../atoms/button/DefaultPaging";
+import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { DeleteButton } from "../../molecules/button/DeleteButton";
 import { EatButton } from "../../molecules/button/EatButton";
 import { Eat } from "../../../types/api/eat";
 
@@ -14,54 +25,78 @@ type Props = {
 
 export const EatDataArea: VFC<Props> = memo((props) => {
   const { eatData, openEditModal, onClickEatNameLink, onClickDeleteButton } = props;
+  const [pagingOffset, setPagingOffset] = useState(0);
+
+  const pagingDisplayNum = 5;
+  const onChangePaging = (page: {selected: number}) =>
+    setPagingOffset(pagingDisplayNum * page.selected);
 
   return (
     <Box>
-      <Flex>
-        <Box className="sectionTitle">
-          食事
-        </Box>
-        <Box ml={3}>
-          <EatButton onClick={() => { openEditModal(); }} />
-        </Box>
-      </Flex>
-      <Grid
-        templateColumns="repeat(2, 1fr)"
-        gap={2}
-      >
-        <GridItem colSpan={1}>
-          <EatTable
-            eatTiming="朝食"
-            onClickEatNameLink={onClickEatNameLink}
-            onClickDeleteButton={onClickDeleteButton}
-            eatData={eatData}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <EatTable
-            eatTiming="昼食"
-            onClickEatNameLink={onClickEatNameLink}
-            onClickDeleteButton={onClickDeleteButton}
-            eatData={eatData}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <EatTable
-            eatTiming="夕食"
-            onClickEatNameLink={onClickEatNameLink}
-            onClickDeleteButton={onClickDeleteButton}
-            eatData={eatData}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <EatTable
-            eatTiming="間食"
-            onClickEatNameLink={onClickEatNameLink}
-            onClickDeleteButton={onClickDeleteButton}
-            eatData={eatData}
-          />
-        </GridItem>
-      </Grid>
+      { (eatData && eatData.length > 0) ? (
+        <>
+          <Flex>
+            <Box className="sectionTitle">
+              食事
+            </Box>
+            <Box ml={3}>
+              <EatButton onClick={() => { openEditModal(); }} />
+            </Box>
+            <Spacer />
+            <DefaultPaging
+              displayNum={pagingDisplayNum}
+              dataNum={eatData.length}
+              onPageChange={onChangePaging}
+            />
+          </Flex>
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Td>料理名</Td>
+                <Td>カテゴリー</Td>
+                <Td>食事タイミング</Td>
+                <Td>食事タイプ</Td>
+                <Td>値段</Td>
+                <Td>カロリー</Td>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {eatData
+                .slice(pagingOffset, pagingOffset + pagingDisplayNum)
+                .map((data) => (
+                  <Tr key={data.id}>
+                    <Td>
+                      <DefaultLink onClick={() => { onClickEatNameLink(data.id); }}>
+                        {data.name}
+                      </DefaultLink>
+                    </Td>
+                    <Td>{data.category}</Td>
+                    <Td>{data.eat_timing}</Td>
+                    <Td>{data.eat_type}</Td>
+                    <Td>
+                      {data.price
+                        ? `${data.price.toLocaleString()}円`
+                        : ""}
+                    </Td>
+                    <Td>
+                      {data.kcal
+                        ? `${data.kcal.toLocaleString()}kcal`
+                        : ""}
+                    </Td>
+                    <Td>
+                      <DeleteButton
+                        tooltipText="食事データ削除"
+                        onClick={() => { onClickDeleteButton(data.id); }}
+                      />
+                    </Td>
+                  </Tr>
+                ))}
+            </Tbody>
+          </Table>
+        </>
+      ) : (
+        <Box>食事のデータはありません</Box>
+      ) }
     </Box>
   );
 });

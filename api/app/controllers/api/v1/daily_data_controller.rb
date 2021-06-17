@@ -5,7 +5,7 @@ class Api::V1::DailyDataController < ApplicationController
     date = params[:date]
     eat = current_user.eats
                       .where(eat_date: date)
-                      .order(:eat_timing)
+                      .order(Arel.sql("FIELD(eat_timing, '朝食', '昼食', '夕食', '間食')"))
     render json: { eat: eat }
   end
 end

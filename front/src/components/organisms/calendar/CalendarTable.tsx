@@ -1,4 +1,5 @@
 import { ChangeEvent, memo, VFC } from "react";
+import { useHistory } from "react-router-dom";
 import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
 import {
   faHandHoldingUsd,
@@ -24,6 +25,7 @@ type Props = {
 };
 
 export const CalendarTable: VFC<Props> = memo((props) => {
+  const history = useHistory();
   const {
     displayYearMonth,
     setDisplayYearMonth,
@@ -66,6 +68,10 @@ export const CalendarTable: VFC<Props> = memo((props) => {
   const addDisplayYearMonth = (addMonth:number) => {
     const [year, month] = displayYearMonth.split("-").map(Number);
     setDisplayYearMonth(getFormatYearMonth(new Date(year, month + addMonth, 1)));
+  };
+
+  const onClickDateLink = (date: string) => {
+    history.push(`/dailydata/${date}`);
   };
 
   return (
@@ -128,7 +134,7 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                       <GridItem colSpan={8}>
                         <DefaultLink
                           tooltipText={`${date.date}の詳細画面`}
-                          onClick={() => {}}
+                          onClick={() => { onClickDateLink(date.date); }}
                         >
                           {Number(date.date.slice(-2))}
                         </DefaultLink>
