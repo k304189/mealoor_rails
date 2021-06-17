@@ -11,6 +11,7 @@ import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { EatButton } from "../../molecules/button/EatButton";
+import { HealthButton } from "../../molecules/button/HealthButton";
 
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
@@ -99,7 +100,10 @@ export const CalendarTable: VFC<Props> = memo((props) => {
               翌月
             </SecondaryButton>
           </GridItem>
-          <GridItem>
+          <GridItem colspan={1}>
+            <HealthButton onClick={() => {}} />
+          </GridItem>
+          <GridItem colspan={1}>
             <EatButton onClick={openEditModal} />
           </GridItem>
         </Grid>
