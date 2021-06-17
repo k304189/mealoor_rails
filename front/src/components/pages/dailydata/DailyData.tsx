@@ -1,7 +1,8 @@
 import { memo, VFC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
@@ -18,6 +19,7 @@ type UrlParams = {
 
 export const DailyData: VFC = memo(() => {
   const { date } = useParams<UrlParams>();
+  const history = useHistory();
   const { showMessage } = useMessage();
   const { getDailyData, eatData, setEatData } = useDailyDataApi();
   const { deleteEat } = useEatApi();
@@ -122,7 +124,7 @@ export const DailyData: VFC = memo(() => {
   return (
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
-        デイリーデータの画面
+        <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
         <EatDataArea
           eatData={eatData}
           openEditModal={openEatEditModal}
