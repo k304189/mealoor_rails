@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const EatButton: VFC<Props> = memo((props) => {
-  const { bg = "#FF0000", color = "#FFFFFF", tooltipText = "食事登録", onClick } = props;
+  const { bg = "#FF8800", color = "#FFFFFF", tooltipText = "食事登録", onClick } = props;
   return (
     <Button bg={bg} onClick={onClick}>
       <DefaultFontIcon

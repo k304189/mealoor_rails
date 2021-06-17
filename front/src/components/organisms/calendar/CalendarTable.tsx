@@ -3,14 +3,13 @@ import { Box, Center, Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakr
 import {
   faHandHoldingUsd,
   faDrumstickBite,
-  faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
-import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
+import { EatButton } from "../../molecules/button/EatButton";
 
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
 import { CalendarWeekType } from "../../../types/pages/calendar/calendarWeekType";
@@ -37,9 +36,6 @@ export const CalendarTable: VFC<Props> = memo((props) => {
     weekDayArray,
     getFormatYearMonth,
   } = useCalendar();
-
-  // const [monthlyCalendar, setMonthlyCalendar] = useState<Array<CalendarWeekType>>();
-  // const [displayYearMonth, setDisplayYearMonth] = useState(getFormatYearMonth(new Date()));
 
   const getKcalFromMonthlySummary = (date: string):string | null => {
     let value:string | null = null;
@@ -98,13 +94,7 @@ export const CalendarTable: VFC<Props> = memo((props) => {
             </SecondaryButton>
           </GridItem>
           <GridItem>
-            <PrimaryButton bg="orange.400" onClick={openEditModal}>
-              <DefaultFontIcon
-                icon={faUtensils}
-                tooltipText="食事登録"
-                color="white"
-              />
-            </PrimaryButton>
+            <EatButton onClick={openEditModal} />
           </GridItem>
         </Grid>
       </Box>

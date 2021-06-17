@@ -21,7 +21,9 @@ export const EatDataArea: VFC<Props> = memo((props) => {
         <Box className="sectionTitle">
           食事
         </Box>
-        <EatButton onClick={() => { openEditModal(); }} />
+        <Box ml={3}>
+          <EatButton onClick={() => { openEditModal(); }} />
+        </Box>
       </Flex>
       <Grid
         templateColumns="repeat(2, 1fr)"
