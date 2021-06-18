@@ -1,6 +1,7 @@
 import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
+import { useHealthApi } from "../../../hooks/health/useHealthApi";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useHealthValidate } from "../../../hooks/validate/useHealthValidate";
 import { Health } from "../../../types/api/health";
@@ -19,6 +20,7 @@ type Props = {
 export const HealthEditForm: VFC<Props> = memo((props) => {
   const { health = null, setHealthData } = props;
   const { showMessage } = useMessage();
+  const { addHealth } = useHealthApi();
   const { validateRecordingDate } = useHealthValidate();
 
   const [id, setId] = useState(0);
@@ -44,6 +46,15 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
     setRecordingDateError(errorMsg);
   };
 
+  const getHealthApiData = () => {
+    return {
+      id,
+      weight,
+      recording_date: recordingDate,
+      fat_percent: fatPercent,
+    };
+  };
+
   const initModal = () => {
     setId(health?.id ?? 0);
     setRecordingDate(health?.recording_date ?? "");
@@ -52,10 +63,32 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
     setFatWeight(health?.fat_weight ?? 0);
 
     let title = "登録";
-    if (id === 0) {
+    if (id !== 0) {
       title = "更新";
     }
     setButtonTitle(title);
+  };
+
+  const onClickModalButton = () => {
+    setButtonLoading(true);
+    const apiData = getHealthApiData();
+    const execType = "登録";
+    const callFunction: (data: Health) => Promise<Health> = addHealth;
+    // if (id === 0) {
+    //   callFunction = addHealth;
+    //   execType = "登録";
+    // }
+    callFunction(apiData)
+      .then(() => {
+        showMessage({ title: `${execType}に成功しました`, status: "success" });
+        initModal();
+      })
+      .catch(() => {
+        showMessage({ title: `${execType}に失敗しました`, status: "error" });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -104,7 +137,7 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
             <PrimaryButton
               disabled={buttonDisabled}
               loading={buttonLoading}
-              onClick={() => {}}
+              onClick={onClickModalButton}
             >
               {buttonTitle}
             </PrimaryButton>
