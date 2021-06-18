@@ -9,4 +9,5 @@ class User < ActiveRecord::Base
 
   has_many :stocks
   has_many :eats
+  has_many :healths
 end
