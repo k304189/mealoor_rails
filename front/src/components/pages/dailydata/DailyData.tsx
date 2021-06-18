@@ -1,6 +1,6 @@
 import { memo, VFC, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { EatButton } from "../../molecules/button/EatButton";
@@ -125,8 +125,10 @@ export const DailyData: VFC = memo(() => {
   return (
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
-        <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
-        <EatButton onClick={openEatEditModal} />
+        <HStack spacing={5}>
+          <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
+          <EatButton onClick={openEatEditModal} />
+        </HStack>
         <EatDataArea
           eatData={eatData}
           onClickEatNameLink={onClickEatNameLink}
