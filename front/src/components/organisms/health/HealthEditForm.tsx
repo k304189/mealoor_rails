@@ -79,8 +79,9 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
     //   execType = "登録";
     // }
     callFunction(apiData)
-      .then(() => {
+      .then((res) => {
         showMessage({ title: `${execType}に成功しました`, status: "success" });
+        setHealthData(res);
         initModal();
       })
       .catch(() => {

@@ -22,7 +22,7 @@ export const InputWeight: VFC<Props> = memo((props) => {
         onChange={onChange}
         unit="kg"
         step={0.01}
-        precision={1}
+        precision={2}
         size={size}
       />
     </DefaultInputForm>

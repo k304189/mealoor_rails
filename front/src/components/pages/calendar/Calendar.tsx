@@ -63,6 +63,26 @@ export const Calendar: VFC = memo(() => {
     setMonthlySummary([...tmpMonthlySummary]);
   };
 
+  const setHealthData = (health: Health) => {
+    const tmpMonthlySummary = [...monthlySummary];
+    const targetIndex = tmpMonthlySummary.findIndex((data) => data.date === health.recording_date);
+    if (targetIndex > -1) {
+      const targetSummary = tmpMonthlySummary[targetIndex];
+      if (targetSummary) {
+        targetSummary.weight = health.weight;
+        targetSummary.fat_percent = health.fat_percent;
+        tmpMonthlySummary[targetIndex] = targetSummary;
+      }
+    } else {
+      tmpMonthlySummary.push({
+        date: health.recording_date,
+        weight: health.weight ?? 0,
+        fat_percent: health.fat_percent ?? 0,
+      });
+    }
+    setMonthlySummary([...tmpMonthlySummary]);
+  };
+
   useEffect(() => {
     const calendar = getCalendarArray(displayYearMonth);
     setMonthlyCalendar(calendar);
@@ -135,7 +155,7 @@ export const Calendar: VFC = memo(() => {
         modalTitle="体調登録"
         size="2xl"
       >
-        <HealthEditForm setHealthData={(health: Health) => {}} />
+        <HealthEditForm setHealthData={setHealthData} />
       </DefaultModal>
     </SigninHeaderLayout>
   );

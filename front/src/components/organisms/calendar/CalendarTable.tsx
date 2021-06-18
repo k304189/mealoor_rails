@@ -2,6 +2,8 @@ import { memo, VFC } from "react";
 import { useHistory } from "react-router-dom";
 import { Grid, GridItem, Table, Thead, Tbody, Td, Tr } from "@chakra-ui/react";
 import {
+  faWeight,
+  faPercent,
   faHandHoldingUsd,
   faDrumstickBite,
 } from "@fortawesome/free-solid-svg-icons";
@@ -51,6 +53,28 @@ export const CalendarTable: VFC<Props> = memo((props) => {
     return value;
   };
 
+  const getWeightFromMonthlySummary = (date: string):string | null => {
+    let value:string | null = null;
+    if (monthlySummary) {
+      const summary = monthlySummary.find((data) => data.date === date);
+      if (summary && summary.weight) {
+        value = `${summary.weight}kg`;
+      }
+    }
+    return value;
+  };
+
+  const getFatPercentFromMonthlySummary = (date: string):string | null => {
+    let value:string | null = null;
+    if (monthlySummary) {
+      const summary = monthlySummary.find((data) => data.date === date);
+      if (summary && summary.fat_percent) {
+        value = `${summary.fat_percent}%`;
+      }
+    }
+    return value;
+  };
+
   const onClickDateLink = (date: string) => {
     history.push(`/dailydata/${date}`);
   };
@@ -91,6 +115,26 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                         >
                           {Number(date.date.slice(-2))}
                         </DefaultLink>
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        <DefaultFontIcon
+                          icon={faWeight}
+                          tooltipText="体重"
+                          color="teal.400"
+                        />
+                      </GridItem>
+                      <GridItem colSpan={3}>
+                        {getWeightFromMonthlySummary(date.date) || null}
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        <DefaultFontIcon
+                          icon={faPercent}
+                          tooltipText="体脂肪率"
+                          color="cyan.400"
+                        />
+                      </GridItem>
+                      <GridItem colSpan={3}>
+                        {getFatPercentFromMonthlySummary(date.date) || null}
                       </GridItem>
                       <GridItem colSpan={1}>
                         <DefaultFontIcon
