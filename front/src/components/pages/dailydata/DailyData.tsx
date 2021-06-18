@@ -62,7 +62,7 @@ export const DailyData: VFC = memo(() => {
       const index = eatData.findIndex((data) => data.id === id);
       let selectedEat: Eat | null = null;
       let editMode = false;
-      if (index > 0) {
+      if (index > -1) {
         selectedEat = eatData[index];
         editMode = true;
       }
