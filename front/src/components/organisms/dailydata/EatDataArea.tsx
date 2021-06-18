@@ -13,18 +13,16 @@ import {
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DeleteButton } from "../../molecules/button/DeleteButton";
-import { EatButton } from "../../molecules/button/EatButton";
 import { Eat } from "../../../types/api/eat";
 
 type Props = {
   eatData: Array<Eat> | null;
-  openEditModal: () => void;
   onClickEatNameLink: (id: number) => void;
   onClickDeleteButton: (id: number) => void;
 };
 
 export const EatDataArea: VFC<Props> = memo((props) => {
-  const { eatData, openEditModal, onClickEatNameLink, onClickDeleteButton } = props;
+  const { eatData, onClickEatNameLink, onClickDeleteButton } = props;
   const [pagingOffset, setPagingOffset] = useState(0);
 
   const pagingDisplayNum = 5;
@@ -38,9 +36,6 @@ export const EatDataArea: VFC<Props> = memo((props) => {
           <Flex>
             <Box className="sectionTitle">
               食事
-            </Box>
-            <Box ml={3}>
-              <EatButton onClick={() => { openEditModal(); }} />
             </Box>
             <Spacer />
             <DefaultPaging

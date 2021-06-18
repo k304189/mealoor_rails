@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
+import { EatButton } from "../../molecules/button/EatButton";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
@@ -125,9 +126,9 @@ export const DailyData: VFC = memo(() => {
     <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
+        <EatButton onClick={openEatEditModal} />
         <EatDataArea
           eatData={eatData}
-          openEditModal={openEatEditModal}
           onClickEatNameLink={onClickEatNameLink}
           onClickDeleteButton={onClickDeleteButton}
         />
