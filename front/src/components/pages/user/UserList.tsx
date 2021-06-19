@@ -1,6 +1,8 @@
 import { memo, useEffect, useState, VFC } from "react";
+import { useHistory } from "react-router-dom";
 import { Box, Center, Flex, Table, Tr, Td, Tbody, Thead, Spacer } from "@chakra-ui/react";
 
+import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
@@ -10,27 +12,7 @@ import { useMessage } from "../../../hooks/common/useMessage";
 export const UserList: VFC = memo(() => {
   const { users, getUsers } = useUserApi();
   const { showMessage } = useMessage();
-
-  // const users = [
-  //   { id: 1, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 2, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 3, nickname: "テスト３", email: "test3@test.com" },
-  //   { id: 4, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 5, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 6, nickname: "テスト３", email: "test3@test.com" },
-  //   { id: 7, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 8, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 9, nickname: "テスト３", email: "test3@test.com" },
-  //   { id: 10, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 11, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 12, nickname: "テスト３", email: "test3@test.com" },
-  //   { id: 13, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 14, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 15, nickname: "テスト３", email: "test3@test.com" },
-  //   { id: 16, nickname: "テスト１", email: "test1@test.com" },
-  //   { id: 17, nickname: "テスト２", email: "test2@test.com" },
-  //   { id: 18, nickname: "テスト３", email: "test3@test.com" },
-  // ];
+  const history = useHistory();
 
   const [pagingOffset, setpagingOffset] = useState(0);
 
@@ -39,6 +21,10 @@ export const UserList: VFC = memo(() => {
   const displayNum = 10;
   const onChangePage = (page: {selected: number}) =>
     setpagingOffset(displayNum * page.selected);
+
+  const onClickLink = (id: number) => {
+    history.push(`/users/detail/${id}`);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -85,8 +71,16 @@ export const UserList: VFC = memo(() => {
                       .slice(pagingOffset, pagingOffset + displayNum)
                       .map((user) => (
                         <Tr key={user.id}>
-                          <Td>{user.nickname}</Td>
-                          <Td>{user.email}</Td>
+                          <Td>
+                            <DefaultLink onClick={() => { onClickLink(user.id); }}>
+                              {user.nickname}
+                            </DefaultLink>
+                          </Td>
+                          <Td>
+                            <DefaultLink onClick={() => { onClickLink(user.id); }}>
+                              {user.email}
+                            </DefaultLink>
+                          </Td>
                         </Tr>
                       ))}
                   </Tbody>

@@ -5,6 +5,7 @@ import { Top } from "../components/pages/top/Top";
 import { UserSignup } from "../components/pages/user/UserSignup";
 import { UserSignin } from "../components/pages/user/UserSignin";
 import { UserList } from "../components/pages/user/UserList";
+import { UserDetail } from "../components/pages/user/UserDetail";
 import { Dashboard } from "../components/pages/dashboard/Dashboard";
 import { Calendar } from "../components/pages/calendar/Calendar";
 import { DailyData } from "../components/pages/dailydata/DailyData";
@@ -42,6 +43,9 @@ export const Router: VFC = memo(() => {
         </Route>
         <Route exact path="/users">
           <UserList />
+        </Route>
+        <Route path="/users/detail/:id">
+          <UserDetail />
         </Route>
       </LoginUserProvider>
     </Switch>
