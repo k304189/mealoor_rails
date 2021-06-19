@@ -4,15 +4,18 @@ import { Box, HStack } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { EatButton } from "../../molecules/button/EatButton";
+import { HealthButton } from "../../molecules/button/HealthButton";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
+import { HealthEditForm } from "../../organisms/health/HealthEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDailyDataApi } from "../../../hooks/dailydata/useDailyDataApi";
 import { useEatApi } from "../../../hooks/eat/useEatApi";
 import { Eat } from "../../../types/api/eat";
+import { Health } from "../../../types/api/health";
 
 type UrlParams = {
   date: string;
@@ -33,6 +36,10 @@ export const DailyData: VFC = memo(() => {
   const [eatEditFormTitle, setEatEditFormTitle] = useState("");
   const [eatDeleteConfirmMessage, setEatDeleteConfirmMessage] = useState("");
 
+  const [healthEditFormIsOpen, setHealthEditFormIsOpen] = useState(false);
+  const [editHealth, setEditHealth] = useState<Health | null>(null);
+  const [healthEditFormTitle, setHealthEditFormTitle] = useState("");
+
   const updateEatDataInDailyData = (eat: Eat) => {
     if (eat.eat_date === date && eatData) {
       const tmpEatData = [...eatData];
@@ -44,6 +51,18 @@ export const DailyData: VFC = memo(() => {
       }
       setEatData([...tmpEatData]);
     }
+  };
+
+  const openHealthEditModal = (editMode = false) => {
+    let title = "";
+    if (editMode) {
+      title = "体調編集";
+    } else {
+      setEditHealth(null);
+      title = "体調登録";
+    }
+    setHealthEditFormTitle(title);
+    setHealthEditFormIsOpen(true);
   };
 
   const openEatEditModal = (editMode = false) => {
@@ -127,7 +146,8 @@ export const DailyData: VFC = memo(() => {
       <Box as="article" w="100%" h="100%">
         <HStack spacing={5}>
           <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
-          <EatButton onClick={openEatEditModal} />
+          <HealthButton onClick={() => { openHealthEditModal(false); }} />
+          <EatButton onClick={() => { openEatEditModal(false); }} />
         </HStack>
         <EatDataArea
           eatData={eatData}
@@ -151,6 +171,14 @@ export const DailyData: VFC = memo(() => {
       >
         {eatDeleteConfirmMessage}
       </DefaultDialog>
+      <DefaultModal
+        isOpen={healthEditFormIsOpen}
+        onClose={() => { setHealthEditFormIsOpen(false); }}
+        modalTitle={healthEditFormTitle}
+        size="2xl"
+      >
+        <HealthEditForm health={editHealth} setHealthData={(h: Health) => {}} />
+      </DefaultModal>
     </SigninHeaderLayout>
   );
 });
