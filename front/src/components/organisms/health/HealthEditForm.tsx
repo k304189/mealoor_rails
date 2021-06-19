@@ -20,9 +20,10 @@ type Props = {
 export const HealthEditForm: VFC<Props> = memo((props) => {
   const { health = null, setHealthData } = props;
   const { showMessage } = useMessage();
-  const { addHealth } = useHealthApi();
+  const { addHealth, editHealth, getHealthByDate } = useHealthApi();
   const { validateRecordingDate } = useHealthValidate();
 
+  const [targetHealth, setTargetHealth] = useState<Health | null>(health);
   const [id, setId] = useState(0);
   const [recordingDate, setRecordingDate] = useState("");
   const [weight, setWeight] = useState(0);
@@ -44,6 +45,17 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
     const { invalid, errorMsg } = validateRecordingDate(recordingDate);
     setRecordingDateInvalid(invalid);
     setRecordingDateError(errorMsg);
+    if (!invalid) {
+      getHealthByDate(recordingDate)
+        .then((res) => {
+          setTargetHealth(res);
+        })
+        .catch(() => {
+          showMessage({ title: "サーバーへの通信が失敗し、データの確認ができませんでした", status: "error" });
+        });
+    } else {
+      setTargetHealth(null);
+    }
   };
 
   const getHealthApiData = () => {
@@ -56,14 +68,19 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
   };
 
   const initModal = () => {
-    setId(health?.id ?? 0);
-    setRecordingDate(health?.recording_date ?? "");
-    setWeight(health?.weight ?? 0);
-    setFatPercent(health?.fat_percent ?? 0);
-    setFatWeight(health?.fat_weight ?? 0);
+    let tmpRecordingDate = targetHealth?.recording_date ?? "";
+    if (!tmpRecordingDate && recordingDate) {
+      tmpRecordingDate = recordingDate;
+    }
+
+    setId(targetHealth?.id ?? 0);
+    setRecordingDate(tmpRecordingDate);
+    setWeight(targetHealth?.weight ?? 0);
+    setFatPercent(targetHealth?.fat_percent ?? 0);
+    setFatWeight(targetHealth?.fat_weight ?? 0);
 
     let title = "登録";
-    if (id !== 0) {
+    if (targetHealth) {
       title = "更新";
     }
     setButtonTitle(title);
@@ -72,17 +89,20 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
   const onClickModalButton = () => {
     setButtonLoading(true);
     const apiData = getHealthApiData();
-    const execType = "登録";
-    const callFunction: (data: Health) => Promise<Health> = addHealth;
-    // if (id === 0) {
-    //   callFunction = addHealth;
-    //   execType = "登録";
-    // }
+    let execType: string;
+    let callFunction: (data: Health) => Promise<Health>;
+    if (id === 0) {
+      callFunction = addHealth;
+      execType = "登録";
+    } else {
+      callFunction = editHealth;
+      execType = "更新";
+    }
     callFunction(apiData)
       .then((res) => {
         showMessage({ title: `${execType}に成功しました`, status: "success" });
         setHealthData(res);
-        initModal();
+        setTargetHealth(res);
       })
       .catch(() => {
         showMessage({ title: `${execType}に失敗しました`, status: "error" });
@@ -98,7 +118,7 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
 
   useEffect(() => {
     initModal();
-  }, [health]);
+  }, [targetHealth]);
 
   return (
     <>
