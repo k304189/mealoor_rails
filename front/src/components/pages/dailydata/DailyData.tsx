@@ -9,13 +9,13 @@ import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
+import { HealthDataArea } from "../../organisms/dailydata/HealthDataArea";
 import { HealthEditForm } from "../../organisms/health/HealthEditForm";
 import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDailyDataApi } from "../../../hooks/dailydata/useDailyDataApi";
 import { useEatApi } from "../../../hooks/eat/useEatApi";
 import { Eat } from "../../../types/api/eat";
-import { Health } from "../../../types/api/health";
 
 type UrlParams = {
   date: string;
@@ -25,7 +25,7 @@ export const DailyData: VFC = memo(() => {
   const { date } = useParams<UrlParams>();
   const history = useHistory();
   const { showMessage } = useMessage();
-  const { getDailyData, eatData, setEatData } = useDailyDataApi();
+  const { getDailyData, eatData, setEatData, healthData, setHealthData } = useDailyDataApi();
   const { deleteEat } = useEatApi();
 
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,6 @@ export const DailyData: VFC = memo(() => {
   const [eatDeleteConfirmMessage, setEatDeleteConfirmMessage] = useState("");
 
   const [healthEditFormIsOpen, setHealthEditFormIsOpen] = useState(false);
-  const [editHealth, setEditHealth] = useState<Health | null>(null);
   const [healthEditFormTitle, setHealthEditFormTitle] = useState("");
 
   const updateEatDataInDailyData = (eat: Eat) => {
@@ -53,12 +52,11 @@ export const DailyData: VFC = memo(() => {
     }
   };
 
-  const openHealthEditModal = (editMode = false) => {
+  const openHealthEditModal = () => {
     let title = "";
-    if (editMode) {
+    if (healthData) {
       title = "体調編集";
     } else {
-      setEditHealth(null);
       title = "体調登録";
     }
     setHealthEditFormTitle(title);
@@ -146,9 +144,15 @@ export const DailyData: VFC = memo(() => {
       <Box as="article" w="100%" h="100%">
         <HStack spacing={5}>
           <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
-          <HealthButton onClick={() => { openHealthEditModal(false); }} />
+          <HealthButton onClick={openHealthEditModal} />
           <EatButton onClick={() => { openEatEditModal(false); }} />
         </HStack>
+        <Box w="40%">
+          <HealthDataArea
+            healthData={healthData}
+            onClickHealthLink={openHealthEditModal}
+          />
+        </Box>
         <EatDataArea
           eatData={eatData}
           onClickEatNameLink={onClickEatNameLink}
@@ -177,7 +181,7 @@ export const DailyData: VFC = memo(() => {
         modalTitle={healthEditFormTitle}
         size="2xl"
       >
-        <HealthEditForm health={editHealth} setHealthData={(h: Health) => {}} />
+        <HealthEditForm health={healthData} setHealthData={setHealthData} />
       </DefaultModal>
     </SigninHeaderLayout>
   );
