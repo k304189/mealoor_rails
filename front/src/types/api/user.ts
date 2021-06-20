@@ -6,4 +6,5 @@ export type User = {
   nickname?: string | null;
   provider?: string | null;
   uid?: string | null;
+  admin: boolean;
 };

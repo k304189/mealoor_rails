@@ -10,7 +10,7 @@ type signupUserType = {
   nickname: string;
   email: string;
   password: string;
-  passwordConfirmation: string;
+  password_confirmation: string;
 };
 
 type returnType = {
@@ -25,8 +25,11 @@ export const useUserSignup = (): returnType => {
 
   const signup = useCallback((signupUser: signupUserType) => {
     const url = `${process.env.REACT_APP_API_V1_URL}/auth/`;
+    const json = {
+      registration: signupUser,
+    };
     axios
-      .post(url, signupUser)
+      .post(url, json)
       .then((res) => {
         setRequestHeader(res.headers);
         setLoginUser(res.data.data);

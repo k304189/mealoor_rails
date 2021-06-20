@@ -4,10 +4,16 @@ import { useCallback, useState } from "react";
 import { User } from "../../types/api/user";
 import { useRequestHeader } from "./useRequestHeader";
 
+type updateParamType = {
+  nickname: string;
+  admin?: boolean;
+};
+
 type returnType = {
   users: Array<User> | null;
   getUsers: () => Promise<number>;
   showUser: (id: string) => Promise<User>;
+  editUser: (updateData: updateParamType) => Promise<User>;
 };
 
 export const useUserApi = (): returnType => {
@@ -32,5 +38,17 @@ export const useUserApi = (): returnType => {
     }, [],
   );
 
-  return { users, getUsers, showUser };
+  const editUser = useCallback(
+    async (updateData: updateParamType) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/auth`;
+      const json = {
+        registration: updateData,
+      };
+      const response = await axios.put(url, json, { headers: getRequestHeader() });
+      const user: User = response.data.data;
+      return user;
+    }, [],
+  );
+
+  return { users, getUsers, showUser, editUser };
 };

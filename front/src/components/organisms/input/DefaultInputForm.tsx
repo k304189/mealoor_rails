@@ -9,7 +9,7 @@ import { memo, ReactNode, VFC } from "react";
 
 type Props = {
   children: ReactNode;
-  require?: "require" | "optional";
+  require?: "require" | "optional" | "";
   label: string;
   labelSize?: string;
   helperMsg?: string;

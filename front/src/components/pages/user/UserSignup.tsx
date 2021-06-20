@@ -37,7 +37,7 @@ export const UserSignup: VFC = memo(() => {
       nickname,
       email,
       password,
-      passwordConfirmation,
+      password_confirmation: passwordConfirmation,
     };
     signup(signupUser);
   };

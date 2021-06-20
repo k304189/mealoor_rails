@@ -9,10 +9,11 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   focusBorderColor?: string;
+  size?: "xs" | "sm" | "md" | "lg";
 };
 
 export const Password: VFC<Props> = memo((props) => {
-  const { value, onChange, placeholder = "パスワード", focusBorderColor = "#7FDC96" } = props;
+  const { value, onChange, placeholder = "パスワード", focusBorderColor = "#7FDC96", size = "md" } = props;
   const [show, setShow] = useState(false);
   const onClickShow = () => setShow(!show);
 
@@ -22,6 +23,7 @@ export const Password: VFC<Props> = memo((props) => {
         <DefaultInput
           type={show ? "text" : "password"}
           value={value}
+          size={size}
           onChange={onChange}
           placeholder={placeholder}
           focusBorderColor={focusBorderColor}

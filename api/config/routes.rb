@@ -3,9 +3,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      mount_devise_token_auth_for 'User', at: 'auth'
-      resources :users, only: %i[index show]
+      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+        registrations: 'api/v1/auth/registrations'
+      }
       get 'users/currentuser'
+      resources :users, only: %i[index show]
       resources :seasonal_foods, only: %i[index create update destroy]
       resources :stocks, only: %i[index create update]
       post "stocks/dispose"
