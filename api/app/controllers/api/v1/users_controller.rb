@@ -34,7 +34,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   private
     def update_user_param
       params.require(:user)
-            .permit(:nickname, :email, :password, :admin)
+            .permit(:nickname, :email, :password, :password_confirmation, :admin)
     end
 
 end

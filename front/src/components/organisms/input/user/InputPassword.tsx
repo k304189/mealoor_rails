@@ -10,7 +10,7 @@ type Props = {
   size?: "xs" | "sm" | "md" | "lg";
 };
 
-export const InputNickname: VFC<Props> = memo((props) => {
+export const InputPassword: VFC<Props> = memo((props) => {
   const { password, onChange, label = "パスワード", size = "md" } = props;
 
   return (

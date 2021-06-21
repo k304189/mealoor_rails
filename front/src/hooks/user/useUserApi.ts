@@ -8,8 +8,10 @@ import { useLoginUser } from "./useLoginUser";
 import { useMessage } from "../common/useMessage";
 
 type updateParamType = {
-  nickname: string;
+  nickname?: string;
   admin?: boolean;
+  password?: string;
+  password_confirmation?: string;
 };
 
 type returnType = {

@@ -2,9 +2,12 @@ import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
+import { SecondaryButton } from "../../atoms/button/SecondaryButton";
+import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultCheckbox } from "../../atoms/button/DefaultCheckbox";
 import { InputNickname } from "../input/user/InputNickname";
 import { InputEmail } from "../input/user/InputEmail";
+import { ChangePasswordForm } from "./ChangePasswordForm";
 
 import { User } from "../../../types/api/user";
 import { useUserApi } from "../../../hooks/user/useUserApi";
@@ -32,6 +35,7 @@ export const UserEditForm: VFC<Props> = memo((props) => {
 
   const [nicknameInvalid, setNicknameInvalid] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
+  const [changePasswordIsOpen, setChangePasswordIsOpen] = useState(false);
 
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -88,43 +92,59 @@ export const UserEditForm: VFC<Props> = memo((props) => {
   return (
     <>
       { user ? (
-        <VStack mt={5} spacing={4}>
-          <InputNickname
-            nickname={nickname}
-            onChange={onChangeNickname}
-            invalid={nicknameInvalid}
-            error={nicknameError}
-            onBlur={onBlurNickname}
-          />
-          <InputEmail
-            email={email}
-            onChange={() => {}}
-            isReadOnly
-            onBlur={() => {}}
-          />
-          { isAdmin ? (
+        <>
+          <VStack mt={5} spacing={4}>
+            <InputNickname
+              nickname={nickname}
+              onChange={onChangeNickname}
+              invalid={nicknameInvalid}
+              error={nicknameError}
+              onBlur={onBlurNickname}
+            />
+            <InputEmail
+              email={email}
+              onChange={() => {}}
+              isReadOnly
+              onBlur={() => {}}
+            />
+            { isAdmin ? (
+              <Flex w="100%" justify="flex-start">
+                <DefaultCheckbox
+                  size="lg"
+                  isChecked={admin}
+                  onChange={onClickAdminCheckbox}
+                >
+                  管理者
+                </DefaultCheckbox>
+              </Flex>
+            ) : (
+              <></>
+            )}
             <Flex w="100%" justify="flex-start">
-              <DefaultCheckbox
-                size="lg"
-                isChecked={admin}
-                onChange={onClickAdminCheckbox}
+              <SecondaryButton
+                onClick={() => { setChangePasswordIsOpen(true); }}
               >
-                管理者
-              </DefaultCheckbox>
+                パスワード変更
+              </SecondaryButton>
             </Flex>
-          ) : (
-            <></>
-          )}
-          <Flex w="100%" justify="flex-end">
-            <PrimaryButton
-              disabled={buttonDisabled}
-              loading={buttonLoding}
-              onClick={onClickUpdate}
-            >
-              更新
-            </PrimaryButton>
-          </Flex>
-        </VStack>
+            <Flex w="100%" justify="flex-end">
+              <PrimaryButton
+                disabled={buttonDisabled}
+                loading={buttonLoding}
+                onClick={onClickUpdate}
+              >
+                更新
+              </PrimaryButton>
+            </Flex>
+          </VStack>
+          <DefaultModal
+            isOpen={changePasswordIsOpen}
+            onClose={() => { setChangePasswordIsOpen(false); }}
+            modalTitle="パスワード変更"
+          >
+            <ChangePasswordForm isAdmin={isAdmin} userId={userId} />
+          </DefaultModal>
+        </>
       ) : (
         <Box>指定のユーザーは存在していません</Box>
       )}
