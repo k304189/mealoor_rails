@@ -13,7 +13,7 @@ type returnType = {
   users: Array<User> | null;
   getUsers: () => Promise<number>;
   showUser: (id: string) => Promise<User>;
-  editUser: (updateData: updateParamType) => Promise<User>;
+  editUser: (editUserId: number, updateData: updateParamType) => Promise<User>;
 };
 
 export const useUserApi = (): returnType => {
@@ -39,13 +39,13 @@ export const useUserApi = (): returnType => {
   );
 
   const editUser = useCallback(
-    async (updateData: updateParamType) => {
-      const url = `${process.env.REACT_APP_API_V1_URL}/auth`;
+    async (editUserId: number, updateData: updateParamType) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/users/${editUserId}`;
       const json = {
-        registration: updateData,
+        user: updateData,
       };
-      const response = await axios.put(url, json, { headers: getRequestHeader() });
-      const user: User = response.data.data;
+      const response = await axios.patch(url, json, { headers: getRequestHeader() });
+      const user: User = response.data;
       return user;
     }, [],
   );

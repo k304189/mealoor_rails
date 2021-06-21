@@ -7,7 +7,7 @@ Rails.application.routes.draw do
         registrations: 'api/v1/auth/registrations'
       }
       get 'users/currentuser'
-      resources :users, only: %i[index show]
+      resources :users, only: %i[index show update]
       resources :seasonal_foods, only: %i[index create update destroy]
       resources :stocks, only: %i[index create update]
       post "stocks/dispose"

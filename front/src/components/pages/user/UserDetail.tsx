@@ -74,7 +74,7 @@ export const UserDetail: VFC = memo(() => {
   const onClickUpdate = () => {
     setButtonLoding(true);
     const updateData = getUpdateUserData();
-    editUser(updateData)
+    editUser(userId, updateData)
       .then((res) => {
         showMessage({ title: "ユーザー更新に成功しました", status: "success" });
         setUserInfo(res);
