@@ -6,6 +6,7 @@ import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
 
 export const Dashboard: VFC = memo(() => {
   const { isLogin } = useIsLogin();
+
   useEffect(() => {
     isLogin();
   }, []);

@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import { User } from "../../types/api/user";
 import { useRequestHeader } from "./useRequestHeader";
+import { useLoginUser } from "./useLoginUser";
+import { useMessage } from "../common/useMessage";
 
 type updateParamType = {
   nickname: string;
@@ -14,10 +17,14 @@ type returnType = {
   getUsers: () => Promise<number>;
   showUser: (id: string) => Promise<User>;
   editUser: (editUserId: number, updateData: updateParamType) => Promise<User>;
+  isLogin: () => void;
 };
 
 export const useUserApi = (): returnType => {
-  const { getRequestHeader } = useRequestHeader();
+  const history = useHistory();
+  const { getRequestHeader, hasRequestHeader } = useRequestHeader();
+  const { setLoginUser } = useLoginUser();
+  const { showMessage } = useMessage();
   const [users, setUsers] = useState<Array<User> | null>(null);
 
   const getUsers = useCallback(
@@ -50,5 +57,33 @@ export const useUserApi = (): returnType => {
     }, [],
   );
 
-  return { users, getUsers, showUser, editUser };
+  const isLogin = useCallback(() => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
+
+    if (hasRequestHeader()) {
+      const data = {
+        headers: getRequestHeader(),
+      };
+      axios
+        .get(url, data)
+        .then((res) => {
+          setLoginUser(res.data.data);
+        })
+        .catch(() => {
+          showMessage({
+            title: "認証情報が不正です。再ログインしてください",
+            status: "error",
+          });
+          localStorage.clear();
+          history.push("/");
+        });
+    } else {
+      showMessage({
+        title: "認証情報が見つかりません",
+        status: "error",
+      });
+      history.push("/");
+    }
+  }, []);
+  return { users, getUsers, showUser, editUser, isLogin };
 };
