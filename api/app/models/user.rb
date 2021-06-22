@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_many :stocks
-  has_many :eats
-  has_many :healths
+  has_many :stocks, dependent: :destroy
+  has_many :eats, dependent: :destroy
+  has_many :healths, dependent: :destroy
 end

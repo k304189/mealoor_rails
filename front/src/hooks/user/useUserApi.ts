@@ -18,7 +18,8 @@ type returnType = {
   users: Array<User> | null;
   getUsers: () => Promise<number>;
   showUser: (id: string) => Promise<User>;
-  editUser: (editUserId: number, updateData: updateParamType) => Promise<User>;
+  editUser: (id: number, updateData: updateParamType) => Promise<User>;
+  deleteUser: (id: number) => Promise<number>;
   isLogin: () => void;
 };
 
@@ -48,14 +49,22 @@ export const useUserApi = (): returnType => {
   );
 
   const editUser = useCallback(
-    async (editUserId: number, updateData: updateParamType) => {
-      const url = `${process.env.REACT_APP_API_V1_URL}/users/${editUserId}`;
+    async (id: number, updateData: updateParamType) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/users/${id}`;
       const json = {
         user: updateData,
       };
       const response = await axios.patch(url, json, { headers: getRequestHeader() });
       const user: User = response.data;
       return user;
+    }, [],
+  );
+
+  const deleteUser = useCallback(
+    async (id: number) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/users/${id}`;
+      const response = await axios.delete(url, { headers: getRequestHeader() });
+      return response.status;
     }, [],
   );
 
@@ -87,5 +96,5 @@ export const useUserApi = (): returnType => {
       history.push("/");
     }
   }, []);
-  return { users, getUsers, showUser, editUser, isLogin };
+  return { users, getUsers, showUser, editUser, deleteUser, isLogin };
 };

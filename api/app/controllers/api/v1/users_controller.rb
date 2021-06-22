@@ -1,5 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApiController
   before_action :authenticate_user!
+  skip_after_action :update_auth_header, only: [:destroy]
 
   def index
     @user = User.all
@@ -21,6 +22,16 @@ class Api::V1::UsersController < Api::V1::ApiController
     if current_user.admin
       @user.update!(update_user_param)
       render json: @user
+    else
+      render status: 401
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    if current_user.admin || @user.id == current_user.id
+      @user.destroy!
+      render json: {}, status: :ok
     else
       render status: 401
     end

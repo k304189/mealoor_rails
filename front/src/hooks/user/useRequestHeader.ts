@@ -19,6 +19,7 @@ type returnType = {
   setRequestHeader: (header: responseHeader) => void;
   hasRequestHeader: () => boolean;
   getRequestHeader: () => requestHeader;
+  clearRequestHeader: () => void;
 };
 
 export const useRequestHeader = (): returnType => {
@@ -48,5 +49,10 @@ export const useRequestHeader = (): returnType => {
     };
     return header;
   }, []);
-  return { setRequestHeader, hasRequestHeader, getRequestHeader };
+
+  const clearRequestHeader = useCallback(() => {
+    localStorage.clear();
+  }, []);
+
+  return { setRequestHeader, hasRequestHeader, getRequestHeader, clearRequestHeader };
 };
