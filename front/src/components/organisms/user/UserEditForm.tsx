@@ -174,7 +174,7 @@ export const UserEditForm: VFC<Props> = memo((props) => {
             onClose={() => { setChangePasswordIsOpen(false); }}
             modalTitle="パスワード変更"
           >
-            <ChangePasswordForm isAdmin={isAdmin} userId={userId} />
+            <ChangePasswordForm userId={userId} />
           </DefaultModal>
           <DefaultDialog
             headerTitle="退会確認"

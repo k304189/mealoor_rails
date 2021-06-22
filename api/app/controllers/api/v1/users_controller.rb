@@ -19,7 +19,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   def update
     @user = User.find(params[:id])
 
-    if current_user.admin
+    if current_user.admin || @user.id == current_user.id
       @user.update!(update_user_param)
       render json: @user
     else

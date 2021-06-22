@@ -8,38 +8,33 @@ import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useMessage } from "../../../hooks/common/useMessage";
 
 type Props = {
-  isAdmin?: boolean;
   userId?: number;
 };
 
 export const ChangePasswordForm: VFC<Props> = memo((props) => {
-  const { isAdmin = false, userId = 0 } = props;
+  const { userId = 0 } = props;
   const { editUser } = useUserApi();
   const { showMessage } = useMessage();
 
-  const [beforePassword, setBeforePassword] = useState("");
-  const [afterPassword, setAfterPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [buttonLoding, setButtonLoding] = useState(false);
 
-  const onChangeBeforePassword = (e: ChangeEvent<HTMLInputElement>) =>
-    setBeforePassword(e.target.value);
-
-  const onChangeAfterPassword = (e: ChangeEvent<HTMLInputElement>) =>
-    setAfterPassword(e.target.value);
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
 
   const onChangePasswordConfirmation = (e: ChangeEvent<HTMLInputElement>) =>
     setPasswordConfirmation(e.target.value);
 
   const getUpdatePassword = () => {
     return {
-      password: afterPassword,
+      password,
       password_confirmation: passwordConfirmation,
     };
   };
 
   const onClickChangePassword = () => {
-    if (afterPassword !== passwordConfirmation) {
+    if (password !== passwordConfirmation) {
       showMessage({
         title: "新しいパスワードと確認用が一致しません。再確認してください",
         status: "error",
@@ -62,19 +57,10 @@ export const ChangePasswordForm: VFC<Props> = memo((props) => {
 
   return (
     <VStack spacing={4}>
-      { isAdmin ? (
-        <></>
-      ) : (
-        <InputPassword
-          label="現在のパスワード"
-          password={beforePassword}
-          onChange={onChangeBeforePassword}
-        />
-      )}
       <InputPassword
         label="新しいのパスワード"
-        password={afterPassword}
-        onChange={onChangeAfterPassword}
+        password={password}
+        onChange={onChangePassword}
       />
       <InputPassword
         label="新しいのパスワード(確認用)"
