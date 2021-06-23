@@ -1,7 +1,7 @@
 import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
 import { Box, Center, Grid, GridItem } from "@chakra-ui/react";
 
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { DefaultInput } from "../../atoms/input/DefaultInput";
 import { EatButton } from "../../molecules/button/EatButton";
@@ -103,7 +103,7 @@ export const Calendar: VFC = memo(() => {
   }, [displayYearMonth]);
 
   return (
-    <SigninHeaderLayout loading={loading} title="カレンダー">
+    <HeaderLayout loading={loading} title="カレンダー">
       <Box as="article" w="100%" h="100%">
         <Box h="10%">
           <Grid
@@ -157,6 +157,6 @@ export const Calendar: VFC = memo(() => {
       >
         <HealthEditForm setHealthData={setHealthData} />
       </DefaultModal>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });

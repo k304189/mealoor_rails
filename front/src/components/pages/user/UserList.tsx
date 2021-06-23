@@ -4,7 +4,7 @@ import { Box, Center, Flex, Table, Tr, Td, Tbody, Thead, Spacer } from "@chakra-
 
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useMessage } from "../../../hooks/common/useMessage";
@@ -38,7 +38,7 @@ export const UserList: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout loading={loading} title="ユーザー一覧">
+    <HeaderLayout loading={loading} title="ユーザー一覧">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"
@@ -92,6 +92,6 @@ export const UserList: VFC = memo(() => {
           </Center>
         </Box>
       </Flex>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });

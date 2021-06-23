@@ -7,7 +7,7 @@ import { StockUsageTable } from "../../organisms/stock/StockUsageTable";
 import { StockEditForm } from "../../organisms/stock/StockEditForm";
 import { UseStockForm } from "../../organisms/stock/UseStockForm";
 import { UsageListTable } from "../../organisms/stock/UsageListTable";
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useStockApi } from "../../../hooks/stock/useStockApi";
@@ -129,7 +129,7 @@ export const StockList: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout loading={loading} title="家にある食材">
+    <HeaderLayout loading={loading} title="家にある食材">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"
@@ -197,6 +197,6 @@ export const StockList: VFC = memo(() => {
           initStockUsageList={initStockUsageList}
         />
       </DefaultModal>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });

@@ -11,7 +11,7 @@ import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
 import { HealthDataArea } from "../../organisms/dailydata/HealthDataArea";
 import { HealthEditForm } from "../../organisms/health/HealthEditForm";
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDailyDataApi } from "../../../hooks/dailydata/useDailyDataApi";
 import { useEatApi } from "../../../hooks/eat/useEatApi";
@@ -140,7 +140,7 @@ export const DailyData: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
+    <HeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
       <Box as="article" w="100%" h="100%">
         <HStack spacing={5}>
           <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
@@ -183,6 +183,6 @@ export const DailyData: VFC = memo(() => {
       >
         <HealthEditForm health={healthData} setHealthData={setHealthData} />
       </DefaultModal>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });

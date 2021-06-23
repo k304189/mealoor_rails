@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 import { SeasonalFoodEditModal } from "../../organisms/seasonalfood/SeasonalFoodEditModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
@@ -91,7 +91,7 @@ export const SeasonalFoodList: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout loading={loading}>
+    <HeaderLayout loading={loading}>
       <>
         <Flex align="center" justify="center" height="100vh">
           <Box as="article" p={4}>
@@ -156,6 +156,6 @@ export const SeasonalFoodList: VFC = memo(() => {
           {deleteConfirmMsg}
         </DefaultDialog>
       </>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });

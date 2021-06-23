@@ -4,7 +4,7 @@ import { Box, Center, Flex } from "@chakra-ui/react";
 
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { UserEditForm } from "../../organisms/user/UserEditForm";
-import { SigninHeaderLayout } from "../../templates/SigninHeaderLayout";
+import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { User } from "../../../types/api/user";
 import { useUserApi } from "../../../hooks/user/useUserApi";
@@ -45,7 +45,7 @@ export const UserDetail: VFC = memo(() => {
   }, []);
 
   return (
-    <SigninHeaderLayout loading={loading} title="ユーザー詳細">
+    <HeaderLayout loading={loading} title="ユーザー詳細">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"
@@ -64,6 +64,6 @@ export const UserDetail: VFC = memo(() => {
           </Center>
         </Box>
       </Flex>
-    </SigninHeaderLayout>
+    </HeaderLayout>
   );
 });
