@@ -12,10 +12,11 @@ import {
   PopoverBody,
   Spacer,
 } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { AvatarButton } from "../../atoms/button/AvatarButton";
-import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
+import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { HeaderLink } from "../../atoms/layout/HeaderLink";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
@@ -48,11 +49,16 @@ export const Header: VFC = memo(() => {
       align="center"
       justify="spacec-between"
     >
-      <HeaderLink px={2} onClick={onClickLogo}>
-        <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
-          mealoor
-        </Heading>
-      </HeaderLink>
+      <Flex h="100%">
+        <HeaderLink px={2} onClick={() => {}} tooltipText="メニュー表示">
+          <HamburgerIcon />
+        </HeaderLink>
+        <HeaderLink px={2} onClick={onClickLogo}>
+          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
+            mealoor
+          </Heading>
+        </HeaderLink>
+      </Flex>
       <Spacer />
       { hasRequestHeader() ? (
         <Popover placement="bottom-start">
