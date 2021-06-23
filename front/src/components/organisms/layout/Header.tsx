@@ -16,8 +16,9 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { AvatarButton } from "../../atoms/button/AvatarButton";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
-import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { HeaderLink } from "../../atoms/layout/HeaderLink";
+import { MenuDrawer } from "../../molecules/layout/MenuDrawer";
+import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
 
@@ -26,6 +27,7 @@ export const Header: VFC = memo(() => {
   const { signout } = useUserApi();
   const { hasRequestHeader } = useRequestHeader();
 
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [confirmSignout, setConfirmSignout] = useState(false);
 
   const onClickLogo = useCallback(() => {
@@ -50,7 +52,7 @@ export const Header: VFC = memo(() => {
       justify="spacec-between"
     >
       <Flex h="100%">
-        <HeaderLink px={2} onClick={() => {}} tooltipText="メニュー表示">
+        <HeaderLink px={2} onClick={() => { setMenuIsOpen(true); }} tooltipText="メニュー表示">
           <HamburgerIcon />
         </HeaderLink>
         <HeaderLink px={2} onClick={onClickLogo}>
@@ -85,6 +87,7 @@ export const Header: VFC = memo(() => {
           <HeaderLink px={2} onClick={onClickSignup}>サインアップ</HeaderLink>
         </Flex>
       ) }
+      <MenuDrawer isOpen={menuIsOpen} onClose={() => { setMenuIsOpen(false); }} />
       <DefaultDialog
         isOpen={confirmSignout}
         onClose={() => { setConfirmSignout(false); }}
