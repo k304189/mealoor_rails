@@ -20,12 +20,13 @@ type returnType = {
   showUser: (id: string) => Promise<User>;
   editUser: (id: number, updateData: updateParamType) => Promise<User>;
   deleteUser: (id: number) => Promise<number>;
+  signout: () => void;
   isLogin: () => void;
 };
 
 export const useUserApi = (): returnType => {
   const history = useHistory();
-  const { getRequestHeader, hasRequestHeader } = useRequestHeader();
+  const { getRequestHeader, hasRequestHeader, clearRequestHeader } = useRequestHeader();
   const { setLoginUser } = useLoginUser();
   const { showMessage } = useMessage();
   const [users, setUsers] = useState<Array<User> | null>(null);
@@ -68,6 +69,17 @@ export const useUserApi = (): returnType => {
     }, [],
   );
 
+  const signout = useCallback(() => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/auth/sign_out`;
+    axios
+      .delete(url, { headers: getRequestHeader() })
+      .finally(() => {
+        showMessage({ title: "ログアウトしました", status: "success" });
+        clearRequestHeader();
+        history.push("/");
+      });
+  }, []);
+
   const isLogin = useCallback(() => {
     const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
 
@@ -96,5 +108,5 @@ export const useUserApi = (): returnType => {
       history.push("/");
     }
   }, []);
-  return { users, getUsers, showUser, editUser, deleteUser, isLogin };
+  return { users, getUsers, showUser, editUser, deleteUser, signout, isLogin };
 };

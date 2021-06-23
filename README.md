@@ -78,4 +78,6 @@ docker-compose run --rm front sh -c "npm i @fortawesome/react-fontawesome"
 
 docker-compose run --rm front sh -c "npm audit fix" # fontawesome関連のライブラリを入れた後、エラーが出たため、実行
 
+docker-compose run --rm front sh -c "npm i @popperjs/core"
+
 ```
