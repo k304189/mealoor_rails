@@ -1,11 +1,11 @@
 import { memo, VFC, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 
-import { useIsLogin } from "../../../hooks/user/useIsLogin";
+import { useUserApi } from "../../../hooks/user/useUserApi";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
 export const Dashboard: VFC = memo(() => {
-  const { isLogin } = useIsLogin();
+  const { isLogin } = useUserApi();
 
   useEffect(() => {
     isLogin();
