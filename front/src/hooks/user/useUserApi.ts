@@ -12,6 +12,13 @@ type signinUserType = {
   password: string;
 };
 
+type signupUserType = {
+  nickname: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+};
+
 type updateParamType = {
   nickname?: string;
   admin?: boolean;
@@ -26,6 +33,7 @@ type returnType = {
   editUser: (id: number, updateData: updateParamType) => Promise<User>;
   deleteUser: (id: number) => Promise<number>;
   signin: (signinUser: signinUserType) => void;
+  signup: (signupUser: signupUserType) => void;
   signout: () => void;
   isLogin: () => void;
 };
@@ -95,6 +103,24 @@ export const useUserApi = (): returnType => {
       });
   }, []);
 
+  const signup = useCallback((signupUser: signupUserType) => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/auth/`;
+    const json = {
+      registration: signupUser,
+    };
+    axios
+      .post(url, json)
+      .then((res) => {
+        setRequestHeader(res.headers);
+        setLoginUser(res.data.data);
+        showMessage({ title: "ユーザーを登録しました", status: "success" });
+        history.push("/dashboard");
+      })
+      .catch(() => {
+        showMessage({ title: "ユーザー登録に失敗しました", status: "error" });
+      });
+  }, []);
+
   const signout = useCallback(() => {
     const url = `${process.env.REACT_APP_API_V1_URL}/auth/sign_out`;
     axios
@@ -142,6 +168,7 @@ export const useUserApi = (): returnType => {
     editUser,
     deleteUser,
     signin,
+    signup,
     signout,
     isLogin,
   };

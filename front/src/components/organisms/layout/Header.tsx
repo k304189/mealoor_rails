@@ -21,6 +21,7 @@ import { MenuDrawer } from "../../molecules/layout/MenuDrawer";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { SigninForm } from "../user/SigninForm";
+import { SignupForm } from "../user/SignupForm";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
 
@@ -31,6 +32,7 @@ export const Header: VFC = memo(() => {
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [signinModalIsOpen, setSigninModalIsOpen] = useState(false);
+  const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
   const [confirmSignout, setConfirmSignout] = useState(false);
 
   const onClickLogo = useCallback(() => {
@@ -40,8 +42,6 @@ export const Header: VFC = memo(() => {
     }
     history.push(nextUrl);
   }, []);
-
-  const onClickSignup = useCallback(() => history.push("/signup"), []);
 
   return (
     <Flex
@@ -82,13 +82,20 @@ export const Header: VFC = memo(() => {
       ) : (
         <Flex h="100%">
           <HeaderLink px={2} onClick={() => { setSigninModalIsOpen(true); }}>サインイン</HeaderLink>
-          <HeaderLink px={2} onClick={onClickSignup}>サインアップ</HeaderLink>
+          <HeaderLink px={2} onClick={() => { setSignupModalIsOpen(true); }}>サインアップ</HeaderLink>
           <DefaultModal
             isOpen={signinModalIsOpen}
             onClose={() => { setSigninModalIsOpen(false); }}
             modalTitle="サインイン"
           >
             <SigninForm />
+          </DefaultModal>
+          <DefaultModal
+            isOpen={signupModalIsOpen}
+            onClose={() => { setSignupModalIsOpen(false); }}
+            modalTitle="サインアップ"
+          >
+            <SignupForm />
           </DefaultModal>
         </Flex>
       ) }
