@@ -7,6 +7,11 @@ import { useRequestHeader } from "./useRequestHeader";
 import { useLoginUser } from "./useLoginUser";
 import { useMessage } from "../common/useMessage";
 
+type signinUserType = {
+  email: string;
+  password: string;
+};
+
 type updateParamType = {
   nickname?: string;
   admin?: boolean;
@@ -20,13 +25,19 @@ type returnType = {
   showUser: (id: string) => Promise<User>;
   editUser: (id: number, updateData: updateParamType) => Promise<User>;
   deleteUser: (id: number) => Promise<number>;
+  signin: (signinUser: signinUserType) => void;
   signout: () => void;
   isLogin: () => void;
 };
 
 export const useUserApi = (): returnType => {
   const history = useHistory();
-  const { getRequestHeader, hasRequestHeader, clearRequestHeader } = useRequestHeader();
+  const {
+    setRequestHeader,
+    getRequestHeader,
+    hasRequestHeader,
+    clearRequestHeader,
+  } = useRequestHeader();
   const { setLoginUser } = useLoginUser();
   const { showMessage } = useMessage();
   const [users, setUsers] = useState<Array<User> | null>(null);
@@ -69,6 +80,21 @@ export const useUserApi = (): returnType => {
     }, [],
   );
 
+  const signin = useCallback((signinUser: signinUserType) => {
+    const url = `${process.env.REACT_APP_API_V1_URL}/auth/sign_in`;
+    axios
+      .post(url, signinUser)
+      .then((res) => {
+        setRequestHeader(res.headers);
+        setLoginUser(res.data.data);
+        showMessage({ title: "ログインしました", status: "success" });
+        history.push("/dashboard");
+      })
+      .catch(() => {
+        showMessage({ title: "ログインに失敗しました", status: "error" });
+      });
+  }, []);
+
   const signout = useCallback(() => {
     const url = `${process.env.REACT_APP_API_V1_URL}/auth/sign_out`;
     axios
@@ -108,5 +134,15 @@ export const useUserApi = (): returnType => {
       history.push("/");
     }
   }, []);
-  return { users, getUsers, showUser, editUser, deleteUser, signout, isLogin };
+
+  return {
+    users,
+    getUsers,
+    showUser,
+    editUser,
+    deleteUser,
+    signin,
+    signout,
+    isLogin,
+  };
 };

@@ -26,10 +26,6 @@ export const useIsLogin = (): returnType => {
         .get(url, data)
         .then((res) => {
           setLoginUser(res.data.data);
-          showMessage({
-            title: "ログインしました",
-            status: "success",
-          });
         })
         .catch(() => {
           showMessage({

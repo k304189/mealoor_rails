@@ -10,10 +10,18 @@ type Props = {
   placeholder?: string;
   focusBorderColor?: string;
   size?: "xs" | "sm" | "md" | "lg";
+  onBlur?: () => void;
 };
 
 export const Password: VFC<Props> = memo((props) => {
-  const { value, onChange, placeholder = "パスワード", focusBorderColor = "#7FDC96", size = "md" } = props;
+  const {
+    value,
+    onChange,
+    placeholder = "パスワード",
+    focusBorderColor = "#7FDC96",
+    size = "md",
+    onBlur = () => {},
+  } = props;
   const [show, setShow] = useState(false);
   const onClickShow = () => setShow(!show);
 
@@ -27,6 +35,7 @@ export const Password: VFC<Props> = memo((props) => {
           onChange={onChange}
           placeholder={placeholder}
           focusBorderColor={focusBorderColor}
+          onBlur={onBlur}
         />
         <InputRightElement>
           { show
