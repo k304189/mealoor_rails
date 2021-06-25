@@ -67,6 +67,25 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
               >
                 家にある食材
               </MenuLink>
+              { loginUser?.admin ? (
+                <>
+                  <MenuSection bg="blue.800" color="#FFFFFF">
+                    管理者メニュー
+                  </MenuSection>
+                  <MenuLink
+                    onClick={() => { history.push("/users"); }}
+                  >
+                    ユーザー一覧
+                  </MenuLink>
+                  <MenuLink
+                    onClick={() => { history.push("/seasonalFood"); }}
+                  >
+                    旬の食材
+                  </MenuLink>
+                </>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <></>
