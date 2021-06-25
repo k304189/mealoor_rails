@@ -15,6 +15,7 @@ import { AvatarButton } from "../../atoms/button/AvatarButton";
 import { MenuSection } from "../../atoms/layout/MenuSection";
 import { MenuLink } from "../../atoms/layout/MenuLink";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
+import { useLoginUser } from "../../../hooks/user/useLoginUser";
 
 type Props = {
   isOpen: boolean;
@@ -24,6 +25,7 @@ type Props = {
 export const MenuDrawer: VFC<Props> = memo((props) => {
   const { isOpen, onClose } = props;
   const { hasRequestHeader } = useRequestHeader();
+  const { loginUser } = useLoginUser();
   const history = useHistory();
 
   return (
@@ -38,12 +40,12 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
           { hasRequestHeader() ? (
             <>
               <MenuLink
-                onClick={() => {}}
+                onClick={() => { history.push(`users/detail/${loginUser?.id}`); }}
               >
                 <Flex>
                   <AvatarButton size="sm" />
                   <Box ml={2}>
-                    アカウント情報
+                    {loginUser?.nickname || "アカウント"}
                   </Box>
                 </Flex>
               </MenuLink>

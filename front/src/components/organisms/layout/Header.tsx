@@ -11,6 +11,7 @@ import {
   PopoverCloseButton,
   PopoverBody,
   Spacer,
+  VStack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
@@ -24,11 +25,13 @@ import { SigninForm } from "../user/SigninForm";
 import { SignupForm } from "../user/SignupForm";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
+import { useLoginUser } from "../../../hooks/user/useLoginUser";
 
 export const Header: VFC = memo(() => {
   const history = useHistory();
   const { signout } = useUserApi();
   const { hasRequestHeader } = useRequestHeader();
+  const { loginUser } = useLoginUser();
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [signinModalIsOpen, setSigninModalIsOpen] = useState(false);
@@ -64,18 +67,22 @@ export const Header: VFC = memo(() => {
         <Popover placement="bottom-start">
           <PopoverTrigger>
             <Box m={5}>
-              <AvatarButton
-                size="sm"
-              />
+              <AvatarButton size="sm" />
             </Box>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>
-              <SecondaryButton size="sm" onClick={() => { setConfirmSignout(true); }}>
-                ログアウト
-              </SecondaryButton>
+              <VStack>
+                <Box>
+                  <AvatarButton size="md" />
+                </Box>
+                <Box as="div">{loginUser?.nickname}</Box>
+                <SecondaryButton size="sm" onClick={() => { setConfirmSignout(true); }}>
+                  ログアウト
+                </SecondaryButton>
+              </VStack>
             </PopoverBody>
           </PopoverContent>
         </Popover>

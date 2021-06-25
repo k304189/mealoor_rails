@@ -165,35 +165,6 @@ export const useUserApi = (): returnType => {
     }, [],
   );
 
-  // const isLogin = useCallback(() => {
-  //   const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
-  //
-  //   if (hasRequestHeader()) {
-  //     const data = {
-  //       headers: getRequestHeader(),
-  //     };
-  //     axios
-  //       .get(url, data)
-  //       .then((res) => {
-  //         setLoginUser(res.data.data);
-  //       })
-  //       .catch(() => {
-  //         showMessage({
-  //           title: "認証情報が不正です。再ログインしてください",
-  //           status: "error",
-  //         });
-  //         localStorage.clear();
-  //         history.push("/");
-  //       });
-  //   } else {
-  //     showMessage({
-  //       title: "認証情報が見つかりません",
-  //       status: "error",
-  //     });
-  //     history.push("/");
-  //   }
-  // }, []);
-
   return {
     users,
     getUsers,
