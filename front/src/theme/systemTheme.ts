@@ -47,6 +47,9 @@ const systemTheme = extendTheme({
         zIndex: "1",
         height: headerHeight,
         width: "100%",
+        ".loginPop": {
+          color: "#000000",
+        },
       },
       ".main": {
         position: "fixed",

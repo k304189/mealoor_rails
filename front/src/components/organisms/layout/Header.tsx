@@ -73,7 +73,7 @@ export const Header: VFC = memo(() => {
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverBody>
+            <PopoverBody className="loginPop">
               <VStack>
                 <Box>
                   <AvatarButton size="md" />
