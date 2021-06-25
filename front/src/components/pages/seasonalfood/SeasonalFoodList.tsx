@@ -21,10 +21,12 @@ import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
+import { useUserApi } from "../../../hooks/user/useUserApi";
 
 export const SeasonalFoodList: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { allSeasonalFoods, getAllSeasonalFoods, deleteSeasonalFood } = useSeasonalFoodApi();
+  const { isLogin } = useUserApi();
   const { showMessage } = useMessage();
   const [selectSeasonalFood, setSelectSeasonalFood] = useState<SeasonalFood | null>();
   const [loading, setLoading] = useState(false);
@@ -81,12 +83,17 @@ export const SeasonalFoodList: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    getAllSeasonalFoods()
-      .catch(() => {
-        showMessage({ title: "データの取得に失敗しました", status: "error" });
-      })
-      .finally(() => {
-        setLoading(false);
+    isLogin()
+      .then((result) => {
+        if (result) {
+          getAllSeasonalFoods()
+            .catch(() => {
+              showMessage({ title: "データの取得に失敗しました", status: "error" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       });
   }, []);
 

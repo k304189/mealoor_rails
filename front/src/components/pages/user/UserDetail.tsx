@@ -31,16 +31,20 @@ export const UserDetail: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    isLogin();
-    showUser(id)
-      .then((res) => {
-        setUser(res);
-      })
-      .catch(() => {
-        showMessage({ title: "指定ユーザーのデータ取得に失敗しました", status: "error" });
-      })
-      .finally(() => {
-        setLoading(false);
+    isLogin()
+      .then((result) => {
+        if (result) {
+          showUser(id)
+            .then((res) => {
+              setUser(res);
+            })
+            .catch(() => {
+              showMessage({ title: "指定ユーザーのデータ取得に失敗しました", status: "error" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       });
   }, []);
 

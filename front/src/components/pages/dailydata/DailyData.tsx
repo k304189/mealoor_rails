@@ -14,6 +14,7 @@ import { HealthEditForm } from "../../organisms/health/HealthEditForm";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDailyDataApi } from "../../../hooks/dailydata/useDailyDataApi";
+import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useEatApi } from "../../../hooks/eat/useEatApi";
 import { Eat } from "../../../types/api/eat";
 
@@ -27,6 +28,7 @@ export const DailyData: VFC = memo(() => {
   const { showMessage } = useMessage();
   const { getDailyData, eatData, setEatData, healthData, setHealthData } = useDailyDataApi();
   const { deleteEat } = useEatApi();
+  const { isLogin } = useUserApi();
 
   const [loading, setLoading] = useState(false);
   const [eatEditFormIsOpen, setEatEditFormIsOpen] = useState(false);
@@ -130,12 +132,17 @@ export const DailyData: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    getDailyData(date)
-      .catch(() => {
-        showMessage({ title: "データの取得に失敗しました", status: "error" });
-      })
-      .finally(() => {
-        setLoading(false);
+    isLogin()
+      .then((result) => {
+        if (result) {
+          getDailyData(date)
+            .catch(() => {
+              showMessage({ title: "データの取得に失敗しました", status: "error" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       });
   }, []);
 

@@ -4,7 +4,6 @@ import { Flex } from "@chakra-ui/react";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
 export const Top: VFC = memo(() => {
-  localStorage.clear();
   return (
     <HeaderLayout>
       <Flex className="main">

@@ -11,6 +11,7 @@ import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useStockApi } from "../../../hooks/stock/useStockApi";
+import { useUserApi } from "../../../hooks/user/useUserApi";
 import { Stock } from "../../../types/api/stock";
 import { StockUsage } from "../../../types/pages/stock/stockUsage";
 
@@ -25,6 +26,7 @@ export const StockList: VFC = memo(() => {
   const [useType, setUseType] = useState("食事");
   const { showMessage } = useMessage();
   const { allStocks, getHavingStock } = useStockApi();
+  const { isLogin } = useUserApi();
 
   const onChangeCheckbox = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     const checkFlg = e.target.checked;
@@ -119,12 +121,17 @@ export const StockList: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    getHavingStock()
-      .catch(() => {
-        showMessage({ title: "家にある食材の取得に失敗しました", status: "error" });
-      })
-      .finally(() => {
-        setLoading(false);
+    isLogin()
+      .then((result) => {
+        if (result) {
+          getHavingStock()
+            .catch(() => {
+              showMessage({ title: "家にある食材の取得に失敗しました", status: "error" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       });
   }, []);
 

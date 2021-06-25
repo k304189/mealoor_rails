@@ -10,7 +10,7 @@ import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useMessage } from "../../../hooks/common/useMessage";
 
 export const UserList: VFC = memo(() => {
-  const { users, getUsers } = useUserApi();
+  const { users, getUsers, isLogin } = useUserApi();
   const { showMessage } = useMessage();
   const history = useHistory();
 
@@ -28,12 +28,17 @@ export const UserList: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    getUsers()
-      .catch(() => {
-        showMessage({ title: "ユーザーのデータが取得できませんでした", status: "error" });
-      })
-      .finally(() => {
-        setLoading(false);
+    isLogin()
+      .then((result) => {
+        if (result) {
+          getUsers()
+            .catch(() => {
+              showMessage({ title: "ユーザーのデータが取得できませんでした", status: "error" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       });
   }, []);
 

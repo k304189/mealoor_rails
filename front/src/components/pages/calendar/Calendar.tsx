@@ -16,6 +16,7 @@ import { Eat } from "../../../types/api/eat";
 import { Health } from "../../../types/api/health";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useCalendarApi } from "../../../hooks/calendar/useCalendarApi";
+import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useCalendar } from "../../../hooks/calendar/useCalendar";
 
 export const Calendar: VFC = memo(() => {
@@ -26,6 +27,7 @@ export const Calendar: VFC = memo(() => {
     getCalendarEndDate,
   } = useCalendar();
   const { monthlySummary, getMonthlySummary, setMonthlySummary } = useCalendarApi();
+  const { isLogin } = useUserApi();
   const { showMessage } = useMessage();
 
   const [loading, setLoading] = useState(false);
@@ -91,12 +93,17 @@ export const Calendar: VFC = memo(() => {
       const endDate = getCalendarEndDate(calendar);
       if (startDate && endDate) {
         setLoading(true);
-        getMonthlySummary(startDate, endDate)
-          .catch(() => {
-            showMessage({ title: "日々のデータの取得に失敗しました", status: "error" });
-          })
-          .finally(() => {
-            setLoading(false);
+        isLogin()
+          .then((result) => {
+            if (result) {
+              getMonthlySummary(startDate, endDate)
+                .catch(() => {
+                  showMessage({ title: "日々のデータの取得に失敗しました", status: "error" });
+                })
+                .finally(() => {
+                  setLoading(false);
+                });
+            }
           });
       }
     }

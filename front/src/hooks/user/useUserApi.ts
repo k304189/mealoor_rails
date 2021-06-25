@@ -35,7 +35,8 @@ type returnType = {
   signin: (signinUser: signinUserType) => void;
   signup: (signupUser: signupUserType) => void;
   signout: () => void;
-  isLogin: () => void;
+  // isLogin: () => void;
+  isLogin: () => Promise<boolean>;
 };
 
 export const useUserApi = (): returnType => {
@@ -132,34 +133,66 @@ export const useUserApi = (): returnType => {
       });
   }, []);
 
-  const isLogin = useCallback(() => {
-    const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
+  const isLogin = useCallback(
+    async () => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
+      let result = false;
 
-    if (hasRequestHeader()) {
-      const data = {
-        headers: getRequestHeader(),
-      };
-      axios
-        .get(url, data)
-        .then((res) => {
-          setLoginUser(res.data.data);
-        })
-        .catch(() => {
+      if (hasRequestHeader()) {
+        const data = {
+          headers: getRequestHeader(),
+        };
+        try {
+          const response = await axios.get(url, data);
+          setLoginUser(response.data.data);
+          result = true;
+        } catch (err) {
           showMessage({
             title: "認証情報が不正です。再ログインしてください",
             status: "error",
           });
-          localStorage.clear();
+          clearRequestHeader();
           history.push("/");
+        }
+      } else {
+        showMessage({
+          title: "認証情報が見つかりません",
+          status: "error",
         });
-    } else {
-      showMessage({
-        title: "認証情報が見つかりません",
-        status: "error",
-      });
-      history.push("/");
-    }
-  }, []);
+        history.push("/");
+      }
+      return result;
+    }, [],
+  );
+
+  // const isLogin = useCallback(() => {
+  //   const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
+  //
+  //   if (hasRequestHeader()) {
+  //     const data = {
+  //       headers: getRequestHeader(),
+  //     };
+  //     axios
+  //       .get(url, data)
+  //       .then((res) => {
+  //         setLoginUser(res.data.data);
+  //       })
+  //       .catch(() => {
+  //         showMessage({
+  //           title: "認証情報が不正です。再ログインしてください",
+  //           status: "error",
+  //         });
+  //         localStorage.clear();
+  //         history.push("/");
+  //       });
+  //   } else {
+  //     showMessage({
+  //       title: "認証情報が見つかりません",
+  //       status: "error",
+  //     });
+  //     history.push("/");
+  //   }
+  // }, []);
 
   return {
     users,

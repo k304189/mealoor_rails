@@ -9,6 +9,11 @@ export const Dashboard: VFC = memo(() => {
 
   useEffect(() => {
     isLogin();
+    // isLogin()
+    //   .then((res) => {
+    //     console.log("isLogin Called!");
+    //     console.log(res);
+    //   });
   }, []);
 
   return (
