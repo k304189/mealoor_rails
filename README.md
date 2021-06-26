@@ -82,4 +82,6 @@ docker-compose run --rm front sh -c "npm i @popperjs/core" # ログアウト用�
 
 docker-compose run --rm front sh -c "npm uninstall @popperjs/core" # このライブラリがなくても位置設定ができたためアンインストール
 
+docker-compose run --rm front sh -c "npm i react-chartjs-2 chart.js"
+
 ```
