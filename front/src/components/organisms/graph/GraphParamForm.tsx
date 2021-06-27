@@ -4,20 +4,26 @@ import { Box } from "@chakra-ui/react";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { RadioGraphParam } from "../input/graph/RadioGraphParam";
 import { InputEndDate } from "../input/graph/InputEndDate";
+import { useGraphApi } from "../../../hooks/graph/useGraphApi";
 import { useGraphValidate } from "../../../hooks/validate/useGraphValidate";
+import { GraphDataType } from "../../../types/pages/graph/graphDataType";
 
 type Props = {
-  onClick: () => void;
+  setGraphData: (graph: GraphDataType | null) => void;
+  onClose: () => void;
 };
 
 export const GraphParamForm: VFC<Props> = memo((props) => {
   const [lineGraphParam, setLineGraphParam] = useState("weight");
-  const [boxGraphParam, setBoxGraphParam] = useState("");
+  const [barGraphParam, setBarGraphParam] = useState("");
   const [endDate, setEndDate] = useState("");
   const [endDateInvalid, setEndDateInvalid] = useState(false);
   const [endDateError, setEndDateError] = useState("");
 
-  const { onClick } = props;
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const { setGraphData, onClose } = props;
+  const { getGraphData } = useGraphApi();
   const { validateEndDate } = useGraphValidate();
 
   const onChangeEndDate = (e: ChangeEvent<HTMLInputElement>) =>
@@ -27,6 +33,18 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
     const { invalid, errorMsg } = validateEndDate(endDate);
     setEndDateInvalid(invalid);
     setEndDateError(errorMsg);
+  };
+
+  const onClickDrawButton = () => {
+    setButtonLoading(true);
+    getGraphData(lineGraphParam, barGraphParam)
+      .then((res) => {
+        setGraphData(res);
+        onClose();
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
   };
 
   return (
@@ -40,8 +58,8 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
       <RadioGraphParam
         label="棒グラフ"
         require="optional"
-        graphParam={boxGraphParam}
-        onChange={setBoxGraphParam}
+        graphParam={barGraphParam}
+        onChange={setBarGraphParam}
       />
       <InputEndDate
         endDate={endDate}
@@ -51,7 +69,8 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
         onBlur={onBlurEndDate}
       />
       <PrimaryButton
-        onClick={onClick}
+        loading={buttonLoading}
+        onClick={onClickDrawButton}
       >
         描画
       </PrimaryButton>
