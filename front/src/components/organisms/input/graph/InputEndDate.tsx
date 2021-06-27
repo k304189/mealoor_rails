@@ -21,6 +21,7 @@ export const InputEndDate: VFC<Props> = memo((props) => {
       label="最終日"
       isInvalid={invalid}
       errorMsg={error}
+      helperMsg="選択日から過去30日分のデータを表示します"
     >
       <DefaultInput
         type="date"

@@ -1,7 +1,17 @@
 import { memo, useEffect, useState, VFC } from "react";
 import { Bar } from "react-chartjs-2";
-import { Box, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Flex,
+  useDisclosure,
+} from "@chakra-ui/react";
 
+import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { GraphParamForm } from "../../organisms/graph/GraphParamForm";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
@@ -94,6 +104,7 @@ const data = {
 
 export const Graph: VFC = memo(() => {
   const { isLogin } = useUserApi();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [loading, setLoading] = useState(false);
 
@@ -113,12 +124,26 @@ export const Graph: VFC = memo(() => {
           h="100%"
           w="100%"
         >
-          <GraphParamForm />
+          <PrimaryButton onClick={onOpen}>グラフ</PrimaryButton>
           <Box h="90%">
             <Bar data={null} type="bar" options={{ maintainAspectRatio: false }} />
           </Box>
         </Box>
       </Flex>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        size="lg"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody>
+            <GraphParamForm />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </HeaderLayout>
   );
 });
