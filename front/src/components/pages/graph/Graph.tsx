@@ -17,6 +17,7 @@ import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useMessage } from "../../../hooks/common/useMessage";
+import { GraphDataType } from "../../../types/pages/graph/graphDataType";
 
 const rand = () => Math.round(Math.random() * 20 - 10);
 
@@ -34,8 +35,8 @@ const data = {
       type: "line",
       label: "Dataset 1",
       borderColor: "rgb(54, 162, 235)",
+      backgroundColor: "white",
       borderWidth: 2,
-      fill: false,
       data: [
         rand(), rand(), rand(), rand(), rand(),
         rand(), rand(), rand(), rand(), rand(),
@@ -72,10 +73,11 @@ const data = {
         rand(), rand(), rand(), rand(), rand(),
         rand(), rand(), rand(), rand(), rand(),
       ],
+      borderColor: "white",
     },
     {
       type: "bar",
-      label: "Dataset 3",
+      label: "Dataset 4",
       backgroundColor: "rgb(255, 0, 0)",
       data: [
         rand(), rand(), rand(), rand(), rand(),
@@ -85,10 +87,11 @@ const data = {
         rand(), rand(), rand(), rand(), rand(),
         rand(), rand(), rand(), rand(), rand(),
       ],
+      borderColor: "white",
     },
     {
       type: "bar",
-      label: "Dataset 3",
+      label: "Dataset 5",
       backgroundColor: "rgb(0, 0, 255)",
       data: [
         rand(), rand(), rand(), rand(), rand(),
@@ -98,6 +101,7 @@ const data = {
         rand(), rand(), rand(), rand(), rand(),
         rand(), rand(), rand(), rand(), rand(),
       ],
+      borderColor: "white",
     },
   ],
 };
@@ -106,7 +110,12 @@ export const Graph: VFC = memo(() => {
   const { isLogin } = useUserApi();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [graphData, setGraphData] = useState<GraphDataType | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const onClickGetGraph = () => {
+    setGraphData(data);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -126,7 +135,7 @@ export const Graph: VFC = memo(() => {
         >
           <PrimaryButton onClick={onOpen}>グラフ</PrimaryButton>
           <Box h="90%">
-            <Bar data={null} type="bar" options={{ maintainAspectRatio: false }} />
+            <Bar data={graphData} type="bar" options={{ maintainAspectRatio: false }} />
           </Box>
         </Box>
       </Flex>
@@ -140,7 +149,7 @@ export const Graph: VFC = memo(() => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <GraphParamForm />
+            <GraphParamForm onClick={onClickGetGraph} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

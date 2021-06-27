@@ -6,13 +6,18 @@ import { RadioGraphParam } from "../input/graph/RadioGraphParam";
 import { InputEndDate } from "../input/graph/InputEndDate";
 import { useGraphValidate } from "../../../hooks/validate/useGraphValidate";
 
-export const GraphParamForm: VFC = memo(() => {
+type Props = {
+  onClick: () => void;
+};
+
+export const GraphParamForm: VFC<Props> = memo((props) => {
   const [lineGraphParam, setLineGraphParam] = useState("weight");
   const [boxGraphParam, setBoxGraphParam] = useState("");
   const [endDate, setEndDate] = useState("");
   const [endDateInvalid, setEndDateInvalid] = useState(false);
   const [endDateError, setEndDateError] = useState("");
 
+  const { onClick } = props;
   const { validateEndDate } = useGraphValidate();
 
   const onChangeEndDate = (e: ChangeEvent<HTMLInputElement>) =>
@@ -46,7 +51,7 @@ export const GraphParamForm: VFC = memo(() => {
         onBlur={onBlurEndDate}
       />
       <PrimaryButton
-        onClick={() => {}}
+        onClick={onClick}
       >
         描画
       </PrimaryButton>
