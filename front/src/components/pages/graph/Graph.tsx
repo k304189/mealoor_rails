@@ -1,4 +1,5 @@
 import { memo, useEffect, useState, VFC } from "react";
+import { Bar } from "react-chartjs-2";
 import { Box, Flex } from "@chakra-ui/react";
 
 import { GraphParamForm } from "../../organisms/graph/GraphParamForm";
@@ -6,6 +7,90 @@ import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useMessage } from "../../../hooks/common/useMessage";
+
+const rand = () => Math.round(Math.random() * 20 - 10);
+
+const data = {
+  labels: [
+    "2021/6/1", "2021/6/2", "2021/6/3", "2021/6/4", "2021/6/5",
+    "2021/6/6", "2021/6/7", "2021/6/8", "2021/6/9", "2021/6/10",
+    "2021/6/11", "2021/6/12", "2021/6/13", "2021/6/14", "2021/6/15",
+    "2021/6/16", "2021/6/17", "2021/6/18", "2021/6/19", "2021/6/20",
+    "2021/6/21", "2021/6/22", "2021/6/23", "2021/6/24", "2021/6/25",
+    "2021/6/26", "2021/6/27", "2021/6/28", "2021/6/29", "2021/6/30",
+  ],
+  datasets: [
+    {
+      type: "line",
+      label: "Dataset 1",
+      borderColor: "rgb(54, 162, 235)",
+      borderWidth: 2,
+      fill: false,
+      data: [
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+      ],
+    },
+    {
+      type: "bar",
+      label: "Dataset 2",
+      backgroundColor: "rgb(255, 99, 132)",
+      data: [
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+      ],
+      borderColor: "white",
+      borderWidth: 2,
+    },
+    {
+      type: "bar",
+      label: "Dataset 3",
+      backgroundColor: "rgb(75, 192, 192)",
+      data: [
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+      ],
+    },
+    {
+      type: "bar",
+      label: "Dataset 3",
+      backgroundColor: "rgb(255, 0, 0)",
+      data: [
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+      ],
+    },
+    {
+      type: "bar",
+      label: "Dataset 3",
+      backgroundColor: "rgb(0, 0, 255)",
+      data: [
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+        rand(), rand(), rand(), rand(), rand(),
+      ],
+    },
+  ],
+};
 
 export const Graph: VFC = memo(() => {
   const { isLogin } = useUserApi();
@@ -29,6 +114,9 @@ export const Graph: VFC = memo(() => {
           w="100%"
         >
           <GraphParamForm />
+          <Box h="90%">
+            <Bar data={null} type="bar" options={{ maintainAspectRatio: false }} />
+          </Box>
         </Box>
       </Flex>
     </HeaderLayout>
