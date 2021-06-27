@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { Top } from "../components/pages/top/Top";
 import { UserList } from "../components/pages/user/UserList";
 import { UserDetail } from "../components/pages/user/UserDetail";
+import { Graph } from "../components/pages/graph/Graph";
 import { Dashboard } from "../components/pages/dashboard/Dashboard";
 import { Calendar } from "../components/pages/calendar/Calendar";
 import { DailyData } from "../components/pages/dailydata/DailyData";
@@ -17,6 +18,9 @@ export const Router: VFC = memo(() => {
       <LoginUserProvider>
         <Route exact path="/">
           <Top />
+        </Route>
+        <Route path="/graph">
+          <Graph />
         </Route>
         <Route path="/dashboard">
           <Dashboard />
