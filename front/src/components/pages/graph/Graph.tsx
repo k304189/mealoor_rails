@@ -44,7 +44,7 @@ export const Graph: VFC = memo(() => {
         >
           <PrimaryButton onClick={onOpen}>グラフ</PrimaryButton>
           <Box h="90%">
-            <Bar data={graphData} type="bar" options={{ maintainAspectRatio: false }} />
+            <Bar data={graphData} type="bar" />
           </Box>
         </Box>
       </Flex>

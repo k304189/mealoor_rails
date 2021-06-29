@@ -6,4 +6,5 @@ export type GraphDatasetType = {
   borderWidth?: number;
   spanGaps: true;
   data: Array<number | null>;
+  yAxisID?: string;
 };

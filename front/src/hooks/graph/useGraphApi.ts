@@ -6,11 +6,12 @@ import { GraphDatasetType } from "../../types/pages/graph/graphDatasetType";
 import { GraphDataType } from "../../types/pages/graph/graphDataType";
 import { useRequestHeader } from "../user/useRequestHeader";
 
+const Y_AXIS_ID_HEALTH = "y-axis-health";
+const Y_AXIS_ID_EAT = "y-axis-eat";
+
 type returnType = {
   getGraphData: (line: string, bar: string, to:string) => Promise<GraphDataType>;
 };
-
-const rand = () => Math.round(Math.random() * 20 - 10);
 
 const getGraphConfig = (column: string) => {
   let config = { color: "#000000", label: "ラベル" };
@@ -37,6 +38,7 @@ const getDataset = (
   label: string,
   color: string,
   data:Array<number | null>,
+  yAxisID = "",
 ): GraphDatasetType => {
   const dataset: GraphDatasetType = {
     type,
@@ -46,6 +48,7 @@ const getDataset = (
     borderWidth: 3,
     spanGaps: true,
     data,
+    yAxisID,
   };
   return dataset;
 };
@@ -57,7 +60,7 @@ export const useGraphApi = (): returnType => {
     async (line: string, bar: string, to: string) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/graph?to=${to}&health=${line}&eat=${bar}`;
       const response = await axios.get(url, { headers: getRequestHeader() });
-      const graphData: Graph = response.data;
+      const graph: Graph = response.data;
 
       const datasets: Array<GraphDatasetType> = [];
       const lineConfig = getGraphConfig(line);
@@ -66,7 +69,8 @@ export const useGraphApi = (): returnType => {
           "line",
           lineConfig.label,
           lineConfig.color,
-          graphData.health,
+          graph.health,
+          Y_AXIS_ID_HEALTH,
         ),
       );
 
@@ -80,7 +84,8 @@ export const useGraphApi = (): returnType => {
           "bar",
           breakfastConfig.label,
           breakfastConfig.color,
-          graphData.eat.breakfast,
+          graph.eat.breakfast,
+          Y_AXIS_ID_EAT,
         ),
       );
 
@@ -89,7 +94,8 @@ export const useGraphApi = (): returnType => {
           "bar",
           lunchConfig.label,
           lunchConfig.color,
-          graphData.eat.lunch,
+          graph.eat.lunch,
+          Y_AXIS_ID_EAT,
         ),
       );
 
@@ -98,7 +104,8 @@ export const useGraphApi = (): returnType => {
           "bar",
           dinnerConfig.label,
           dinnerConfig.color,
-          graphData.eat.dinner,
+          graph.eat.dinner,
+          Y_AXIS_ID_EAT,
         ),
       );
 
@@ -107,14 +114,17 @@ export const useGraphApi = (): returnType => {
           "bar",
           snackConfig.label,
           snackConfig.color,
-          graphData.eat.snack,
+          graph.eat.snack,
+          Y_AXIS_ID_EAT,
         ),
       );
 
-      return {
-        labels: graphData.labels,
+      const graphData: GraphDataType = {
+        labels: graph.labels,
         datasets,
       };
+
+      return graphData;
     }, [],
   );
   return { getGraphData };
