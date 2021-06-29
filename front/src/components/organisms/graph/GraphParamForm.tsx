@@ -2,7 +2,8 @@ import { ChangeEvent, memo, useState, VFC } from "react";
 import { Box } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
-import { RadioGraphParam } from "../input/graph/RadioGraphParam";
+import { RadioBarParam } from "../input/graph/RadioBarParam";
+import { RadioLineParam } from "../input/graph/RadioLineParam";
 import { InputEndDate } from "../input/graph/InputEndDate";
 import { useGraphApi } from "../../../hooks/graph/useGraphApi";
 import { useGraphValidate } from "../../../hooks/validate/useGraphValidate";
@@ -15,7 +16,7 @@ type Props = {
 
 export const GraphParamForm: VFC<Props> = memo((props) => {
   const [lineGraphParam, setLineGraphParam] = useState("weight");
-  const [barGraphParam, setBarGraphParam] = useState("");
+  const [barGraphParam, setBarGraphParam] = useState("kcal");
   const [endDate, setEndDate] = useState("");
   const [endDateInvalid, setEndDateInvalid] = useState(false);
   const [endDateError, setEndDateError] = useState("");
@@ -37,7 +38,7 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
 
   const onClickDrawButton = () => {
     setButtonLoading(true);
-    getGraphData(lineGraphParam, barGraphParam)
+    getGraphData(lineGraphParam, barGraphParam, endDate)
       .then((res) => {
         setGraphData(res);
         onClose();
@@ -49,15 +50,11 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
 
   return (
     <Box>
-      <RadioGraphParam
-        label="線グラフ"
-        require="require"
+      <RadioLineParam
         graphParam={lineGraphParam}
         onChange={setLineGraphParam}
       />
-      <RadioGraphParam
-        label="棒グラフ"
-        require="optional"
+      <RadioBarParam
         graphParam={barGraphParam}
         onChange={setBarGraphParam}
       />

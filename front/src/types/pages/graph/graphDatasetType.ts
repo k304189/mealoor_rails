@@ -4,5 +4,6 @@ export type GraphDatasetType = {
   borderColor: string;
   backgroundColor?: string;
   borderWidth?: number;
-  data: Array<number>;
+  spanGaps: true;
+  data: Array<number | null>;
 };

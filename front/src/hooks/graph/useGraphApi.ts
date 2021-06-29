@@ -1,56 +1,42 @@
 import axios from "axios";
 import { useCallback } from "react";
 
+import { Graph } from "../../types/api/graph";
 import { GraphDatasetType } from "../../types/pages/graph/graphDatasetType";
 import { GraphDataType } from "../../types/pages/graph/graphDataType";
 import { useRequestHeader } from "../user/useRequestHeader";
 
 type returnType = {
-  getGraphData: (line: string, bar: string) => Promise<GraphDataType>;
+  getGraphData: (line: string, bar: string, to:string) => Promise<GraphDataType>;
 };
 
 const rand = () => Math.round(Math.random() * 20 - 10);
 
-const labels = [
-  "2021/6/1", "2021/6/2", "2021/6/3", "2021/6/4", "2021/6/5",
-  "2021/6/6", "2021/6/7", "2021/6/8", "2021/6/9", "2021/6/10",
-  "2021/6/11", "2021/6/12", "2021/6/13", "2021/6/14", "2021/6/15",
-  "2021/6/16", "2021/6/17", "2021/6/18", "2021/6/19", "2021/6/20",
-  "2021/6/21", "2021/6/22", "2021/6/23", "2021/6/24", "2021/6/25",
-  "2021/6/26", "2021/6/27", "2021/6/28", "2021/6/29", "2021/6/30",
-];
-
-const testData = [
-  rand(), rand(), rand(), rand(), rand(),
-  rand(), rand(), rand(), rand(), rand(),
-  rand(), rand(), rand(), rand(), rand(),
-  rand(), rand(), rand(), rand(), rand(),
-  rand(), rand(), rand(), rand(), rand(),
-  rand(), rand(), rand(), rand(), rand(),
-];
-
 const getGraphConfig = (column: string) => {
-  const configList = [];
+  let config = { color: "#000000", label: "ラベル" };
   if (column === "weight") {
-    configList.push({ color: "#3182CE", label: "体重" });
+    config = { color: "#3182CE", label: "体重" };
   } else if (column === "fat_percent") {
-    configList.push({ color: "#38A169", label: "体脂肪率" });
+    config = { color: "#38A169", label: "体脂肪率" };
   } else if (column === "fat_weight") {
-    configList.push({ color: "#E53E3E", label: "体脂肪量" });
-  } else if (column === "kcal" || column === "price") {
-    configList.push({ color: "#9BF6FF", label: "朝食" });
-    configList.push({ color: "#FDFFB6", label: "昼食" });
-    configList.push({ color: "#FFADAD", label: "夕食" });
-    configList.push({ color: "#CAFFBF", label: "間食" });
+    config = { color: "#E53E3E", label: "体脂肪量" };
+  } else if (column === "breakfast") {
+    config = { color: "#9BF6FF", label: "朝食" };
+  } else if (column === "lunch") {
+    config = { color: "#FDFFB6", label: "昼食" };
+  } else if (column === "dinner") {
+    config = { color: "#FFADAD", label: "夕食" };
+  } else if (column === "snack") {
+    config = { color: "#CAFFBF", label: "間食" };
   }
-  return configList;
+  return config;
 };
 
 const getDataset = (
   type: string,
   label: string,
   color: string,
-  data:Array<number>,
+  data:Array<number | null>,
 ): GraphDatasetType => {
   const dataset: GraphDatasetType = {
     type,
@@ -58,6 +44,7 @@ const getDataset = (
     backgroundColor: color,
     borderColor: color,
     borderWidth: 3,
+    spanGaps: true,
     data,
   };
   return dataset;
@@ -67,25 +54,65 @@ export const useGraphApi = (): returnType => {
   const { getRequestHeader } = useRequestHeader();
 
   const getGraphData = useCallback(
-    async (line: string, bar: string) => {
+    async (line: string, bar: string, to: string) => {
+      const url = `${process.env.REACT_APP_API_V1_URL}/graph?to=${to}&health=${line}&eat=${bar}`;
+      const response = await axios.get(url, { headers: getRequestHeader() });
+      const graphData: Graph = response.data;
+
       const datasets: Array<GraphDatasetType> = [];
       const lineConfig = getGraphConfig(line);
-      lineConfig.forEach((config) => {
-        datasets.push(
-          getDataset("line", config.label, config.color, testData),
-        );
-      });
+      datasets.push(
+        getDataset(
+          "line",
+          lineConfig.label,
+          lineConfig.color,
+          graphData.health,
+        ),
+      );
 
-      if (bar) {
-        const barConfig = getGraphConfig(bar);
-        barConfig.forEach((config) => {
-          datasets.push(
-            getDataset("bar", config.label, config.color, testData),
-          );
-        });
-      }
+      const breakfastConfig = getGraphConfig("breakfast");
+      const lunchConfig = getGraphConfig("lunch");
+      const dinnerConfig = getGraphConfig("dinner");
+      const snackConfig = getGraphConfig("snack");
+
+      datasets.push(
+        getDataset(
+          "bar",
+          breakfastConfig.label,
+          breakfastConfig.color,
+          graphData.eat.breakfast,
+        ),
+      );
+
+      datasets.push(
+        getDataset(
+          "bar",
+          lunchConfig.label,
+          lunchConfig.color,
+          graphData.eat.lunch,
+        ),
+      );
+
+      datasets.push(
+        getDataset(
+          "bar",
+          dinnerConfig.label,
+          dinnerConfig.color,
+          graphData.eat.dinner,
+        ),
+      );
+
+      datasets.push(
+        getDataset(
+          "bar",
+          snackConfig.label,
+          snackConfig.color,
+          graphData.eat.snack,
+        ),
+      );
+
       return {
-        labels,
+        labels: graphData.labels,
         datasets,
       };
     }, [],
