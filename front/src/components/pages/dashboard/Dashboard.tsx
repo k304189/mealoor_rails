@@ -18,8 +18,8 @@ export const Dashboard: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout>
-      <Box as="article" w="95%" h="95%">
+    <HeaderLayout title="ダッシュボード">
+      <Box as="article" w="100%" h="100%">
         <h1>ログイン後のダッシュボード画面です</h1>
         <SimpleGrid columns={4} spacing={1}>
           <EatSummaryBox
