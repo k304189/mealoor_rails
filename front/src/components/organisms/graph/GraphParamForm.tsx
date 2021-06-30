@@ -5,6 +5,7 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { RadioBarParam } from "../input/graph/RadioBarParam";
 import { RadioLineParam } from "../input/graph/RadioLineParam";
 import { InputEndDate } from "../input/graph/InputEndDate";
+import { useMessage } from "../../../hooks/common/useMessage";
 import { useGraphApi } from "../../../hooks/graph/useGraphApi";
 import { useGraphValidate } from "../../../hooks/validate/useGraphValidate";
 import { GraphDataType } from "../../../types/pages/graph/graphDataType";
@@ -24,6 +25,7 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const { setGraphData, onClose } = props;
+  const { showMessage } = useMessage();
   const { getGraphData } = useGraphApi();
   const { validateEndDate } = useGraphValidate();
 
@@ -42,6 +44,9 @@ export const GraphParamForm: VFC<Props> = memo((props) => {
       .then((res) => {
         setGraphData(res);
         onClose();
+      })
+      .catch(() => {
+        showMessage({ title: "グラフデータの取得に失敗しました", status: "error" });
       })
       .finally(() => {
         setButtonLoading(false);

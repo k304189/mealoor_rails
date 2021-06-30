@@ -16,7 +16,6 @@ import { GraphParamForm } from "../../organisms/graph/GraphParamForm";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
 import { useUserApi } from "../../../hooks/user/useUserApi";
-import { useMessage } from "../../../hooks/common/useMessage";
 import { GraphDataType } from "../../../types/pages/graph/graphDataType";
 
 export const Graph: VFC = memo(() => {
@@ -44,7 +43,7 @@ export const Graph: VFC = memo(() => {
         >
           <PrimaryButton onClick={onOpen}>グラフ</PrimaryButton>
           <Box h="90%">
-            <Bar data={graphData} type="bar" />
+            <Bar data={graphData} type="bar" options={{ maintainAspectRatio: false }} />
           </Box>
         </Box>
       </Flex>

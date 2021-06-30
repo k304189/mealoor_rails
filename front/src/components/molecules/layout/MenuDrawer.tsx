@@ -59,6 +59,11 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
               >
                 ダッシュボード
               </MenuLink>
+              <MenuLink
+                onClick={() => { history.push("/graph"); }}
+              >
+                食事グラフ
+              </MenuLink>
               <MenuSection bg="red.300">
                 食材
               </MenuSection>
