@@ -44,14 +44,14 @@ export const EatSummaryBox: VFC<Props> = memo((props) => {
         </Thead>
         <Tbody>
           <Tr>
-            <Td w="30%" fontSize="xl">本日</Td>
-            <Td w="35%" fontSize="xl">{todayKcal.toLocaleString()}kcal</Td>
-            <Td w="35%" fontSize="xl">{todayPrice.toLocaleString()}円</Td>
+            <Td fontSize="xl">本日</Td>
+            <Td fontSize="xl">{todayKcal.toLocaleString()}kcal</Td>
+            <Td fontSize="xl">{todayPrice.toLocaleString()}円</Td>
           </Tr>
           <Tr>
-            <Td w="30%">昨日</Td>
-            <Td w="35%" fontSize="xl">{yesterdayKcal.toLocaleString()}kcal</Td>
-            <Td w="35%" fontSize="xl">{yesterdayPrice.toLocaleString()}円</Td>
+            <Td>昨日</Td>
+            <Td>{yesterdayKcal.toLocaleString()}kcal</Td>
+            <Td>{yesterdayPrice.toLocaleString()}円</Td>
           </Tr>
         </Tbody>
       </Table>

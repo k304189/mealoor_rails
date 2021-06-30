@@ -21,7 +21,7 @@ export const Dashboard: VFC = memo(() => {
     <HeaderLayout title="ダッシュボード">
       <Box as="article" w="100%" h="100%">
         <h1>ログイン後のダッシュボード画面です</h1>
-        <SimpleGrid columns={4} spacing={1}>
+        <SimpleGrid columns={5} spacing={1}>
           <EatSummaryBox
             bg="#00C0EF"
             headerLabel="朝食"
