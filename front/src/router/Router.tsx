@@ -5,7 +5,7 @@ import { Top } from "../components/pages/top/Top";
 import { UserList } from "../components/pages/user/UserList";
 import { UserDetail } from "../components/pages/user/UserDetail";
 import { Graph } from "../components/pages/graph/Graph";
-import { Dashboard } from "../components/pages/dashboard/Dashboard";
+import { DashboardPage } from "../components/pages/dashboard/DashboardPage";
 import { Calendar } from "../components/pages/calendar/Calendar";
 import { DailyData } from "../components/pages/dailydata/DailyData";
 import { SeasonalFoodList } from "../components/pages/seasonalfood/SeasonalFoodList";
@@ -23,7 +23,7 @@ export const Router: VFC = memo(() => {
           <Graph />
         </Route>
         <Route path="/dashboard">
-          <Dashboard />
+          <DashboardPage />
         </Route>
         <Route path="/calendar">
           <Calendar />
