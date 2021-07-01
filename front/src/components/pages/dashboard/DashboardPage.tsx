@@ -1,8 +1,8 @@
 import { memo, VFC, useEffect, useState } from "react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 
-import { EatSummaryCard } from "../../molecules/layout/EatSummaryCard";
-import { HealthCard } from "../../molecules/layout/HealthCard";
+import { DashboardEatCard } from "../../organisms/dashboard/DashboardEatCard";
+import { DashboardHealthCard } from "../../organisms/dashboard/DashboardHealthCard";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDashboardApi } from "../../../hooks/dashboard/useDashboardApi";
 import { useUserApi } from "../../../hooks/user/useUserApi";
@@ -33,20 +33,8 @@ export const DashboardPage: VFC = memo(() => {
       <Box as="article" w="100%" h="100%">
         <h1>ログイン後のダッシュボード画面です</h1>
         <SimpleGrid columns={4} spacing={1}>
-          <HealthCard
-            todayWeight={81}
-            todayFatPercent={25.6}
-            todayFatWeight={20.73}
-            yesterdayWeight={82.5}
-            yesterdayFatPercent={25.6}
-            yesterdayFatWeight={21.12}
-          />
-          <EatSummaryCard
-            todayKcal={1200}
-            todayPrice={500}
-            yesterdayKcal={681}
-            yesterdayPrice={1500}
-          />
+          <DashboardHealthCard dashboard={dashboard} />
+          <DashboardEatCard dashboard={dashboard} />
         </SimpleGrid>
       </Box>
     </HeaderLayout>

@@ -1,7 +1,7 @@
 import { Stock } from "./stock";
 import { Health } from "./health";
 
-type DateData = {
+export type DateData = {
   eat: {
     id: number | null;
     date: string | null;
@@ -9,7 +9,7 @@ type DateData = {
     price: number | null;
   } | null;
   health: Health | null;
-}
+};
 
 export type Dashboard = {
   stock: Array<Stock> | null;
