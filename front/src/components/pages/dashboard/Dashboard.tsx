@@ -3,19 +3,19 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 
 import { EatSummaryCard } from "../../molecules/layout/EatSummaryCard";
 import { HealthCard } from "../../molecules/layout/HealthCard";
+import { useDashboardApi } from "../../../hooks/dashboard/useDashboardApi";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
 export const Dashboard: VFC = memo(() => {
   const { isLogin } = useUserApi();
+  const { getDashborad } = useDashboardApi();
 
   useEffect(() => {
-    isLogin();
-    // isLogin()
-    //   .then((res) => {
-    //     console.log("isLogin Called!");
-    //     console.log(res);
-    //   });
+    isLogin()
+      .then((res) => {
+        getDashborad();
+      });
   }, []);
 
   return (
