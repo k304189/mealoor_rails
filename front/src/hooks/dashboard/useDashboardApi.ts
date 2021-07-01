@@ -2,9 +2,10 @@ import axios from "axios";
 import { useCallback } from "react";
 
 import { useRequestHeader } from "../user/useRequestHeader";
+import { Dashboard } from "../../types/api/dashboard";
 
 type returnType = {
-  getDashborad: () => Promise<number>;
+  getDashborad: () => Promise<Dashboard>;
 };
 
 export const useDashboardApi = (): returnType => {
@@ -14,8 +15,7 @@ export const useDashboardApi = (): returnType => {
     async () => {
       const url = `${process.env.REACT_APP_API_V1_URL}/dashboard/`;
       const response = await axios.get(url, { headers: getRequestHeader() });
-      console.log(response);
-      return response.status;
+      return response.data;
     }, [],
   );
   return { getDashborad };
