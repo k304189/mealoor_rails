@@ -30,9 +30,9 @@ export const HealthCard: VFC<Props> = memo((props) => {
       <Table bg={bg} w="100%" size="sm" variant="unstyled" align="right">
         <Thead>
           <Tr>
-            <Td w="25%" />
+            <Td w="28%" />
             <Td w="20%">体重</Td>
-            <Td w="30%">体脂肪率</Td>
+            <Td w="27%">体脂肪率</Td>
             <Td w="25%">体脂肪量</Td>
           </Tr>
         </Thead>
