@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post "stocks/dispose"
       post "stocks/split"
       post "stocks/cook"
+      post "stocks/eat"
       get 'usages/history/:id', to: "usages#history"
       get 'usages/foodstuff/:id', to: "usages#foodstuff"
       resources :eats, only: %i[create update destroy]

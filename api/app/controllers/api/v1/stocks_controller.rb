@@ -81,6 +81,40 @@ class Api::V1::StocksController < ApplicationController
     render json: updated_stocks
   end
 
+  def eat
+    updated_stocks = nil
+    ActiveRecord::Base.transaction do
+      eat_info = params.require(:usage).permit(:use_date, :eat_timing, :note)
+      updated_stocks, use_rate_info = create_usage
+
+      for use_info in use_rate_info do
+        target_stock_id = use_info[:id]
+        calced_stock_param = calc_stock_param(target_stock_id, use_info[:use_rate])
+        eat = current_user.eats.new(
+          name: calced_stock_param[:name],
+          category: calced_stock_param[:category],
+          price: calced_stock_param[:price],
+          kcal: calced_stock_param[:kcal],
+          amount: calced_stock_param[:amount],
+          unit: calced_stock_param[:unit],
+          protein: calced_stock_param[:protein],
+          shop: calced_stock_param[:shop],
+          discounted: calced_stock_param[:discounted],
+          eat_timing: eat_info[:eat_timing],
+          eat_date: eat_info[:use_date],
+          note: eat_info[:note]
+        )
+        if calced_stock_param[:stock_type] == "中食"
+          eat.eat_type = calced_stock_param[:stock_type]
+        else
+          eat.eat_type = "自炊"
+        end
+        eat.save!
+      end
+    end
+    render json: updated_stocks
+  end
+
   private
     def stock_add_params
       params.require(:stock)

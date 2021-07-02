@@ -14,6 +14,9 @@ module CommonActions
         amount: (stock.amount * use_rate / 100.to_f).ceil,
         protein: BigDecimal((stock.protein * use_rate / 100).to_s).ceil(1).to_f,
         unit: stock.unit,
+        shop: stock.shop,
+        discounted: stock.discounted,
+        stock_type: stock.stock_type
       }
     end
     return calced_stock_param
