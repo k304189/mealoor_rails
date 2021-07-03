@@ -3,7 +3,7 @@ import { memo, VFC } from "react";
 import { DefaultSelect } from "../../atoms/input/DefaultSelect";
 import { CustomizeSelect } from "../../../types/molecules/customizeSelect";
 
-export const SelectMonth: VFC<CustomizeSelect> = memo((props) => {
+export const Month: VFC<CustomizeSelect> = memo((props) => {
   const {
     selectedValue = "",
     size = "md",

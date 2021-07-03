@@ -1,17 +1,17 @@
 import {
-  Box,
+  Grid,
+  GridItem,
   Flex,
-  Stack,
-  Spacer,
 } from "@chakra-ui/react";
 import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
-import { DefaultInput } from "../../atoms/input/DefaultInput";
-import { SelectMonth } from "../../molecules/select/SelectMonth";
-import { FoodCategory } from "../../molecules/select/FoodCategory";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
-import { DefaultInputForm } from "../input/DefaultInputForm";
+import { InputName } from "../input/common/InputName";
+import { SelectFoodCategory } from "../input/common/SelectFoodCategory";
+import { SelectMonth } from "../input/seasonalfood/SelectMonth";
+import { useCommonValidate } from "../../../hooks/validate/useCommonValidate";
+import { useSeasonalFoodValidate } from "../../../hooks/validate/useSeasonalFoodValidate";
 import { useSeasonalFoodApi } from "../../../hooks/seasonalfood/useSeasonalFoodApi";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
@@ -26,20 +26,27 @@ type Props = {
 export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const { allSeasonalFoods, seasonalFood = null, isOpen, onClose } = props;
   const { addSeasonalFood, editSeasonalFood } = useSeasonalFoodApi();
+  const { validateName, validateFoodCategory } = useCommonValidate();
+  const { validateMonth } = useSeasonalFoodValidate();
   const { showMessage } = useMessage();
+
   const [id, setId] = useState<number>(0);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [startMonth, setStartMonth] = useState<number>(0);
-  const [endMonth, setEndMonth] = useState<number>(0);
-  const [nameInvalid, setNameInvalid] = useState<boolean>();
-  const [categoryInvalid, setCategoryInvalid] = useState<boolean>();
-  const [startMonthInvalid, setStartMonthInvalid] = useState<boolean>();
-  const [endMonthInvalid, setEndMonthInvalid] = useState<boolean>();
-  const [startMonthErrmsg, setStartMonthErrmsg] = useState("");
-  const [endMonthErrmsg, setEndMonthErrmsg] = useState("");
+  const [startMonth, setStartMonth] = useState(0);
+  const [endMonth, setEndMonth] = useState(0);
+
+  const [nameInvalid, setNameInvalid] = useState(false);
+  const [categoryInvalid, setCategoryInvalid] = useState(false);
+  const [startMonthInvalid, setStartMonthInvalid] = useState(false);
+  const [endMonthInvalid, setEndMonthInvalid] = useState(false);
+
+  const [nameError, setNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [startMonthError, setStartMonthError] = useState("");
+  const [endMonthError, setEndMonthError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -53,48 +60,36 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   const onChangeEndMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     setEndMonth(Number(e.target.value));
 
-  const onBlurName = () =>
-    setNameInvalid(name === "");
+  const onBlurName = () => {
+    const { invalid, errorMsg } = validateName(name);
+    setNameInvalid(invalid);
+    setNameError(errorMsg);
+  };
 
-  const onBlurCategory = () =>
-    setCategoryInvalid(category === "");
+  const onBlurCategory = () => {
+    const { invalid, errorMsg } = validateFoodCategory(category);
+    setCategoryInvalid(invalid);
+    setCategoryError(errorMsg);
+  };
 
   const onBlurStartMonth = () => {
-    let status = false;
-    let errmsg = "";
-    if (!(startMonth >= 1 && startMonth <= 12)) {
-      status = true;
-      errmsg = "必須項目です。選択してください";
-    } else if (startMonthInvalid !== undefined || endMonthInvalid !== undefined) {
-      if (startMonth > endMonth) {
-        status = true;
-        errmsg = "終了月よりも前の月を選択してください";
-      } else {
-        setEndMonthInvalid(false);
-        setEndMonthErrmsg("");
-      }
+    const { startMonthStatus, startMonthErrmsg } = validateMonth(startMonth, endMonth);
+    if (!startMonthStatus) {
+      setEndMonthInvalid(false);
+      setEndMonthError("");
     }
-    setStartMonthInvalid(status);
-    setStartMonthErrmsg(errmsg);
+    setStartMonthInvalid(startMonthStatus);
+    setStartMonthError(startMonthErrmsg);
   };
 
   const onBlurEndMonth = () => {
-    let status = false;
-    let errmsg = "";
-    if (!(endMonth >= 1 && endMonth <= 12)) {
-      status = true;
-      errmsg = "必須項目です。選択してください";
-    } else if (startMonthInvalid !== undefined || endMonthInvalid !== undefined) {
-      if (startMonth > endMonth) {
-        status = true;
-        errmsg = "開始月よりも後の月を選択してください";
-      } else {
-        setStartMonthInvalid(false);
-        setStartMonthErrmsg("");
-      }
+    const { endMonthStatus, endMonthErrmsg } = validateMonth(startMonth, endMonth);
+    if (!endMonthStatus) {
+      setStartMonthInvalid(false);
+      setStartMonthError("");
     }
-    setEndMonthInvalid(status);
-    setEndMonthErrmsg(errmsg);
+    setEndMonthInvalid(endMonthStatus);
+    setEndMonthError(endMonthErrmsg);
   };
 
   const initModal = () => {
@@ -103,14 +98,6 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
     setCategory(seasonalFood?.category ?? "");
     setStartMonth(seasonalFood?.start_month ?? 0);
     setEndMonth(seasonalFood?.end_month ?? 0);
-    let isInValidStatus;
-    if (seasonalFood) {
-      isInValidStatus = false;
-    }
-    setNameInvalid(isInValidStatus);
-    setCategoryInvalid(isInValidStatus);
-    setStartMonthInvalid(isInValidStatus);
-    setEndMonthInvalid(isInValidStatus);
   };
 
   const callAddSeasonalFood = () => {
@@ -161,16 +148,7 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
   }, [seasonalFood]);
 
   useEffect(() => {
-    let disabled;
-    if (
-      nameInvalid === undefined || categoryInvalid === undefined
-      || startMonthInvalid === undefined || endMonthInvalid === undefined
-    ) {
-      disabled = true;
-    } else {
-      disabled = nameInvalid || categoryInvalid || startMonthInvalid || endMonthInvalid;
-    }
-    setButtonDisabled(disabled);
+    setButtonDisabled(nameInvalid || categoryInvalid || startMonthInvalid || endMonthInvalid);
   }, [nameInvalid, categoryInvalid, startMonthInvalid, endMonthInvalid]);
 
   const editType = (id === 0) ? "登録" : "編集";
@@ -183,63 +161,50 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
       onClose={onClose}
       modalTitle={`旬の食材${editType}`}
     >
-      <Stack spacing={4}>
-        <DefaultInputForm
-          label="食材名"
-          require="require"
-          isInvalid={nameInvalid}
-          errorMsg="必須項目です。入力してください"
-        >
-          <DefaultInput
-            value={name}
+      <Grid
+        templateRows="repeat(1, 1fr)"
+        templateColumns="repeat(2, 1fr)"
+        gap={5}
+      >
+        <GridItem colSpan={2}>
+          <InputName
+            name={name}
             onChange={onChangeName}
+            invalid={nameInvalid}
+            error={nameError}
             onBlur={onBlurName}
           />
-        </DefaultInputForm>
-        <DefaultInputForm
-          label="カテゴリー"
-          require="require"
-          isInvalid={categoryInvalid}
-          errorMsg="必須項目です。選択してください"
-        >
-          <FoodCategory
-            selectedValue={category}
+        </GridItem>
+        <GridItem colSpan={2}>
+          <SelectFoodCategory
+            category={category}
             onChange={onChangeCategory}
+            invalid={categoryInvalid}
+            error={categoryError}
             onBlur={onBlurCategory}
           />
-        </DefaultInputForm>
-        <Flex>
-          <Box w="40%">
-            <DefaultInputForm
-              label="開始月"
-              require="require"
-              isInvalid={startMonthInvalid}
-              errorMsg={startMonthErrmsg}
-            >
-              <SelectMonth
-                selectedValue={startMonth}
-                onChange={onChangeStartMonth}
-                onBlur={onBlurStartMonth}
-              />
-            </DefaultInputForm>
-          </Box>
-          <Spacer />
-          <Box w="40%">
-            <DefaultInputForm
-              label="終了月"
-              require="require"
-              isInvalid={endMonthInvalid}
-              errorMsg={endMonthErrmsg}
-            >
-              <SelectMonth
-                selectedValue={endMonth}
-                onChange={onChangeEndMonth}
-                onBlur={onBlurEndMonth}
-              />
-            </DefaultInputForm>
-          </Box>
-        </Flex>
-        <Box>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <SelectMonth
+            label="開始月"
+            month={startMonth}
+            onChange={onChangeStartMonth}
+            invalid={startMonthInvalid}
+            error={startMonthError}
+            onBlur={onBlurStartMonth}
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <SelectMonth
+            label="終了月"
+            month={endMonth}
+            onChange={onChangeEndMonth}
+            invalid={endMonthInvalid}
+            error={endMonthError}
+            onBlur={onBlurEndMonth}
+          />
+        </GridItem>
+        <GridItem colSpan={2}>
           <Flex justify="flex-end">
             <PrimaryButton
               disabled={buttonDisabled}
@@ -249,8 +214,8 @@ export const SeasonalFoodEditModal: VFC<Props> = memo((props) => {
               {buttonTitle}
             </PrimaryButton>
           </Flex>
-        </Box>
-      </Stack>
+        </GridItem>
+      </Grid>
     </DefaultModal>
   );
 });
