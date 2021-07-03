@@ -98,12 +98,12 @@ export const SeasonalFoodList: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading}>
+    <HeaderLayout loading={loading} title="旬の食材">
       <>
-        <Flex align="center" justify="center" height="100vh">
-          <Box as="article" p={4}>
+        <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
+          <Box as="article" w="100%" h="100%">
             <Flex>
-              <PrimaryButton onClick={onClickSeasonalFood}>新規作成</PrimaryButton>
+              <PrimaryButton onClick={onClickSeasonalFood}>旬の食材登録</PrimaryButton>
               <Spacer />
               <DefaultPaging
                 displayNum={displayNum}
