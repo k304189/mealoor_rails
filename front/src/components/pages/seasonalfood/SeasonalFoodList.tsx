@@ -1,6 +1,7 @@
 import { memo, useEffect, useState, VFC } from "react";
 import {
   Box,
+  Center,
   Flex,
   Spacer,
   Table,
@@ -102,50 +103,58 @@ export const SeasonalFoodList: VFC = memo(() => {
       <>
         <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
           <Box as="article" w="100%" h="100%">
-            <Flex>
-              <PrimaryButton onClick={onClickSeasonalFood}>旬の食材登録</PrimaryButton>
-              <Spacer />
-              <DefaultPaging
-                displayNum={displayNum}
-                dataNum={allSeasonalFoods.length}
-                onPageChange={onClickPageChange}
-              />
-            </Flex>
-            <Table variant="simple">
-              <Thead>
-                <Tr fontSize={{ base: "sm", md: "md" }}>
-                  <Td w="200px">食材名</Td>
-                  <Td w="200px">カテゴリー</Td>
-                  <Td w="100px">開始月</Td>
-                  <Td w="100px">終了月</Td>
-                  <Td w="30px" />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {allSeasonalFoods
-                  .slice(pagingOffset, pagingOffset + displayNum)
-                  .map((data) => (
-                    <Tr key={data.id}>
-                      <Td p={0}>
-                        <DefaultLink
-                          tooltipText="編集画面へ"
-                          onClick={() => onClickSeasonalFood(data.id)}
-                        >
-                          {data.name}
-                        </DefaultLink>
-                      </Td>
-                      <Td>{data.category}</Td>
-                      <Td>{data.start_month}</Td>
-                      <Td>{data.end_month}</Td>
-                      <Td>
-                        <DeleteButton
-                          onClick={() => { onClickDeleteSeasonalFood(data.id); }}
-                        />
-                      </Td>
-                    </Tr>
-                  ))}
-              </Tbody>
-            </Table>
+            <Center>
+              <Box w="50%">
+                <Flex>
+                  <PrimaryButton onClick={onClickSeasonalFood}>旬の食材登録</PrimaryButton>
+                  <Spacer />
+                  <DefaultPaging
+                    displayNum={displayNum}
+                    dataNum={allSeasonalFoods.length}
+                    onPageChange={onClickPageChange}
+                  />
+                </Flex>
+                { allSeasonalFoods ? (
+                  <Table variant="simple" size="sm">
+                    <Thead>
+                      <Tr fontSize={{ base: "sm", md: "md" }}>
+                        <Td w="200px">食材名</Td>
+                        <Td w="200px">カテゴリー</Td>
+                        <Td w="100px">開始月</Td>
+                        <Td w="100px">終了月</Td>
+                        <Td w="30px" />
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {allSeasonalFoods
+                        .slice(pagingOffset, pagingOffset + displayNum)
+                        .map((data) => (
+                          <Tr key={data.id}>
+                            <Td p={0}>
+                              <DefaultLink
+                                tooltipText="編集画面へ"
+                                onClick={() => onClickSeasonalFood(data.id)}
+                              >
+                                {data.name}
+                              </DefaultLink>
+                            </Td>
+                            <Td>{data.category}</Td>
+                            <Td>{data.start_month}月</Td>
+                            <Td>{data.end_month}月</Td>
+                            <Td>
+                              <DeleteButton
+                                onClick={() => { onClickDeleteSeasonalFood(data.id); }}
+                              />
+                            </Td>
+                          </Tr>
+                        ))}
+                    </Tbody>
+                  </Table>
+                ) : (
+                  <Box>旬の食材が存在しません</Box>
+                )}
+              </Box>
+            </Center>
           </Box>
         </Flex>
         <SeasonalFoodEditModal
