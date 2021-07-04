@@ -13,6 +13,19 @@ class Api::V1::DashboardController < ApplicationController
 
     stocks = current_user.stocks.where(limit: today..today.since(2.days))
 
+    this_month_seasonalfood = SeasonalFood.where("#{today.month} between start_month and end_month")
+
+    vegetables = this_month_seasonalfood.where(
+      "category in ('緑黄色野菜', '淡色野菜', 'きのこ', '大豆', 'いも')"
+    )
+    vegetable = vegetables.find(vegetables.pluck(:id).sample)
+
+    fruits = this_month_seasonalfood.where("category = 'フルーツ'")
+    fruit = fruits.find(fruits.pluck(:id).sample)
+
+    seafoods = this_month_seasonalfood.where("category in ('魚介', '海藻')")
+    seafood = seafoods.find(seafoods.pluck(:id).sample)
+
     dashboard_data = {
       "today" => {
         "health" => healths.find { |x| x["recording_date"] == today },
@@ -21,6 +34,11 @@ class Api::V1::DashboardController < ApplicationController
       "yesterday" => {
         "health" => healths.find { |x| x["recording_date"] == yesterday },
         "eat" => eats.find { |x| x["date"] == yesterday },
+      },
+      "seasonalfood" => {
+        "vegetable" => vegetable,
+        "fruit" => fruit,
+        "seafood" => seafood,
       },
       "stock" => stocks,
     }
