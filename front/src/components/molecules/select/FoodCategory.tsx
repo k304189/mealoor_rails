@@ -21,6 +21,7 @@ export const FoodCategory: VFC<CustomizeSelect> = memo((props) => {
     { value: "卵" },
     { value: "淡色野菜" },
     { value: "緑黄色野菜" },
+    { value: "きのこ" },
     { value: "フルーツ" },
     { value: "海藻" },
     { value: "乳製品" },
