@@ -28,14 +28,14 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
         <Table w="100%" h="100%" variant="unstyled" fontSize="2xl" color="#FFFFFF">
           <Thead>
             <Tr h="10%">
-              <Td w="33%" textAlign="center" bg="#99CC66">野菜</Td>
-              <Td w="33%" textAlign="center" bg="#006888">魚介類</Td>
-              <Td w="33%" textAlign="center" bg="#FF3366">フルーツ</Td>
+              <Td w="33%" px={0} textAlign="center" bg="#99CC66">野菜</Td>
+              <Td w="33%" px={0} textAlign="center" bg="#006888">魚介類</Td>
+              <Td w="33%" px={0} textAlign="center" bg="#FF3366">フルーツ</Td>
             </Tr>
           </Thead>
           <Tbody>
             <Tr h="90%">
-              <Td textAlign="center" bg="#99CC66">
+              <Td p={0} textAlign="center" bg="#99CC66">
                 <FontAwesomeIcon icon={faLeaf} size="4x" />
                 {vegetable ? (
                   <>
@@ -50,7 +50,7 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
                   <Box>旬の野菜はありません</Box>
                 )}
               </Td>
-              <Td textAlign="center" bg="#006888">
+              <Td p={0} textAlign="center" bg="#006888">
                 <FontAwesomeIcon icon={faFish} size="4x" />
                 {seafood ? (
                   <>
@@ -65,7 +65,7 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
                   <Box>旬の魚介類はありません</Box>
                 )}
               </Td>
-              <Td textAlign="center" bg="#FF3366">
+              <Td p={0} textAlign="center" bg="#FF3366">
                 <FontAwesomeIcon icon={faAppleAlt} size="4x" />
                 {fruit ? (
                   <>
