@@ -17,8 +17,8 @@ export type Dashboard = {
   today: DateData;
   yesterday: DateData;
   seasonalfood: {
-    vegetable?: SeasonalFood;
-    fruit?: SeasonalFood;
-    seafood?: SeasonalFood;
+    vegetable: SeasonalFood | null;
+    fruit: SeasonalFood | null;
+    seafood: SeasonalFood | null;
   };
 };

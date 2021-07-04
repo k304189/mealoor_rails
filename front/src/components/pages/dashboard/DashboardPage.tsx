@@ -4,6 +4,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { DashboardEatCard } from "../../organisms/dashboard/DashboardEatCard";
 import { DashboardHealthCard } from "../../organisms/dashboard/DashboardHealthCard";
 import { LimitSoonStockTable } from "../../organisms/dashboard/LimitSoonStockTable";
+import { SeasonalfoodTable } from "../../organisms/dashboard/SeasonalfoodTable";
 import { useMessage } from "../../../hooks/common/useMessage";
 import { useDashboardApi } from "../../../hooks/dashboard/useDashboardApi";
 import { useUserApi } from "../../../hooks/user/useUserApi";
@@ -47,6 +48,10 @@ export const DashboardPage: VFC = memo(() => {
           <Box>
             <Box className="sectionTitle">賞味期限が近い食材</Box>
             <LimitSoonStockTable dashboard={dashboard} />
+          </Box>
+          <Box>
+            <Box className="sectionTitle">今日が旬の食材</Box>
+            <SeasonalfoodTable dashboard={dashboard} />
           </Box>
         </SimpleGrid>
       </Box>
