@@ -51,7 +51,7 @@ export const LimitSoonStockTable: VFC<Props> = memo((props) => {
               { stocks
                 .slice(pagingOffset, pagingOffset + displayNum)
                 .map((data) => (
-                  <Tr>
+                  <Tr key={data.id}>
                     <Td>{data.name}</Td>
                     <Td>{data.limit}</Td>
                     <Td>{data.amount || 0 }{data.unit || ""}</Td>

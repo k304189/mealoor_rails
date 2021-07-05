@@ -1,6 +1,8 @@
 import { memo, VFC, useEffect, useState } from "react";
-import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
+import { Box, Flex, Grid, GridItem, HStack, SimpleGrid } from "@chakra-ui/react";
 
+import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DashboardEatCard } from "../../organisms/dashboard/DashboardEatCard";
 import { DashboardHealthCard } from "../../organisms/dashboard/DashboardHealthCard";
 import { LimitSoonStockTable } from "../../organisms/dashboard/LimitSoonStockTable";
@@ -15,9 +17,18 @@ export const DashboardPage: VFC = memo(() => {
   const { isLogin } = useUserApi();
   const { showMessage } = useMessage();
   const { getDashborad } = useDashboardApi();
+  const history = useHistory();
 
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const todayString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = `00${today.getMonth() + 1}`.slice(-2);
+    const date = `00${today.getDate()}`.slice(-2);
+    return `${year}-${month}-${date}`;
+  };
 
   useEffect(() => {
     isLogin()
@@ -39,7 +50,25 @@ export const DashboardPage: VFC = memo(() => {
   return (
     <HeaderLayout title="ダッシュボード" loading={loading}>
       <Box as="article" w="100%" h="100%">
-        <Box className="sectionTitle">今日のデータ</Box>
+        <Flex>
+          <Box className="sectionTitle" mr={10}>
+            今日のサマリー
+          </Box>
+          <HStack spacing={5}>
+            <DefaultLink
+              tooltipText="カレンダー画面へ"
+              onClick={() => { history.push("/calendar"); }}
+            >
+              カレンダー
+            </DefaultLink>
+            <DefaultLink
+              tooltipText="本日のデイリーデータ画面へ"
+              onClick={() => { history.push(`/dailydata/${todayString()}`); }}
+            >
+              デイリーデータ
+            </DefaultLink>
+          </HStack>
+        </Flex>
         <SimpleGrid columns={4} spacing={1}>
           <DashboardHealthCard dashboard={dashboard} />
           <DashboardEatCard dashboard={dashboard} />
@@ -51,7 +80,15 @@ export const DashboardPage: VFC = memo(() => {
         >
           <GridItem colSpan={2}>
             <Box>
-              <Box className="sectionTitle">賞味期限が近い食材</Box>
+              <Flex>
+                <Box className="sectionTitle" mr={10}>賞味期限が近い食材</Box>
+                <DefaultLink
+                  tooltipText="家にある食材画面へ"
+                  onClick={() => { history.push("/stock"); }}
+                >
+                  家にある食材
+                </DefaultLink>
+              </Flex>
               <LimitSoonStockTable dashboard={dashboard} />
             </Box>
           </GridItem>
