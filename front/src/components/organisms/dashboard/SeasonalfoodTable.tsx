@@ -25,7 +25,7 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
   return (
     <Box w="100%" h="100%">
       { dashboard ? (
-        <Table w="100%" h="100%" variant="unstyled" fontSize="2xl" color="#FFFFFF">
+        <Table w="100%" h="100%" variant="unstyled" color="#FFFFFF">
           <Thead>
             <Tr h="10%">
               <Td w="33%" px={0} textAlign="center" bg="#99CC66">野菜</Td>
@@ -35,12 +35,12 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
           </Thead>
           <Tbody>
             <Tr h="90%">
-              <Td p={0} textAlign="center" bg="#99CC66">
-                <FontAwesomeIcon icon={faLeaf} size="4x" />
+              <Td p={1} textAlign="center" bg="#99CC66">
+                <FontAwesomeIcon icon={faLeaf} size="3x" />
                 {vegetable ? (
                   <>
                     <Box mt={6}>{vegetable.name}</Box>
-                    <Box fontSize="md">
+                    <Box fontSize="sm">
                       { vegetable.start_month === vegetable.end_month
                         ? `${vegetable.start_month}月`
                         : `${vegetable.start_month}月～${vegetable.end_month}月` }
@@ -50,12 +50,12 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
                   <Box>旬の野菜はありません</Box>
                 )}
               </Td>
-              <Td p={0} textAlign="center" bg="#006888">
-                <FontAwesomeIcon icon={faFish} size="4x" />
+              <Td p={1} textAlign="center" bg="#006888">
+                <FontAwesomeIcon icon={faFish} size="3x" />
                 {seafood ? (
                   <>
                     <Box mt={6}>{seafood.name}</Box>
-                    <Box fontSize="md">
+                    <Box fontSize="sm">
                       { seafood.start_month === seafood.end_month
                         ? `${seafood.start_month}月`
                         : `${seafood.start_month}月～${seafood.end_month}月` }
@@ -65,12 +65,12 @@ export const SeasonalfoodTable: VFC<Props> = memo((props) => {
                   <Box>旬の魚介類はありません</Box>
                 )}
               </Td>
-              <Td p={0} textAlign="center" bg="#FF3366">
-                <FontAwesomeIcon icon={faAppleAlt} size="4x" />
+              <Td p={1} textAlign="center" bg="#FF3366">
+                <FontAwesomeIcon icon={faAppleAlt} size="3x" />
                 {fruit ? (
                   <>
                     <Box mt={6}>{fruit.name}</Box>
-                    <Box fontSize="md">
+                    <Box fontSize="sm">
                       { fruit.start_month === fruit.end_month
                         ? `${fruit.start_month}月`
                         : `${fruit.start_month}月～${fruit.end_month}月` }

@@ -1,5 +1,5 @@
 import { memo, VFC, useEffect, useState } from "react";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 
 import { DashboardEatCard } from "../../organisms/dashboard/DashboardEatCard";
 import { DashboardHealthCard } from "../../organisms/dashboard/DashboardHealthCard";
@@ -39,21 +39,29 @@ export const DashboardPage: VFC = memo(() => {
   return (
     <HeaderLayout title="ダッシュボード" loading={loading}>
       <Box as="article" w="100%" h="100%">
-        <h1>ログイン後のダッシュボード画面です</h1>
+        <Box className="sectionTitle">今日のデータ</Box>
         <SimpleGrid columns={4} spacing={1}>
           <DashboardHealthCard dashboard={dashboard} />
           <DashboardEatCard dashboard={dashboard} />
         </SimpleGrid>
-        <SimpleGrid mt={3} columns={2} spacing={1}>
-          <Box>
-            <Box className="sectionTitle">賞味期限が近い食材</Box>
-            <LimitSoonStockTable dashboard={dashboard} />
-          </Box>
-          <Box>
-            <Box className="sectionTitle">今日が旬の食材</Box>
-            <SeasonalfoodTable dashboard={dashboard} />
-          </Box>
-        </SimpleGrid>
+        <Grid
+          templateColumns="repeat(4, 1fr)"
+          gap={5}
+          mt={5}
+        >
+          <GridItem colSpan={2}>
+            <Box>
+              <Box className="sectionTitle">賞味期限が近い食材</Box>
+              <LimitSoonStockTable dashboard={dashboard} />
+            </Box>
+          </GridItem>
+          <GridItem colSpan={1}>
+            <Box>
+              <Box className="sectionTitle">今月の旬の食材</Box>
+              <SeasonalfoodTable dashboard={dashboard} />
+            </Box>
+          </GridItem>
+        </Grid>
       </Box>
     </HeaderLayout>
   );
