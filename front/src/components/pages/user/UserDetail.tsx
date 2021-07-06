@@ -1,8 +1,7 @@
 import { memo, useEffect, useState, VFC } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, Center, Flex } from "@chakra-ui/react";
 
-import { SecondaryButton } from "../../atoms/button/SecondaryButton";
 import { UserEditForm } from "../../organisms/user/UserEditForm";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 
@@ -17,17 +16,12 @@ type UrlParams = {
 
 export const UserDetail: VFC = memo(() => {
   const { id } = useParams<UrlParams>();
-  const history = useHistory();
   const { showUser, isLogin } = useUserApi();
   const { loginUser } = useLoginUser();
   const { showMessage } = useMessage();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const onClickUserListButton = () => {
-    history.push("/users");
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -58,9 +52,9 @@ export const UserDetail: VFC = memo(() => {
         >
           <Center>
             <Box w="50%">
-              <SecondaryButton onClick={onClickUserListButton}>
-                ユーザー一覧画面へ
-              </SecondaryButton>
+              <Box className="sectionTitle">
+                ユーザー情報
+              </Box>
               <Box mt={5}>
                 <UserEditForm user={user} isAdmin={loginUser?.admin} />
               </Box>
