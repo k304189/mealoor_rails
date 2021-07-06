@@ -64,7 +64,7 @@ export const UserList: VFC = memo(() => {
                 />
               </Flex>
               { users ? (
-                <Table>
+                <Table size="sm">
                   <Thead>
                     <Tr>
                       <Td>ニックネーム</Td>
