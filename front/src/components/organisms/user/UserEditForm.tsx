@@ -153,6 +153,15 @@ export const UserEditForm: VFC<Props> = memo((props) => {
             </Flex>
             <Flex w="100%" justify="flex-end">
               <HStack spacing={10}>
+                { loginUser?.admin ? (
+                  <SecondaryButton
+                    onClick={() => { history.push("/users"); }}
+                  >
+                    ユーザー一覧
+                  </SecondaryButton>
+                ) : (
+                  <></>
+                ) }
                 <PrimaryButton
                   bg="gray.500"
                   onClick={() => { setUserDeleteIsOpen(true); }}
