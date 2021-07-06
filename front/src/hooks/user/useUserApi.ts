@@ -35,8 +35,7 @@ type returnType = {
   signin: (signinUser: signinUserType) => void;
   signup: (signupUser: signupUserType) => void;
   signout: () => void;
-  // isLogin: () => void;
-  isLogin: () => Promise<boolean>;
+  isLogin: (isAdmin?: boolean) => Promise<boolean>;
 };
 
 export const useUserApi = (): returnType => {
@@ -134,7 +133,7 @@ export const useUserApi = (): returnType => {
   }, []);
 
   const isLogin = useCallback(
-    async () => {
+    async (isAdmin = false) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/users/currentuser`;
       let result = false;
 
@@ -145,7 +144,19 @@ export const useUserApi = (): returnType => {
         try {
           const response = await axios.get(url, data);
           setLoginUser(response.data.data);
-          result = true;
+          if (isAdmin) {
+            if (response.data.data.admin) {
+              result = true;
+            } else {
+              showMessage({
+                title: "参照権限がありません。",
+                status: "error",
+              });
+              history.push("/dashboard");
+            }
+          } else {
+            result = true;
+          }
         } catch (err) {
           showMessage({
             title: "認証情報が不正です。再ログインしてください",

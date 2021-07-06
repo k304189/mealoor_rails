@@ -84,7 +84,7 @@ export const SeasonalFoodList: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    isLogin()
+    isLogin(true)
       .then((result) => {
         if (result) {
           getAllSeasonalFoods()

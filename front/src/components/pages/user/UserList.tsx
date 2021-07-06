@@ -28,7 +28,7 @@ export const UserList: VFC = memo(() => {
 
   useEffect(() => {
     setLoading(true);
-    isLogin()
+    isLogin(true)
       .then((result) => {
         if (result) {
           getUsers()
