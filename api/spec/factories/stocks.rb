@@ -25,4 +25,23 @@ FactoryBot.define do
     limit { "2021-06-20" }
     remain { 100 }
   end
+
+  factory :cook, class: Stock do
+    user { nil }
+    name { "お茶漬け" }
+    category { "米" }
+    limit { "2021-05-17" }
+    price { 250 }
+    kcal { 285 }
+    remain { 100 }
+    amount { 200 }
+    unit { "g" }
+    protein { 2.7 }
+    quantity { 1 }
+    location { "冷蔵庫" }
+    stock_type { "自炊" }
+    shop { "スーパー" }
+    discounted { false }
+    note { "昼食用" }
+  end
 end
