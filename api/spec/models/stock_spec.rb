@@ -100,6 +100,16 @@ RSpec.describe Stock, type: :model do
       stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: 1)
       expect(stock.valid?).to eq true
     end
+
+    it "店名の長さが40文字" do
+      eat = FactoryBot.build(:eat_require, user_id: @user.id, shop: "あ" * 40)
+      expect(eat.valid?).to eq true
+    end
+
+    it "一言メモの長さが50文字" do
+      eat = FactoryBot.build(:eat_require, user_id: @user.id, note: "あ" * 50)
+      expect(eat.valid?).to eq true
+    end
   end
 
   context "境界値チェック（異常系）" do
@@ -146,6 +156,16 @@ RSpec.describe Stock, type: :model do
     it "個数が0" do
       stock = FactoryBot.build(:stock_require, user_id: @user.id, quantity: 0)
       expect(stock.valid?).to eq false
+    end
+
+    it "店名の長さが41文字" do
+      eat = FactoryBot.build(:eat_require, user_id: @user.id, shop: "あ" * 41)
+      expect(eat.valid?).to eq false
+    end
+
+    it "一言メモの長さが51文字" do
+      eat = FactoryBot.build(:eat_require, user_id: @user.id, note: "あ" * 51)
+      expect(eat.valid?).to eq false
     end
   end
 
