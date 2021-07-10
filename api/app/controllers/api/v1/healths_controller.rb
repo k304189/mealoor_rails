@@ -3,7 +3,6 @@ class Api::V1::HealthsController < ApplicationController
 
   def create
     @health = current_user.healths.new(health_add_param)
-    @health.set_fat_weight
     if @health.save
       render json: @health, status: :created
     else
@@ -14,7 +13,6 @@ class Api::V1::HealthsController < ApplicationController
   def update
     @health = current_user.healths.find(params[:id])
     @health.attributes = health_add_param
-    @health.set_fat_weight
     @health.save!
     render json: @health
   end
