@@ -1,5 +1,5 @@
 import { memo, VFC, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { HeaderLayout } from "../../templates/HeaderLayout";
 import { useUserApi } from "../../../hooks/user/useUserApi";
@@ -17,9 +17,9 @@ export const Top: VFC = memo(() => {
 
   return (
     <HeaderLayout>
-      <Flex className="main">
+      <Box as="article" h="100%" w="100%">
         <h1>Top画面です</h1>
-      </Flex>
+      </Box>
     </HeaderLayout>
   );
 });

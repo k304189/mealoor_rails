@@ -33,6 +33,10 @@ const contentHeight = {
   base: `calc(100% - ${headerHeight.base} - ${titleHeight.base} - ${mainChildMargin.base})`,
   md: `calc(100% - ${headerHeight.md} - ${titleHeight.md} - ${mainChildMargin.md})`,
 };
+const onlyContentHeight = {
+  base: `calc(100% - ${headerHeight.base} - ${mainChildMargin.base})`,
+  md: `calc(100% - ${headerHeight.md} - ${mainChildMargin.md})`,
+};
 
 const systemTheme = extendTheme({
   styles: {
@@ -77,6 +81,11 @@ const systemTheme = extendTheme({
           marginTop: mainChildMargin,
           width: "100%",
           height: contentHeight,
+        },
+        ".onlyContents": {
+          marginTop: mainChildMargin,
+          width: "100%",
+          height: onlyContentHeight,
         },
       },
       article: {

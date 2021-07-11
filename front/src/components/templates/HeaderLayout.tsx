@@ -22,15 +22,19 @@ export const HeaderLayout: VFC<Props> = memo((props) => {
         <Flex className="main">
           <Box w="95%" h="100%" overflow={{ base: "scroll", md: "auto" }}>
             { title ? (
-              <Box className="title">
-                {title}
-              </Box>
+              <>
+                <Box className="title">
+                  {title}
+                </Box>
+                <Box className="contents">
+                  {children}
+                </Box>
+              </>
             ) : (
-              <></>
+              <Box className="onlyContents">
+                {children}
+              </Box>
             )}
-            <Box className="contents">
-              {children}
-            </Box>
           </Box>
         </Flex>
       )}
