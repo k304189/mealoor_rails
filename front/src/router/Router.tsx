@@ -11,27 +11,28 @@ import { DailyData } from "../components/pages/dailydata/DailyData";
 import { SeasonalFoodList } from "../components/pages/seasonalfood/SeasonalFoodList";
 import { LoginUserProvider } from "../providers/LoginUserProvider";
 import { StockList } from "../components/pages/stock/StockList";
+import { Http404 } from "../components/pages/http404/Http404";
 
 export const Router: VFC = memo(() => {
   return (
-    <Switch>
-      <LoginUserProvider>
+    <LoginUserProvider>
+      <Switch>
         <Route exact path="/">
           <Top />
         </Route>
-        <Route path="/graph">
+        <Route exact path="/graph">
           <Graph />
         </Route>
-        <Route path="/dashboard">
+        <Route exact path="/dashboard">
           <DashboardPage />
         </Route>
-        <Route path="/calendar">
+        <Route exact path="/calendar">
           <Calendar />
         </Route>
         <Route path="/dailydata/:date">
           <DailyData />
         </Route>
-        <Route path="/seasonalfood">
+        <Route exact path="/seasonalfood">
           <SeasonalFoodList />
         </Route>
         <Route exact path="/stock">
@@ -43,7 +44,10 @@ export const Router: VFC = memo(() => {
         <Route path="/users/detail/:id">
           <UserDetail />
         </Route>
-      </LoginUserProvider>
-    </Switch>
+        <Route path="*">
+          <Http404 />
+        </Route>
+      </Switch>
+    </LoginUserProvider>
   );
 });
