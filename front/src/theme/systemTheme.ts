@@ -177,6 +177,30 @@ const systemTheme = extendTheme({
           },
         },
       },
+      ".http404": {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        img: {
+          height: "50%",
+        },
+        div: {
+          textAlign: "center",
+          merginLeft: "20px",
+          h1: {
+            fontSize: "64px",
+            fontWeight: "bold",
+          },
+          h3: {
+            fontSize: "32px",
+            fontWeight: "bold",
+          },
+          p: {
+            fontSize: "20px",
+            margin: "20px 0",
+          },
+        },
+      },
     },
   },
 });
