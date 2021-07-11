@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import top from "../assets/top.jpg";
 
 const baseColor = "#7FDC96";
 const mainColor = "#FCFDFE";
@@ -144,6 +145,36 @@ const systemTheme = extendTheme({
           margin: "0 2px",
           justifyContent: "center",
           alignItems: "center",
+        },
+      },
+      ".top": {
+        letterSpacing: "2px",
+        backgroundImage: `url(${top})`,
+        backgroundSize: "cover",
+        position: "relative",
+        ".white": {
+          position: "absolute",
+          backgroundColor: "rgba(255, 255, 255, 0.6)",
+          height: "100%",
+          width: "100%",
+          top: 0,
+          left: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          div: {
+            textAlign: "center",
+            h1: {
+              fontSize: "32px",
+            },
+            img: {
+              margin: "0 auto",
+            },
+            p: {
+              fontSize: "24px",
+              margin: "20px 0",
+            },
+          },
         },
       },
     },
