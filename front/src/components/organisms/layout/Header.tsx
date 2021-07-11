@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import {
   Box,
   Flex,
-  Heading,
+  Image,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -26,6 +26,7 @@ import { SignupForm } from "../user/SignupForm";
 import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
 import { useLoginUser } from "../../../hooks/user/useLoginUser";
+import logo from "../../../assets/mealoor_logo.png";
 
 export const Header: VFC = memo(() => {
   const history = useHistory();
@@ -57,9 +58,10 @@ export const Header: VFC = memo(() => {
           <HamburgerIcon />
         </HeaderLink>
         <HeaderLink px={2} onClick={onClickLogo}>
-          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
-            mealoor
-          </Heading>
+          <Image
+            className="logo"
+            src={logo}
+          />
         </HeaderLink>
       </Flex>
       <Spacer />

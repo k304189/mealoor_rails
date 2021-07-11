@@ -3,6 +3,7 @@ import { extendTheme } from "@chakra-ui/react";
 const baseColor = "#7FDC96";
 const mainColor = "#FCFDFE";
 const accentColor = "#FF6D62";
+const headerColor = "#119B15";
 
 const pagenationColor = {
   bg: baseColor,
@@ -42,13 +43,16 @@ const systemTheme = extendTheme({
       },
       header: {
         backgroundColor: mainColor,
-        color: baseColor,
+        color: headerColor,
         position: "fixed",
         zIndex: "1",
         height: headerHeight,
         width: "100%",
         ".loginPop": {
           color: "#000000",
+        },
+        ".logo": {
+          height: headerHeight,
         },
       },
       ".main": {
