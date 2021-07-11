@@ -92,12 +92,12 @@ export const UserEditForm: VFC<Props> = memo((props) => {
   const callDeleteUser = () => {
     deleteUser(userId)
       .then(() => {
-        showMessage({ title: "退会処理が完了しました", status: "success" });
-        if (loginUser?.admin) {
+        if (loginUser?.admin && loginUser?.id !== userId) {
+          showMessage({ title: "退会処理が完了しました", status: "success" });
           history.push("/users");
         } else {
           clearRequestHeader();
-          history.push("/");
+          history.push("/withdraw");
         }
       })
       .catch(() => {

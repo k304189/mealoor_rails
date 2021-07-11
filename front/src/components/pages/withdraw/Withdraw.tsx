@@ -1,17 +1,20 @@
 import { memo, VFC, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
 import { HeaderLayout } from "../../templates/HeaderLayout";
-import { useUserApi } from "../../../hooks/user/useUserApi";
 import { useRequestHeader } from "../../../hooks/user/useRequestHeader";
+import { useMessage } from "../../../hooks/common/useMessage";
 
 export const Withdraw: VFC = memo(() => {
-  const { isLogin } = useUserApi();
   const { hasRequestHeader } = useRequestHeader();
+  const { showMessage } = useMessage();
+  const history = useHistory();
 
   useEffect(() => {
     if (hasRequestHeader()) {
-      isLogin();
+      showMessage({ title: "この画面は参照できません", status: "error" });
+      history.push("/dashboard");
     }
   }, []);
 
