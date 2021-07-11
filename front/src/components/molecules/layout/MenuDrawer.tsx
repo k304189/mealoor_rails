@@ -95,6 +95,14 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
           ) : (
             <></>
           )}
+          <MenuSection bg="green.100">
+            mealoorについて
+          </MenuSection>
+          <MenuLink
+            onClick={() => { history.push("/"); }}
+          >
+            トップ画面
+          </MenuLink>
         </DrawerBody>
       </DrawerContent>
     </Drawer>
