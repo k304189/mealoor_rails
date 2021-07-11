@@ -12,6 +12,7 @@ import { SeasonalFoodList } from "../components/pages/seasonalfood/SeasonalFoodL
 import { LoginUserProvider } from "../providers/LoginUserProvider";
 import { StockList } from "../components/pages/stock/StockList";
 import { Http404 } from "../components/pages/http404/Http404";
+import { Withdraw } from "../components/pages/withdraw/Withdraw";
 
 export const Router: VFC = memo(() => {
   return (
@@ -43,6 +44,9 @@ export const Router: VFC = memo(() => {
         </Route>
         <Route path="/users/detail/:id">
           <UserDetail />
+        </Route>
+        <Route exact path="/withdraw">
+          <Withdraw />
         </Route>
         <Route path="*">
           <Http404 />

@@ -201,6 +201,22 @@ const systemTheme = extendTheme({
           },
         },
       },
+      ".withdraw": {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        div: {
+          textAlign: "center",
+          h1: {
+            fontSize: "64px",
+            fontWeight: "bold",
+          },
+          p: {
+            fontSize: "20px",
+            margin: "20px 0",
+          },
+        },
+      },
     },
   },
 });
