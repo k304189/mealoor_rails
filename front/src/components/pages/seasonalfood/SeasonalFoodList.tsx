@@ -16,7 +16,7 @@ import { HeaderLayout } from "../../templates/HeaderLayout";
 import { SeasonalFoodEditModal } from "../../organisms/seasonalfood/SeasonalFoodEditModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
-import { DeleteButton } from "../../atoms/button/DeleteButton";
+import { DeleteButton } from "../../molecules/button/DeleteButton";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { SeasonalFood } from "../../../types/api/seasonalFood";
@@ -143,6 +143,8 @@ export const SeasonalFoodList: VFC = memo(() => {
                             <Td>{data.end_month}月</Td>
                             <Td>
                               <DeleteButton
+                                size="xs"
+                                tooltipText="データ削除"
                                 onClick={() => { onClickDeleteSeasonalFood(data.id); }}
                               />
                             </Td>
