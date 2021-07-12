@@ -98,7 +98,8 @@ export const CalendarTable: VFC<Props> = memo((props) => {
                 {week.dateArray.map((date) => (
                   <Td
                     key={date.date}
-                    p={1}
+                    px={1}
+                    py={0}
                     w="14%"
                     h="15%"
                     valign="top"
