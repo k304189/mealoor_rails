@@ -1,5 +1,5 @@
 import { ChangeEvent, memo, VFC, useEffect, useState } from "react";
-import { Box, Center, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Center, Grid, GridItem, HStack } from "@chakra-ui/react";
 
 import { HeaderLayout } from "../../templates/HeaderLayout";
 import { SecondaryButton } from "../../atoms/button/SecondaryButton";
@@ -135,11 +135,11 @@ export const Calendar: VFC = memo(() => {
                 翌月
               </SecondaryButton>
             </GridItem>
-            <GridItem colSpan={1}>
-              <HealthButton onClick={() => { setHealthEditFormIsOpen(true); }} />
-            </GridItem>
-            <GridItem colSpan={1}>
-              <EatButton onClick={() => { setEatEditFormIsOpen(true); }} />
+            <GridItem colSpan={3}>
+              <HStack spacing={5}>
+                <HealthButton onClick={() => { setHealthEditFormIsOpen(true); }} />
+                <EatButton onClick={() => { setEatEditFormIsOpen(true); }} />
+              </HStack>
             </GridItem>
           </Grid>
         </Box>
