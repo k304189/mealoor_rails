@@ -136,7 +136,7 @@ export const StockList: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading} title="家にある食材">
+    <HeaderLayout loading={loading} title="家にある食材" titleClass="stockSection">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"

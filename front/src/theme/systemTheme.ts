@@ -69,10 +69,9 @@ const systemTheme = extendTheme({
         height: mainHeight,
         ".title": {
           fontSize: titleFontSize,
-          backgroundColor: "#FFCCC8",
-          color: "#730800",
           height: titleHeight,
-          borderLeft: `10px solid ${accentColor}`,
+          borderLeftWidth: "10px",
+          borderLeftStype: "solid",
           lineHeight: titleHeight,
           fontWeight: "normal",
           paddingLeft: "10px",
@@ -127,6 +126,15 @@ const systemTheme = extendTheme({
         ".notTargetMonth": {
           backgroundColor: "#F3F3F3",
         },
+      },
+      ".defaultSection": {
+        backgroundColor: mainColor,
+        borderLeftColor: accentColor,
+      },
+      ".stockSection": {
+        backgroundColor: "#FFCCC8",
+        color: "#730800",
+        borderLeftColor: accentColor,
       },
       ".pagination": {
         display: "flex",

@@ -6,11 +6,12 @@ import { Header } from "../organisms/layout/Header";
 type Props = {
   loading?: boolean;
   title?: string | null;
+  titleClass?: string;
   children: ReactNode;
 };
 
 export const HeaderLayout: VFC<Props> = memo((props) => {
-  const { loading = false, title = null, children } = props;
+  const { loading = false, title = null, titleClass = "defaultSection", children } = props;
   return (
     <>
       <Header />
@@ -23,7 +24,7 @@ export const HeaderLayout: VFC<Props> = memo((props) => {
           <Box w="95%" h="100%" overflow={{ base: "scroll", md: "auto" }}>
             { title ? (
               <>
-                <Box className="title">
+                <Box className={`title ${titleClass}`}>
                   {title}
                 </Box>
                 <Box className="contents">
