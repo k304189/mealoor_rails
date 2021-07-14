@@ -136,6 +136,11 @@ const systemTheme = extendTheme({
         color: "#730800",
         borderLeftColor: accentColor,
       },
+      ".adminSection": {
+        backgroundColor: "#2A4365",
+        color: mainColor,
+        borderLeftColor: "#BEE3F8",
+      },
       ".pagination": {
         display: "flex",
         listStyle: "none",

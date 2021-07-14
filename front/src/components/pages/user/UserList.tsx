@@ -43,7 +43,7 @@ export const UserList: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading} title="ユーザー一覧">
+    <HeaderLayout loading={loading} title="ユーザー一覧" titleClass="adminSection">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"
