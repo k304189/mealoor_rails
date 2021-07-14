@@ -146,6 +146,11 @@ const systemTheme = extendTheme({
         color: mainColor,
         borderLeftColor: "#BEE3F8",
       },
+      ".aboutSection": {
+        backgroundColor: "#C6F6D5",
+        color: "#22543D",
+        borderLeftColor: "#009D5B",
+      },
       ".pagination": {
         display: "flex",
         listStyle: "none",

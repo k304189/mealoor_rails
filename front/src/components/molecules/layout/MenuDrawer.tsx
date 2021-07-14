@@ -39,6 +39,9 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
         <DrawerBody>
           { hasRequestHeader() ? (
             <>
+              <MenuSection sectionClass="dataSection">
+                ユーザーデータ
+              </MenuSection>
               <MenuLink
                 onClick={() => { history.push(`users/detail/${loginUser?.id}`); }}
               >
@@ -64,8 +67,8 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
               >
                 食事グラフ
               </MenuLink>
-              <MenuSection bg="red.300">
-                食材
+              <MenuSection sectionClass="stockSection">
+                自炊
               </MenuSection>
               <MenuLink
                 onClick={() => { history.push("/stock"); }}
@@ -74,7 +77,7 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
               </MenuLink>
               { loginUser?.admin ? (
                 <>
-                  <MenuSection bg="blue.800" color="#FFFFFF">
+                  <MenuSection sectionClass="adminSection">
                     管理者メニュー
                   </MenuSection>
                   <MenuLink
@@ -95,7 +98,7 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
           ) : (
             <></>
           )}
-          <MenuSection bg="green.100">
+          <MenuSection sectionClass="aboutSection">
             mealoorについて
           </MenuSection>
           <MenuLink
