@@ -131,6 +131,11 @@ const systemTheme = extendTheme({
         backgroundColor: mainColor,
         borderLeftColor: accentColor,
       },
+      ".dataSection": {
+        backgroundColor: "#FFF1AB",
+        color: "#974407",
+        borderLeftColor: "#FFD700",
+      },
       ".stockSection": {
         backgroundColor: "#FFCCC8",
         color: "#730800",

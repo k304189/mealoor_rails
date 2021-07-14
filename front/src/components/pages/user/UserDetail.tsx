@@ -43,7 +43,7 @@ export const UserDetail: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading} title="ユーザー詳細">
+    <HeaderLayout loading={loading} title="ユーザー詳細" titleClass="dataSection">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"

@@ -147,7 +147,7 @@ export const DailyData: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading} title={`デイリーデータ：${date}`}>
+    <HeaderLayout loading={loading} title={`デイリーデータ：${date}`} titleClass="dataSection">
       <Box as="article" w="100%" h="100%">
         <HStack spacing={5}>
           <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>

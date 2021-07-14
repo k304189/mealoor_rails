@@ -34,7 +34,7 @@ export const Graph: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout loading={loading} title="食事グラフ">
+    <HeaderLayout loading={loading} title="食事グラフ" titleClass="dataSection">
       <Flex flexWrap={{ base: "wrap", md: "nowrap" }} h="100%">
         <Box
           as="article"

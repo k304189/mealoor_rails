@@ -48,7 +48,7 @@ export const DashboardPage: VFC = memo(() => {
   }, []);
 
   return (
-    <HeaderLayout title="ダッシュボード" loading={loading}>
+    <HeaderLayout title="ダッシュボード" loading={loading} titleClass="dataSection">
       <Box as="article" w="100%" h="100%">
         <Flex>
           <Box className="sectionTitle" mr={10}>

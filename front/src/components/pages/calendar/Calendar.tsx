@@ -110,7 +110,7 @@ export const Calendar: VFC = memo(() => {
   }, [displayYearMonth]);
 
   return (
-    <HeaderLayout loading={loading} title="カレンダー">
+    <HeaderLayout loading={loading} title="カレンダー" titleClass="dataSection">
       <Box as="article" w="100%" h="100%">
         <Box h="10%">
           <Grid
