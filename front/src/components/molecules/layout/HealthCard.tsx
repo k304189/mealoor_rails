@@ -1,29 +1,39 @@
-import { memo, VFC } from "react";
+import { memo, useEffect, useState, VFC } from "react";
 import { Table, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
 import { faFileMedical } from "@fortawesome/free-solid-svg-icons";
+import { Health } from "../../../types/api/health";
 
 import { Card } from "../../atoms/layout/Card";
 
 type Props = {
-  todayWeight: number;
-  todayFatPercent: number;
-  todayFatWeight: number;
-  yesterdayWeight?: number | null;
-  yesterdayFatPercent?: number | null;
-  yesterdayFatWeight?: number | null;
+  todayHealth: Health | null;
+  yesterdayHealth?: Health | null;
 };
 
 export const HealthCard: VFC<Props> = memo((props) => {
-  const {
-    todayWeight,
-    todayFatPercent,
-    todayFatWeight,
-    yesterdayWeight,
-    yesterdayFatPercent,
-    yesterdayFatWeight,
-  } = props;
+  const { todayHealth, yesterdayHealth = null } = props;
+  const [todayWeight, setTodayWeight] = useState(0);
+  const [todayFatPercent, setTodayFatPercent] = useState(0);
+  const [todayFatWeight, setTodayFatWeight] = useState(0);
+  const [yesterdayWeight, setYesterdayWeight] = useState(0);
+  const [yesterdayFatPercent, setYesterdayFatPercent] = useState(0);
+  const [yesterdayFatWeight, setYesterdayFatWeight] = useState(0);
 
   const bg = "#00B894";
+
+  useEffect(() => {
+    if (todayHealth) {
+      setTodayWeight(todayHealth.weight);
+      setTodayFatPercent(todayHealth.fat_percent || 0);
+      setTodayFatWeight(todayHealth.fat_weight || 0);
+    }
+
+    if (yesterdayHealth) {
+      setYesterdayWeight(yesterdayHealth.weight);
+      setYesterdayFatPercent(yesterdayHealth.fat_percent || 0);
+      setYesterdayFatWeight(yesterdayHealth.fat_weight || 0);
+    }
+  }, []);
 
   return (
     <Card bg={bg} icon={faFileMedical} label="体調">
@@ -43,7 +53,7 @@ export const HealthCard: VFC<Props> = memo((props) => {
             <Td fontSize="xl">{todayFatPercent.toLocaleString()}%</Td>
             <Td fontSize="xl">{todayFatWeight.toLocaleString()}kg</Td>
           </Tr>
-          { yesterdayWeight && yesterdayFatPercent && yesterdayFatWeight ? (
+          { yesterdayHealth ? (
             <Tr>
               <Td>昨日</Td>
               <Td>{yesterdayWeight.toLocaleString()}kg</Td>
