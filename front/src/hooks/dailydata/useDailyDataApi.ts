@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { useRequestHeader } from "../user/useRequestHeader";
 import { Eat } from "../../types/api/eat";
 import { Health } from "../../types/api/health";
+import { Dailydata } from "../../types/api/dailydata";
 
 type returnType = {
   getDailyData: (date: string) => Promise<number>;
@@ -22,13 +23,10 @@ export const useDailyDataApi = (): returnType => {
     async (date: string) => {
       const url = `${process.env.REACT_APP_API_V1_URL}/daily_data/${date}`;
       const response = await axios.get(url, { headers: getRequestHeader() });
-      const { eat, health } : { eat: Array<Eat>, health: Health } = response.data;
-      if (eat) {
-        setEatData(eat);
-      }
-      if (health) {
-        setHealthData(health);
-      }
+      const dailydata: Dailydata = response.data;
+      // const { eat, health } : { eat: Array<Eat>, health: Health } = response.data;
+      setEatData(dailydata.eat);
+      setHealthData(dailydata.health);
       return response.status;
     }, [],
   );
