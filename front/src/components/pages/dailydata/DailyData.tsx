@@ -1,15 +1,15 @@
 import { memo, VFC, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, VStack } from "@chakra-ui/react";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { EatButton } from "../../molecules/button/EatButton";
 import { HealthButton } from "../../molecules/button/HealthButton";
+import { HealthCard } from "../../molecules/layout/HealthCard";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
 import { EatEditForm } from "../../organisms/eat/EatEditForm";
-import { HealthDataArea } from "../../organisms/dailydata/HealthDataArea";
 import { HealthEditForm } from "../../organisms/health/HealthEditForm";
 import { HeaderLayout } from "../../templates/HeaderLayout";
 import { useMessage } from "../../../hooks/common/useMessage";
@@ -149,22 +149,35 @@ export const DailyData: VFC = memo(() => {
   return (
     <HeaderLayout loading={loading} title={`デイリーデータ：${date}`} titleClass="dataSection">
       <Box as="article" w="100%" h="100%">
-        <HStack spacing={5}>
-          <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
-          <HealthButton onClick={openHealthEditModal} />
-          <EatButton onClick={() => { openEatEditModal(false); }} />
-        </HStack>
-        <Box w="40%">
-          <HealthDataArea
-            healthData={healthData}
-            onClickHealthLink={openHealthEditModal}
-          />
-        </Box>
-        <EatDataArea
-          eatData={eatData}
-          onClickEatNameLink={onClickEatNameLink}
-          onClickDeleteButton={onClickDeleteButton}
-        />
+        <Flex h="100%">
+          <Box w="55%">
+            <HStack spacing={5}>
+              <PrimaryButton onClick={history.goBack}>戻る</PrimaryButton>
+              <HealthButton onClick={openHealthEditModal} />
+              <EatButton onClick={() => { openEatEditModal(false); }} />
+            </HStack>
+            <Box mt={6} className="sectionTitle">
+              データサマリー
+            </Box>
+            <Grid templateColumns="repeat(2, 1fr)" gap={2} p={1}>
+              <GridItem colSpan={1}>
+                <HealthCard todayHealth={healthData} />
+              </GridItem>
+              <GridItem colSpan={1}>
+                <></>
+              </GridItem>
+            </Grid>
+          </Box>
+          <Box w="45%">
+            <VStack spacing={4}>
+              <EatDataArea
+                eatData={eatData}
+                onClickEatNameLink={onClickEatNameLink}
+                onClickDeleteButton={onClickDeleteButton}
+              />
+            </VStack>
+          </Box>
+        </Flex>
       </Box>
       <DefaultModal
         isOpen={eatEditFormIsOpen}

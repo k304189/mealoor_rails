@@ -25,7 +25,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
   const { eatData, onClickEatNameLink, onClickDeleteButton } = props;
   const [pagingOffset, setPagingOffset] = useState(0);
 
-  const pagingDisplayNum = 5;
+  const pagingDisplayNum = 4;
   const onChangePaging = (page: {selected: number}) =>
     setPagingOffset(pagingDisplayNum * page.selected);
 
@@ -48,8 +48,8 @@ export const EatDataArea: VFC<Props> = memo((props) => {
             <Tr>
               <Td>料理名</Td>
               <Td>カテゴリー</Td>
-              <Td>食事タイミング</Td>
-              <Td>食事タイプ</Td>
+              <Td>タイミング</Td>
+              <Td>タイプ</Td>
               <Td>値段</Td>
               <Td>カロリー</Td>
             </Tr>
@@ -79,6 +79,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
                   </Td>
                   <Td>
                     <DeleteButton
+                      size="xs"
                       tooltipText="食事データ削除"
                       onClick={() => { onClickDeleteButton(data.id); }}
                     />
