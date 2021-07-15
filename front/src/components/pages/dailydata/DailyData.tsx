@@ -26,7 +26,13 @@ export const DailyData: VFC = memo(() => {
   const { date } = useParams<UrlParams>();
   const history = useHistory();
   const { showMessage } = useMessage();
-  const { getDailyData, eatData, setEatData, healthData, setHealthData } = useDailyDataApi();
+  const {
+    getDailyData,
+    eatData,
+    setEatData,
+    healthData,
+    setHealthData,
+  } = useDailyDataApi();
   const { deleteEat } = useEatApi();
   const { isLogin } = useUserApi();
 

@@ -1,18 +1,18 @@
 import { Eat } from "./eat";
 import { Health } from "./health";
 
-type summary = {
+export type DailyDataSummary = {
   kcal: number;
   price: number;
-}
+};
 
 export type Dailydata = {
   health: Health | null;
   eat: Array<Eat> | null;
   summary: {
-    breakfast: summary | null;
-    lunch: summary | null;
-    dinner: summary | null;
-    snack: summary | null;
+    breakfast: DailyDataSummary | null;
+    lunch: DailyDataSummary | null;
+    dinner: DailyDataSummary | null;
+    snack: DailyDataSummary | null;
   };
 };
