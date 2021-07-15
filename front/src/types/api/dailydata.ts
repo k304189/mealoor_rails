@@ -9,10 +9,10 @@ type summary = {
 export type Dailydata = {
   health: Health | null;
   eat: Array<Eat> | null;
-  summary?: {
-    breakfast?: summary;
-    lunch?: summary;
-    dinner?: summary;
-    snack?: summary;
+  summary: {
+    breakfast: summary | null;
+    lunch: summary | null;
+    dinner: summary | null;
+    snack: summary | null;
   };
 };

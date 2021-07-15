@@ -24,7 +24,6 @@ export const useDailyDataApi = (): returnType => {
       const url = `${process.env.REACT_APP_API_V1_URL}/daily_data/${date}`;
       const response = await axios.get(url, { headers: getRequestHeader() });
       const dailydata: Dailydata = response.data;
-      // const { eat, health } : { eat: Array<Eat>, health: Health } = response.data;
       setEatData(dailydata.eat);
       setHealthData(dailydata.health);
       return response.status;
