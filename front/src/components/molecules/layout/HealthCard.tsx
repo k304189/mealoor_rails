@@ -61,7 +61,9 @@ export const HealthCard: VFC<Props> = memo((props) => {
               <Td>{yesterdayFatWeight.toLocaleString()}kg</Td>
             </Tr>
           ) : (
-            <></>
+            <Tr>
+              <Td colspan="4" />
+            </Tr>
           )}
         </Tbody>
       </Table>

@@ -9,20 +9,22 @@ type Props = {
   todayPrice: number;
   yesterdayKcal?: number | null;
   yesterdayPrice?: number | null;
+  label?: string;
+  bg?: string;
 };
 
 export const EatSummaryCard: VFC<Props> = memo((props) => {
   const {
     todayKcal,
     todayPrice,
-    yesterdayKcal,
-    yesterdayPrice,
+    yesterdayKcal = null,
+    yesterdayPrice = null,
+    label = "食事",
+    bg = "#FF8800",
   } = props;
 
-  const bg = "#FF8800";
-
   return (
-    <Card bg={bg} icon={faUtensils} label="食事">
+    <Card bg={bg} icon={faUtensils} label={label}>
       <Table bg={bg} w="100%" size="sm" variant="unstyled" align="right">
         <Thead>
           <Tr>
@@ -44,7 +46,9 @@ export const EatSummaryCard: VFC<Props> = memo((props) => {
               <Td>{yesterdayPrice.toLocaleString()}円</Td>
             </Tr>
           ) : (
-            <></>
+            <Tr>
+              <Td colspan="3" />
+            </Tr>
           )}
         </Tbody>
       </Table>

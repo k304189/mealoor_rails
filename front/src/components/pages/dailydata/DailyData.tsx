@@ -6,6 +6,7 @@ import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { EatButton } from "../../molecules/button/EatButton";
 import { HealthButton } from "../../molecules/button/HealthButton";
 import { HealthCard } from "../../molecules/layout/HealthCard";
+import { EatSummaryCard } from "../../molecules/layout/EatSummaryCard";
 import { DefaultModal } from "../../molecules/layout/DefaultModal";
 import { DefaultDialog } from "../../molecules/layout/DefaultDialog";
 import { EatDataArea } from "../../organisms/dailydata/EatDataArea";
@@ -32,6 +33,10 @@ export const DailyData: VFC = memo(() => {
     setEatData,
     healthData,
     setHealthData,
+    breakfastSummary,
+    lunchSummary,
+    dinnerSummary,
+    snackSummary,
   } = useDailyDataApi();
   const { deleteEat } = useEatApi();
   const { isLogin } = useUserApi();
@@ -171,6 +176,38 @@ export const DailyData: VFC = memo(() => {
               </GridItem>
               <GridItem colSpan={1}>
                 <></>
+              </GridItem>
+              <GridItem colSpan={1}>
+                <EatSummaryCard
+                  label="朝食"
+                  bg="#89C3ED"
+                  todayKcal={breakfastSummary ? breakfastSummary.kcal : 0}
+                  todayPrice={breakfastSummary ? breakfastSummary.price : 0}
+                />
+              </GridItem>
+              <GridItem colSpan={1}>
+                <EatSummaryCard
+                  label="昼食"
+                  bg="#F7C114"
+                  todayKcal={lunchSummary ? lunchSummary.kcal : 0}
+                  todayPrice={lunchSummary ? lunchSummary.price : 0}
+                />
+              </GridItem>
+              <GridItem colSpan={1}>
+                <EatSummaryCard
+                  label="夕食"
+                  bg="#EE827C"
+                  todayKcal={dinnerSummary ? dinnerSummary.kcal : 0}
+                  todayPrice={dinnerSummary ? dinnerSummary.price : 0}
+                />
+              </GridItem>
+              <GridItem colSpan={1}>
+                <EatSummaryCard
+                  label="間食"
+                  bg="#68BE8D"
+                  todayKcal={snackSummary ? snackSummary.kcal : 0}
+                  todayPrice={snackSummary ? snackSummary.price : 0}
+                />
               </GridItem>
             </Grid>
           </Box>
