@@ -47,7 +47,7 @@ export const EatSummaryCard: VFC<Props> = memo((props) => {
             </Tr>
           ) : (
             <Tr>
-              <Td colspan="3" />
+              <Td colSpan={3} />
             </Tr>
           )}
         </Tbody>

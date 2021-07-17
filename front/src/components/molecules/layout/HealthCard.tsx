@@ -62,7 +62,7 @@ export const HealthCard: VFC<Props> = memo((props) => {
             </Tr>
           ) : (
             <Tr>
-              <Td colspan="4" />
+              <Td colSpan={4} />
             </Tr>
           )}
         </Tbody>

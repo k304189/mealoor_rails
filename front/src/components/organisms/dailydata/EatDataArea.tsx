@@ -52,6 +52,7 @@ export const EatDataArea: VFC<Props> = memo((props) => {
               <Td>タイプ</Td>
               <Td>値段</Td>
               <Td>カロリー</Td>
+              <Td />
             </Tr>
           </Thead>
           <Tbody>

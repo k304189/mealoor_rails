@@ -43,7 +43,7 @@ export const MenuDrawer: VFC<Props> = memo((props) => {
                 ユーザーデータ
               </MenuSection>
               <MenuLink
-                onClick={() => { history.push(`users/detail/${loginUser?.id}`); }}
+                onClick={() => { history.push(`/users/detail/${loginUser?.id}`); }}
               >
                 <Flex>
                   <AvatarButton size="sm" />
