@@ -2,6 +2,7 @@ import { memo, useState, VFC } from "react";
 import {
   Box,
   Flex,
+  HStack,
   Table,
   Thead,
   Tbody,
@@ -9,9 +10,14 @@ import {
   Td,
   Spacer,
 } from "@chakra-ui/react";
+import {
+  faClock,
+  faUtensils,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
+import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
 import { DeleteButton } from "../../molecules/button/DeleteButton";
 import { Eat } from "../../../types/api/eat";
 
@@ -29,8 +35,34 @@ export const EatDataArea: VFC<Props> = memo((props) => {
   const onChangePaging = (page: {selected: number}) =>
     setPagingOffset(pagingDisplayNum * page.selected);
 
+  const getEatTimingColor = (eatTiming: string) => {
+    let eatTimingColor = "#000000";
+    if (eatTiming === "朝食") {
+      eatTimingColor = "#89C3ED";
+    } else if (eatTiming === "昼食") {
+      eatTimingColor = "#F7C114";
+    } else if (eatTiming === "夕食") {
+      eatTimingColor = "#EE827C";
+    } else if (eatTiming === "間食") {
+      eatTimingColor = "#68BE8D";
+    }
+    return eatTimingColor;
+  };
+
+  const getEatTypeColor = (eatType: string) => {
+    let eatTypeColor = "#000000";
+    if (eatType === "外食") {
+      eatTypeColor = "#016DEA";
+    } else if (eatType === "中食") {
+      eatTypeColor = "#FADF01";
+    } else if (eatType === "自炊") {
+      eatTypeColor = "#FA4001";
+    }
+    return eatTypeColor;
+  };
+
   return (
-    <Box>
+    <Box w="100%">
       <Flex>
         <Box className="sectionTitle">
           食事
@@ -46,13 +78,11 @@ export const EatDataArea: VFC<Props> = memo((props) => {
         <Table size="sm">
           <Thead>
             <Tr>
-              <Td>料理名</Td>
-              <Td>カテゴリー</Td>
-              <Td>タイミング</Td>
-              <Td>タイプ</Td>
-              <Td>値段</Td>
-              <Td>カロリー</Td>
-              <Td />
+              <Td w="45%">料理名</Td>
+              <Td w="20%">カテゴリー</Td>
+              <Td w="15%">値段</Td>
+              <Td w="15%">カロリー</Td>
+              <Td w="5%" />
             </Tr>
           </Thead>
           <Tbody>
@@ -61,13 +91,26 @@ export const EatDataArea: VFC<Props> = memo((props) => {
               .map((data) => (
                 <Tr key={data.id}>
                   <Td>
-                    <DefaultLink onClick={() => { onClickEatNameLink(data.id); }}>
-                      {data.name}
-                    </DefaultLink>
+                    <Flex>
+                      <DefaultLink onClick={() => { onClickEatNameLink(data.id); }}>
+                        { data.name.length > 10 ? `${data.name.slice(0, 10)}...` : data.name }
+                      </DefaultLink>
+                      <Spacer />
+                      <HStack>
+                        <DefaultFontIcon
+                          icon={faClock}
+                          tooltipText={`食事タイミング：${data.eat_timing}`}
+                          color={getEatTimingColor(data.eat_timing)}
+                        />
+                        <DefaultFontIcon
+                          icon={faUtensils}
+                          tooltipText={`食事タイプ：${data.eat_type}`}
+                          color={getEatTypeColor(data.eat_type)}
+                        />
+                      </HStack>
+                    </Flex>
                   </Td>
                   <Td>{data.category}</Td>
-                  <Td>{data.eat_timing}</Td>
-                  <Td>{data.eat_type}</Td>
                   <Td>
                     {data.price
                       ? `${data.price.toLocaleString()}円`
