@@ -1,6 +1,7 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
 import {
   Flex,
+  HStack,
   Spacer,
   Table,
   Thead,
@@ -8,11 +9,17 @@ import {
   Tr,
   Td,
 } from "@chakra-ui/react";
+import {
+  faBell,
+  faTimes,
+  faSquareFull,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { DefaultPaging } from "../../atoms/button/DefaultPaging";
 import { DefaultLink } from "../../atoms/button/DefaultLink";
 import { DefaultCheckbox } from "../../atoms/button/DefaultCheckbox";
+import { DefaultFontIcon } from "../../atoms/icon/DefaultFontIcon";
 import { Stock } from "../../../types/api/stock";
 
 type Props = {
@@ -24,6 +31,8 @@ type Props = {
 };
 
 export const HavingStockTable: VFC<Props> = memo((props) => {
+  const TYPE_PASSED = "passed";
+  const TYPE_NEARLY = "nealry";
   const [havingPagingOffset, setHavingPagingOffset] = useState(0);
   const {
     havingStocks,
@@ -42,17 +51,61 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
     return diff;
   };
 
+  const getDiffDaysType = (targetDate: string) => {
+    const dateDiff = getDiffDaysFromToday(targetDate);
+    let type = "";
+    if (dateDiff < 0) {
+      type = TYPE_PASSED;
+    } else if (dateDiff >= 0 && dateDiff < 3) {
+      type = TYPE_NEARLY;
+    }
+    return type;
+  };
+
   const getTrClassName = (limitStr: string) => {
-    const diffDaysFromToday = getDiffDaysFromToday(limitStr);
+    const type = getDiffDaysType(limitStr);
     let className;
-    if (diffDaysFromToday < 0) {
+    if (type === TYPE_PASSED) {
       className = "passedLimitRow";
-    } else if (diffDaysFromToday >= 0 && diffDaysFromToday < 2) {
+    } else if (type === TYPE_NEARLY) {
       className = "nearlyLimitRow";
     } else {
       className = "";
     }
     return className;
+  };
+
+  const getLimitIcon = (limitStr: string) => {
+    const type = getDiffDaysType(limitStr);
+    let icon = faSquareFull;
+    if (type === TYPE_PASSED) {
+      icon = faTimes;
+    } else if (type === TYPE_NEARLY) {
+      icon = faBell;
+    }
+    return icon;
+  };
+
+  const getLimitIconTooltip = (limitStr: string) => {
+    const type = getDiffDaysType(limitStr);
+    let tooltipText = "";
+    if (type === TYPE_PASSED) {
+      tooltipText = "賞味期限が過ぎています";
+    } else if (type === TYPE_NEARLY) {
+      tooltipText = "賞味期限が近づいています";
+    }
+    return tooltipText;
+  };
+
+  const getLimitIconColor = (limitStr: string) => {
+    const type = getDiffDaysType(limitStr);
+    let color = "transparent";
+    if (type === TYPE_PASSED) {
+      color = "gray.600";
+    } else if (type === TYPE_NEARLY) {
+      color = "red.500";
+    }
+    return color;
   };
 
   const havingPagingDisplayNum = 10;
@@ -88,11 +141,22 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
             .map((data) => (
               <Tr key={data.id} className={getTrClassName(data.limit)}>
                 <Td>
-                  <DefaultCheckbox
-                    isChecked={checkedList.includes(data.id)}
-                    tooltipText="選択中食材に追加・解除する"
-                    onChange={(e) => { onChangeCheckbox(e, data.id); }}
-                  />
+                  <HStack spacing={3}>
+                    <DefaultCheckbox
+                      isChecked={checkedList.includes(data.id)}
+                      tooltipText="選択中食材に追加・解除する"
+                      onChange={(e) => { onChangeCheckbox(e, data.id); }}
+                    />
+                    { getLimitIcon(data.limit) ? (
+                      <DefaultFontIcon
+                        icon={getLimitIcon(data.limit)}
+                        tooltipText={getLimitIconTooltip(data.limit)}
+                        color={getLimitIconColor(data.limit)}
+                      />
+                    ) : (
+                      <></>
+                    ) }
+                  </HStack>
                 </Td>
                 <Td>
                   <DefaultLink
