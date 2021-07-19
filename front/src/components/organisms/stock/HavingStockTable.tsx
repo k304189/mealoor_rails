@@ -146,6 +146,7 @@ export const HavingStockTable: VFC<Props> = memo((props) => {
                       isChecked={checkedList.includes(data.id)}
                       tooltipText="選択中食材に追加・解除する"
                       onChange={(e) => { onChangeCheckbox(e, data.id); }}
+                      borderColor="#228B22"
                     />
                     { getLimitIcon(data.limit) ? (
                       <DefaultFontIcon

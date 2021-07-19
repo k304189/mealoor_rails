@@ -8,7 +8,8 @@ type Props = {
   colorScheme?: string;
   tooltipText?: string;
   children?: ReactNode;
-}
+  borderColor?: string;
+};
 
 export const DefaultCheckbox: VFC<Props> = memo((props) => {
   const {
@@ -18,6 +19,7 @@ export const DefaultCheckbox: VFC<Props> = memo((props) => {
     colorScheme = "green",
     tooltipText = "",
     children = "",
+    borderColor = "",
   } = props;
 
   return (
@@ -28,6 +30,7 @@ export const DefaultCheckbox: VFC<Props> = memo((props) => {
           onChange={onChange}
           size={size}
           colorScheme={colorScheme}
+          borderColor={borderColor}
         >
           {children}
         </Checkbox>
