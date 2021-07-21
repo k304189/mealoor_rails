@@ -228,7 +228,11 @@ export const DailyData: VFC = memo(() => {
         modalTitle={eatEditFormTitle}
         size="4xl"
       >
-        <EatEditForm eat={editEat} setEatData={updateEatDataInDailyData} />
+        <EatEditForm
+          eat={editEat}
+          initialEatDate={date}
+          setEatData={updateEatDataInDailyData}
+        />
       </DefaultModal>
       <DefaultDialog
         isOpen={eatDeleteDialogIsOpen}

@@ -23,11 +23,12 @@ import { CheckDiscounted } from "../input/common/CheckDiscounted";
 
 type Props = {
   eat?: Eat | null;
+  initialEatDate?: string;
   setEatData: (eat: Eat) => void;
 };
 
 export const EatEditForm: VFC<Props> = memo((props) => {
-  const { eat = null, setEatData } = props;
+  const { eat = null, initialEatDate = "", setEatData } = props;
   const { showMessage } = useMessage();
   const { addEat, editEat } = useEatApi();
   const {
@@ -146,13 +147,19 @@ export const EatEditForm: VFC<Props> = memo((props) => {
     setPrice(eat?.price ?? 0);
     setEatType(eat?.eat_type ?? "");
     setEatTiming(eat?.eat_timing ?? "");
-    setEatDate(eat?.eat_date ?? "");
+    // setEatDate(eat?.eat_date ?? "");
     setFoodAmount(eat?.amount ?? 0);
     setFoodUnit(eat?.unit ?? "");
     setProtein(eat?.protein ?? 0.0);
     setShop(eat?.shop ?? "");
     setDiscounted(eat?.discounted ?? false);
     setNote(eat?.note ?? "");
+
+    let ed = initialEatDate;
+    if (eat) {
+      ed = eat.eat_date;
+    }
+    setEatDate(ed);
 
     setNameInvalid(false);
     setCategoryInvalid(false);
