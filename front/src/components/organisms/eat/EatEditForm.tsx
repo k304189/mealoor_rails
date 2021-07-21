@@ -147,7 +147,6 @@ export const EatEditForm: VFC<Props> = memo((props) => {
     setPrice(eat?.price ?? 0);
     setEatType(eat?.eat_type ?? "");
     setEatTiming(eat?.eat_timing ?? "");
-    // setEatDate(eat?.eat_date ?? "");
     setFoodAmount(eat?.amount ?? 0);
     setFoodUnit(eat?.unit ?? "");
     setProtein(eat?.protein ?? 0.0);

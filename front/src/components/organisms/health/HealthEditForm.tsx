@@ -14,11 +14,12 @@ import { InputFatWeight } from "../input/health/InputFatWeight";
 
 type Props = {
   health?: Health | null;
+  initialRecordingDate?: string;
   setHealthData: (health: Health) => void;
 }
 
 export const HealthEditForm: VFC<Props> = memo((props) => {
-  const { health = null, setHealthData } = props;
+  const { health = null, initialRecordingDate = "", setHealthData } = props;
   const { showMessage } = useMessage();
   const { addHealth, editHealth, getHealthByDate } = useHealthApi();
   const { validateRecordingDate } = useHealthValidate();
@@ -68,7 +69,7 @@ export const HealthEditForm: VFC<Props> = memo((props) => {
   };
 
   const initModal = () => {
-    let tmpRecordingDate = targetHealth?.recording_date ?? "";
+    let tmpRecordingDate = targetHealth?.recording_date ?? initialRecordingDate;
     if (!tmpRecordingDate && recordingDate) {
       tmpRecordingDate = recordingDate;
     }

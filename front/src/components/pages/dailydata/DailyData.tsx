@@ -248,7 +248,11 @@ export const DailyData: VFC = memo(() => {
         modalTitle={healthEditFormTitle}
         size="2xl"
       >
-        <HealthEditForm health={healthData} setHealthData={setHealthData} />
+        <HealthEditForm
+          health={healthData}
+          initialRecordingDate={date}
+          setHealthData={setHealthData}
+        />
       </DefaultModal>
     </HeaderLayout>
   );
