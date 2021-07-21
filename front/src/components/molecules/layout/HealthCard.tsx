@@ -33,7 +33,7 @@ export const HealthCard: VFC<Props> = memo((props) => {
       setYesterdayFatPercent(yesterdayHealth.fat_percent || 0);
       setYesterdayFatWeight(yesterdayHealth.fat_weight || 0);
     }
-  }, []);
+  }, [todayHealth, yesterdayHealth]);
 
   return (
     <Card bg={bg} icon={faFileMedical} label="体調">
