@@ -34,9 +34,13 @@ export const DailyData: VFC = memo(() => {
     healthData,
     setHealthData,
     breakfastSummary,
+    setBreakfastSummary,
     lunchSummary,
+    setLunchSummary,
     dinnerSummary,
+    setDinnerSummary,
     snackSummary,
+    setSnackSummary,
   } = useDailyDataApi();
   const { deleteEat } = useEatApi();
   const { isLogin } = useUserApi();
@@ -52,6 +56,32 @@ export const DailyData: VFC = memo(() => {
   const [healthEditFormIsOpen, setHealthEditFormIsOpen] = useState(false);
   const [healthEditFormTitle, setHealthEditFormTitle] = useState("");
 
+  const calcEatSummary = (calcEats: Array<Eat> | null) => {
+    const EAT_TIMING_ARRAY = [
+      { eat_timing: "朝食", setFunction: setBreakfastSummary },
+      { eat_timing: "昼食", setFunction: setLunchSummary },
+      { eat_timing: "夕食", setFunction: setDinnerSummary },
+      { eat_timing: "間食", setFunction: setSnackSummary },
+    ];
+
+    if (calcEats) {
+      EAT_TIMING_ARRAY.forEach((timing) => {
+        const targetEats = calcEats.filter((data) => data.eat_timing === timing.eat_timing);
+        let summaryKcal = 0;
+        let summaryPrice = 0;
+        if (targetEats.length > 0) {
+          summaryKcal = targetEats.reduce((sum, element) => {
+            return sum + (element.kcal ?? 0);
+          }, 0);
+          summaryPrice = targetEats.reduce((sum, element) => {
+            return sum + (element.price ?? 0);
+          }, 0);
+        }
+        timing.setFunction({ kcal: summaryKcal, price: summaryPrice });
+      });
+    }
+  };
+
   const updateEatDataInDailyData = (eat: Eat) => {
     if (eat.eat_date === date && eatData) {
       const tmpEatData = [...eatData];
@@ -63,6 +93,7 @@ export const DailyData: VFC = memo(() => {
       }
       setEatData([...tmpEatData]);
       setEditEat(eat);
+      calcEatSummary(tmpEatData);
     }
   };
 
@@ -127,6 +158,7 @@ export const DailyData: VFC = memo(() => {
             if (index > -1) {
               tmpEatData.splice(index, 1);
               setEatData([...tmpEatData]);
+              calcEatSummary(tmpEatData);
             }
           }
           setEatDeleteDialogIsOpen(false);
