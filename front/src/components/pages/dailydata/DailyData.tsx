@@ -62,6 +62,7 @@ export const DailyData: VFC = memo(() => {
         tmpEatData.push(eat);
       }
       setEatData([...tmpEatData]);
+      setEditEat(eat);
     }
   };
 
